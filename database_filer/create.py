@@ -21,6 +21,7 @@ def create_tables():
         params = config()
         conn = psycopg2.connect(
             host="localhost",
+            port="5433",
             database="postgres",
             user=os.environ["database_user"],
             password=os.environ["database_password"]
