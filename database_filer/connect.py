@@ -1,5 +1,5 @@
 import psycopg2
-import config
+from config import config
 import os
 
 def connect(filename='database.ini', section='postgresql'):

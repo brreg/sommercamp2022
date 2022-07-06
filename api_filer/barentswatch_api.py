@@ -1,14 +1,12 @@
 import json
 import requests as r
 from rauth.service import OAuth2Service
-import pandas as pd
-import numpy as np
 import os
 
 barentswatch = OAuth2Service(
     name='barentswatch',
-    client_id=os.environ["b_user"],
-    client_secret=os.environ["b_password"],
+    client_id= os.environ["api_user"],
+    client_secret=os.environ["api_password"],
     authorize_url='https://id.barentswatch.no/connect/authorize',
     access_token_url='https://id.barentswatch.no/connect/token',
     base_url='https://www.barentswatch.no/bwapi/')
