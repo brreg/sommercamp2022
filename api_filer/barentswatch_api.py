@@ -10,8 +10,7 @@ import pandas as pd
 
 
 class API:
-    
-    
+      
     def __init__(self):
         
         self.barentswatch = OAuth2Service(
@@ -54,6 +53,7 @@ class API:
         
         escape_res = r.get('https://www.barentswatch.no/bwapi/v1/geodata/fishhealth/locality/'+str(locnr)+'/escape/'+str(year),
         headers = { 'Authorization' : 'Bearer ' + self.session.access_token})
+        
         
         escape_json = escape_res.json()
         
