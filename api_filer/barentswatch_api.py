@@ -4,10 +4,22 @@ from rauth.service import OAuth2Service
 import os
 import pandas as pd
 
+def make_week_dict(week_value_list):
+    # input is a list of dictionaries with week and value
+    week_dict = {}
+    for dct in week_value_list: 
+        week = dct["week"]
+        value = dct["value"]
+        week_dict[week] = value
 
+    for key in week_dict:
+        print(key, week_dict[key])
+
+    #output is a dictionary with key=week, value=value
+    return week_dict
+
+    
 #Get fishhealth data 
-
-
 
 class API:
       
@@ -68,8 +80,9 @@ def __main__():
     fishhealthdata = bapi.get_lice_data(45032, 2022)
     escapedata = bapi.get_escape_data(45032, 2022)
     
-    print(fishhealthdata)
-    print(escapedata)
+    print(fishhealthdata["data"])
+    #print(escapedata)
+    make_week_dict(fishhealthdata["data"])
 
 if __name__ == "__main__":
     __main__()
