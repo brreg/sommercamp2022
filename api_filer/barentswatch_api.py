@@ -6,6 +6,11 @@ import os
 import pandas as pd
 import licedata as ld
 import licedata_container as ldc
+import escapedata as ed
+
+## locality with lice data 45032
+
+## locality with escape data 45017
 
 
     
@@ -61,7 +66,7 @@ class API:
         
         return escape_json
     
-    def make_week_dict(self, week_value_list):
+    def make_week_dict_lice(self, week_value_list):
         # input is a list of dictionaries with week and value
         week_dict = {}
         for dct in week_value_list: 
@@ -71,7 +76,7 @@ class API:
         #output is a dictionary with key=week, value=value
         return week_dict
 
-    def putlicedataintoobject(self, fishhealthdata) :
+    def putlicedataintoobjects(self, fishhealthdata) :
         # input is a dictionary of the form {localityNo: , year: , data: {weeks:values}}
         licedatalist = []
         for week in fishhealthdata["data"].keys():
@@ -93,25 +98,27 @@ def __main__():
     bapi = API()
     
     #locnrs= bapi.get_locnrs()
-    #escapedata = bapi.get_escape_data(45032, 2022)
-
+    escapedata = bapi.get_escape_data(45017, 2022)
+    print(escapedata)
+    escapedata_object = ed.EscapeData(escapedata["localityNo"], escapedata["year"], escapedata["data"])
+    escapedata_object.print_data()
     # gets lice data about one locnr, in a given year, as a dictionary
-    fishhealthdata = bapi.get_lice_data(45032, 2022)
+    fishhealthdata = bapi.get_lice_data(45017, 2022)
     fishhealthdata.pop("type")
 
     # changing form of the week data to a dictionary with weeks as keys and values as values
-    fishhealthdata["data"] = bapi.make_week_dict(fishhealthdata["data"])
-    print(fishhealthdata)
+    fishhealthdata["data"] = bapi.make_week_dict_lice(fishhealthdata["data"])
+    #print(fishhealthdata)
 
     # put one fishhealthdata record into multiple LiceData objects
-    licedatalist = bapi.putlicedataintoobject(fishhealthdata)
+    licedatalist = bapi.putlicedataintoobjects(fishhealthdata)
 
     # put licedata objects into licedata container
     licedata_container = ldc.LicedataContainer()
     licedata_container.addLiceDataList(licedatalist)
 
     df = licedata_container.getDataFrame()
-    print(df)
+    #print(df)
 
 if __name__ == "__main__":
     __main__()
