@@ -110,6 +110,9 @@ def __main__():
     licedata_container = ldc.LicedataContainer()
     licedata_container.addLiceDataList(licedatalist)
 
+    df = licedata_container.getDataFrame()
+    print(df)
+
 if __name__ == "__main__":
     __main__()
 

@@ -15,3 +15,6 @@ class LiceData:
         print(self.lice_binary)
         print(self.lice_week)
         print(self.lice_year)
+
+    def getlist(self): 
+        return [self.locnr, self.lice_value, self.lice_binary, self.lice_year, self.lice_week]

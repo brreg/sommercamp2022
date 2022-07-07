@@ -13,4 +13,8 @@ class LicedataContainer:
 
     # should return a pandas dataframe with all the lice data
     def getDataFrame(self):
-        return pd.DataFrame(self.licedatalist)
+        df_list = []
+        for licedata in self.licedatalist: 
+            ldlist = licedata.getlist()
+            df_list.append(ldlist)
+        return pd.DataFrame(df_list)
