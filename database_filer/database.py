@@ -1,5 +1,4 @@
 import psycopg2
-from config import config
 import os
 from configparser import ConfigParser
 
@@ -12,7 +11,6 @@ class Database:
     
     def connect(self):
         try:
-            params = config()
 
             print("Connecting to the PostgreSQL database...")
             self.conn = psycopg2.connect(
@@ -134,7 +132,6 @@ class Database:
         )
 
         try:
-            params = config()
 
             self.conn = psycopg2.connect(
                 host="localhost",
