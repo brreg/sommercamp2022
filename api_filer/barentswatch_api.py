@@ -11,10 +11,6 @@ def make_week_dict(week_value_list):
         week = dct["week"]
         value = dct["value"]
         week_dict[week] = value
-
-    for key in week_dict:
-        print(key, week_dict[key])
-
     #output is a dictionary with key=week, value=value
     return week_dict
 
