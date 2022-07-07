@@ -76,9 +76,10 @@ def __main__():
     fishhealthdata = bapi.get_lice_data(45032, 2022)
     escapedata = bapi.get_escape_data(45032, 2022)
     
-    print(fishhealthdata["data"])
-    #print(escapedata)
-    make_week_dict(fishhealthdata["data"])
+    print(fishhealthdata)
+    fishhealthdata["data"] = make_week_dict(fishhealthdata["data"])
+    df = pd.DataFrame(fishhealthdata)
+    print(df)
 
 if __name__ == "__main__":
     __main__()
