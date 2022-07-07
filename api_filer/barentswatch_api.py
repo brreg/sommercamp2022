@@ -7,6 +7,7 @@ import pandas as pd
 import licedata as ld
 import licedata_container as ldc
 import escapedata as ed
+import EscapedataContainer as edc
 
 ## locality with lice data 45032
 
@@ -101,7 +102,11 @@ def __main__():
     escapedata = bapi.get_escape_data(45017, 2022)
     print(escapedata)
     escapedata_object = ed.EscapeData(escapedata["localityNo"], escapedata["year"], escapedata["data"])
-    escapedata_object.print_data()
+    edcontainer = edc.EscapedataContainer()
+    edcontainer.add_escapedata(escapedata_object)
+    eddf = edcontainer.getDataFrame()
+    print(eddf)
+
     # gets lice data about one locnr, in a given year, as a dictionary
     fishhealthdata = bapi.get_lice_data(45017, 2022)
     fishhealthdata.pop("type")
@@ -124,4 +129,3 @@ if __name__ == "__main__":
     __main__()
 
 
-api = API()
