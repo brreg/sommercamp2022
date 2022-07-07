@@ -1,9 +1,12 @@
+from turtle import turtles
 import psycopg2
-from config import config
 import os
 from configparser import ConfigParser
+import pandas as pd
+import numpy as np
+import psycopg2.extras as extras
 
-class Database:
+class Database_class:
 
     def __init__(self):
         self.filename='database.ini'
@@ -12,12 +15,12 @@ class Database:
     
     def connect(self):
         try:
-            params = config()
 
             print("Connecting to the PostgreSQL database...")
             self.conn = psycopg2.connect(
                 host="localhost",
                 database="postgres",
+                port="5433",
                 user=os.environ["database_user"],
                 password=os.environ["database_password"])
             
@@ -134,11 +137,11 @@ class Database:
         )
 
         try:
-            params = config()
 
             self.conn = psycopg2.connect(
                 host="localhost",
                 database="postgres",
+                port="5433",
                 user=os.environ["database_user"],
                 password=os.environ["database_password"]
             )
@@ -157,6 +160,35 @@ class Database:
             if self.conn is not None:
                 self.conn.close()
 
+    def insert_lice_data(self, df, table):
+        tuples = [tuple(x) for x in df.to_numpy()]
+
+        cols = ','.join(list(df.columns))
+
+        query = "INSERT INTO %s(%s) VALUES %%s" % (table, cols)
+        cursor = self.conn.cursor()
+
+        try:
+            extras.execute_values(cursor, query, tuples)
+            self.conn.commit()
+        except (Exception, psycopg2.DatabaseError) as error:
+            print("Error: %s" % error)
+            self.conn.rollback()
+            cursor.close()
+            return 1
+        print("the dataframe is inserted")
+        cursor.close()
+
+        self.conn = psycopg2.connect(
+            host="localhost",
+                database="postgres",
+                port="5433",
+                user=os.environ["database_user"],
+                password=os.environ["database_password"]
+        )
+
+
+    
 
 
 '''
