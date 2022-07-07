@@ -159,8 +159,9 @@ class Database:
 
 
 
-
+'''
 database1 = Database()
 database1.connect()
 database1.config()
 database1.create_tables()
+'''

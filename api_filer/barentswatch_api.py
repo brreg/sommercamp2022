@@ -28,8 +28,7 @@ class API:
             'grant_type': 'client_credentials',
             }
         
-        self.session = self.barentswatch.get_auth_session(data=self.data, decoder=json.loads)
-        
+        self.session = self.barentswatch.get_auth_session(data=self.data, decoder=json.loads) 
     
     def get_locnrs(self):
         res = r.get(
@@ -117,4 +116,4 @@ if __name__ == "__main__":
     __main__()
 
 
-api = API()
+#api = API()
