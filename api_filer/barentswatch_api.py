@@ -78,7 +78,11 @@ def __main__():
     
     print(fishhealthdata)
     fishhealthdata["data"] = make_week_dict(fishhealthdata["data"])
+    print(fishhealthdata)
+    fishhealthdata.pop("type")
+    print(fishhealthdata)
     df = pd.DataFrame(fishhealthdata)
+
     print(df)
 
 if __name__ == "__main__":
