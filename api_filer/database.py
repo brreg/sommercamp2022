@@ -160,8 +160,15 @@ class Database:
 
     
     def insert_lice_data(self, df, table):
-        tuples = [tuple(x) for x in df.to_numpy()]
-
+        
+        df = df.astype(str)
+        print(df)
+        #tuples = [tuple(x) for x in df.to_numpy()]
+        #cols = ','.join(list(df.columns))
+        #print(cols)
+        for index, row in df.iterrows():
+            print(row[0])
+        '''
         cols = ','.join(list(df.columns))
 
         query = "INSERT INTO %s(%s) VALUES %%s" % (table, cols)
@@ -183,7 +190,9 @@ class Database:
             database="postgres",
             user=os.environ["database_user"],
             password=os.environ["database_password"]
+        
         )
+        '''
 
 
     
