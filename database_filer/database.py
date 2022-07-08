@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 import psycopg2.extras as extras
 
-class Database_class:
+class Database:
 
     def __init__(self):
         self.filename='database.ini'
@@ -20,7 +20,6 @@ class Database_class:
             self.conn = psycopg2.connect(
                 host="localhost",
                 database="postgres",
-                port="5433",
                 user=os.environ["database_user"],
                 password=os.environ["database_password"])
             
@@ -141,7 +140,6 @@ class Database_class:
             self.conn = psycopg2.connect(
                 host="localhost",
                 database="postgres",
-                port="5433",
                 user=os.environ["database_user"],
                 password=os.environ["database_password"]
             )
@@ -160,6 +158,7 @@ class Database_class:
             if self.conn is not None:
                 self.conn.close()
 
+    
     def insert_lice_data(self, df, table):
         tuples = [tuple(x) for x in df.to_numpy()]
 
@@ -181,10 +180,9 @@ class Database_class:
 
         self.conn = psycopg2.connect(
             host="localhost",
-                database="postgres",
-                port="5433",
-                user=os.environ["database_user"],
-                password=os.environ["database_password"]
+            database="postgres",
+            user=os.environ["database_user"],
+            password=os.environ["database_password"]
         )
 
 
