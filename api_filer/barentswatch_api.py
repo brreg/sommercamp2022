@@ -8,11 +8,12 @@ import licedata as ld
 import licedata_container as ldc
 import escapedata as ed
 import EscapedataContainer as edc
+import random
 
 ## locality with lice data 45032
-
 ## locality with escape data 45017
 
+filename = '/Users/ingunn/Documents/GitHub/sommercamp2022/Dataanalyse/smb.csv'
 
     
 #Get fishhealth data 
@@ -48,6 +49,23 @@ class API:
         locnrs = df['localityNo'].tolist()
         
         return locnrs
+    
+    def make_dfas(self, filename, locnrs):
+        dfas = pd.read_csv(filename, sep = ';')
+        dfas['LOK_KAP'] = dfas['LOK_KAP'].str.replace(',','.')
+        #dfas.loc[dfas['LOK_NR'] == 10362]
+        totalgood = 0
+        totalfail = 0
+        locnrmedas = []
+        for locnr in locnrs:
+            if len(dfas.loc[dfas['LOK_NR'] == locnr]) == 1:
+                totalgood += 1
+                locnrmedas.append(locnr)
+            else:
+                totalfail +=1
+        return dfas
+
+    
         
     def get_lice_data(self, locnr, year):
 
@@ -66,7 +84,37 @@ class API:
         escape_json = escape_res.json()
         
         return escape_json
+
     
+
+    def generate_deadliness_data_for_all_locnrs(self, locnrmedas, dfas): 
+        deadlighet = []
+        for i in locnrmedas:
+
+            enhet = dfas.loc[dfas['LOK_NR'] == i]['LOK_ENHET'].values[0]
+            kapasitet = dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0]
+            
+            if enhet == 'STK':
+                konvertert = int(int(dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0])/5)
+                dfas['LOK_KAP'][dfas.loc[dfas['LOK_NR']==i].index[0]] = konvertert
+                dfas['LOK_ENHET'][dfas.loc[dfas['LOK_NR']==i].index[0]] = 'TN'
+            elif enhet == 'KG':
+                konvertert = int(int(dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0])/1000)
+                dfas['LOK_KAP'][dfas.loc[dfas['LOK_NR']==i].index[0]] = konvertert
+                dfas['LOK_ENHET'][dfas.loc[dfas['LOK_NR']==i].index[0]] = 'TN'
+            elif enhet == 'M3':
+                konvertert = int(int(dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0])*0.005)
+                dfas['LOK_KAP'][dfas.loc[dfas['LOK_NR']==i].index[0]] = konvertert
+                dfas['LOK_ENHET'][dfas.loc[dfas['LOK_NR']==i].index[0]] = 'TN'
+            
+            
+            deadlighet.append(int(float(dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0])*random.uniform(12.5, 17.5)/100))
+            
+        dictdead = {'LOK_NR':locnrmedas,'Year': 2022,'Deadlighet':deadlighet, 'Enhet': 'TN'}
+        dfdead = pd.DataFrame(dictdead)
+        return dfdead
+
+
     def make_week_dict_lice(self, week_value_list):
         # input is a list of dictionaries with week and value
         week_dict = {}
@@ -106,6 +154,15 @@ def __main__():
     edcontainer.add_escapedata(escapedata_object)
     eddf = edcontainer.getDataFrame()
     print(eddf)
+
+    locnrs = bapi.get_locnrs()
+    dfas = pd.DataFrame(bapi.make_dfas(filename, locnrs))
+    print(dfas)
+
+    deadliness_data = bapi.generate_deadliness_data_for_all_locnrs(locnrs, dfas)
+    print(pd.DataFrame(deadliness_data))
+
+    
 
     # gets lice data about one locnr, in a given year, as a dictionary
     fishhealthdata = bapi.get_lice_data(45017, 2022)
