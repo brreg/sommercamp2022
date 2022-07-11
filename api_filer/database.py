@@ -6,18 +6,17 @@ import pandas as pd
 import numpy as np
 import psycopg2.extras as extras
 
-
 class Database:
 
     def __init__(self):
         self.filename='database.ini'
         self.conn = None
-        self.section='postgresql'
     
     def connect(self):
         try:
 
             print("Connecting to the PostgreSQL database...")
+            
             self.conn = psycopg2.connect(
                 host="localhost",
                 database="postgres",
@@ -35,7 +34,9 @@ class Database:
             cur.close()
 
         except (Exception, psycopg2.DatabaseError) as error:
-                print(error)
+            
+                print("connect",error)
+            
 
         finally:
             if self.conn is not None:
@@ -59,7 +60,7 @@ class Database:
             raise Exception('Section {0} not found in the {1} file'.format(self.section, self.filename))
 
         return db
-
+    
     def create_tables(self):
 
         commands = (
@@ -153,101 +154,37 @@ class Database:
             self.conn.commit()
 
         except (Exception, psycopg2.DatabaseError) as error:
-            print(error)
+            print("create", error)
             
         #finally:
         #    if self.conn is not None:
         #        self.conn.close()
 
     
-    def insert_lice_data(self, data):
+    def insert_data(self):
         
         #sql = "INSERT INTO samlonoid_lice(loc_nr, lice, lice_nr, lice_limit, lice_week, live_year) VALUES(%s, %s, %s, %s, %s, %s)"
-        sql = "SELECT * from samlonoid_lice"
-        try:            
-            #params = self.config()
+        #sql = "INSERT INTO samlonoid_lice VALUES (45017, True, 3, '4', '5', '6');"
+        
+        try:
+            
             conn = psycopg2.connect(                
                 host="localhost",
                 database="postgres",
                 user=os.environ["database_user"],
                 password=os.environ["database_password"])
+            
             cur = conn.cursor()
-            cur.execute(sql, data)
-            conn.commit
-            row = cur.fetchone()
-            print(row)            
-        except (Exception, psycopg2.DatabaseError) as error:
-            print(error)
+            cur.execute(sql)
+            conn.commit()
+            cur.close()
         
+            
+                   
+        except (Exception, psycopg2.DatabaseError) as error:
+            print("insert", error)
 
         finally:
-            if conn is not None:
-                conn.close()
+            if self.conn is not None:
+                self.conn.close()
                 print('Database connection closed.')
-        
-        
-        
-        
-
-        #df = df.astype(str)
-        #print(df)
-        #tuples = [tuple(x) for x in df.to_numpy()]
-        
-        for col in df.columns:
-            df[col]=df[col].map(str)
-            
-        cols = ('locnr', 'escape_nr', 'escape_year', 'escape_week')
-        
-        df_list = df.values.tolist()
-        #print(df_list)
-        df_tuple = tuple(df_list[0])
-        print(df_tuple)
-            
-            
-        #cols = ','.join(list(df.columns))
-        #print(cols)
-
-        #for index, row in df.iterrows():
-        #    print(row[0])
-            
-            
-        '''
-
-        
-        #cols = ','.join(list(df.columns))
-
-
-        query = "INSERT INTO table (cols) VALUES  (%s, %s)", ('1','2','3','4')
-        cursor = self.conn.cursor()
-
-        try:
-            cursor.execute(query)
-            #extras.execute_values(cursor, query, df_tuple)
-            self.conn.commit()
-        except (Exception, psycopg2.DatabaseError) as error:
-            print("Error: %s" % error)
-            self.conn.rollback()
-            cursor.close()
-            return 1
-        print("the dataframe is inserted")
-        cursor.close()
-
-        self.conn = psycopg2.connect(
-            host="localhost",
-            database="postgres",
-            user=os.environ["database_user"],
-            password=os.environ["database_password"]
-        
-        )
-        
-
-
-    
-
-
-'''
-database1 = Database()
-database1.connect()
-database1.config()
-database1.create_tables()
-'''

@@ -6,13 +6,14 @@ from licedata import Licedata
 from licedata_container import LicedataContainer
 from database import Database
 import escapedata as ed
-import escapedataContainer as edc
+import EscapedataContainer as edc
 
 
-def main():
+def Main():
     database1 = Database()
     bapi = API()
     escapedata = bapi.get_escape_data(45017, 2022)
+    #licedata = bapi.getlist()
     #print(escapedata)
 
     #escapedata_object = ed.EscapeData(escapedata["localityNo"], escapedata["year"], escapedata["data"])
@@ -25,12 +26,7 @@ def main():
     database1.config()
     database1.create_tables()
 
-    database1.insert_lice_data([('12345', True, 3,'4','5','6')])
+    database1.insert_data()
     
 
-main()
-        
-    database1.insert_lice_data(eddf, 'escapes')
-
-
-main()
+Main()
