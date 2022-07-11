@@ -148,20 +148,19 @@ def __main__():
     #locnrs= bapi.get_locnrs()
     escapedata = bapi.get_escape_data(45017, 2022)
     print(escapedata)
-    escapedata_object = ed.EscapeData(escapedata["localityNo"], escapedata["year"], escapedata["data"])
-    edcontainer = edc.EscapedataContainer()
-    edcontainer.add_escapedata(escapedata_object)
-    eddf = edcontainer.getDataFrame()
-    print(eddf)
+    #escapedata_object = ed.EscapeData(escapedata["localityNo"], escapedata["year"], escapedata["data"])
+    #edcontainer = edc.EscapedataContainer()
+    #edcontainer.add_escapedata(escapedata_object)
+    #eddf = edcontainer.getDataFrame()
+    #print(eddf)
 
     locnrs = bapi.get_locnrs()
+    print(locnrs)
     dfas = pd.DataFrame(bapi.make_dfas(filename, locnrs))
     print(dfas)
 
-    deadliness_data = bapi.generate_deadliness_data_for_all_locnrs(locnrs, dfas)
-    print(pd.DataFrame(deadliness_data))
-
-    
+    #deadliness_data = bapi.generate_deadliness_data_for_all_locnrs(locnrs, dfas)
+    #print(pd.DataFrame(deadliness_data))
 
     # gets lice data about one locnr, in a given year, as a dictionary
     fishhealthdata = bapi.get_lice_data(45017, 2022)
@@ -185,4 +184,4 @@ if __name__ == "__main__":
     __main__()
 
 
-#api = API()
+
