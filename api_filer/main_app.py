@@ -25,6 +25,4 @@ def main():
     database1.insert_lice_data(eddf, 'escapes')
 
 
-main()    
-    
-        
+main()
