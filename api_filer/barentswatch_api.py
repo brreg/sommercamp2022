@@ -7,7 +7,7 @@ import pandas as pd
 import licedata as ld
 import licedata_container as ldc
 import escapedata as ed
-import EscapedataContainer as edc
+import escapedataContainer as edc
 import random
 
 ## locality with lice data 45032
