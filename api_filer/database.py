@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 import psycopg2.extras as extras
 
+
 class Database:
 
     def __init__(self):
@@ -97,7 +98,7 @@ class Database:
             """,
 
             """
-            CREATE TABLE samlonoid_lice (
+            CREATE TABLE salmonoid_lice (
                 loc_nr INTEGER PRIMARY KEY,
                 lice BOOL,
                 lice_nr INTEGER,
@@ -159,8 +160,35 @@ class Database:
         #        self.conn.close()
 
     
-    def insert_lice_data(self, df, table):
+    def insert_lice_data(self, data):
         
+        #sql = "INSERT INTO samlonoid_lice(loc_nr, lice, lice_nr, lice_limit, lice_week, live_year) VALUES(%s, %s, %s, %s, %s, %s)"
+        sql = "SELECT * from samlonoid_lice"
+        try:            
+            #params = self.config()
+            conn = psycopg2.connect(                
+                host="localhost",
+                database="postgres",
+                user=os.environ["database_user"],
+                password=os.environ["database_password"])
+            cur = conn.cursor()
+            cur.execute(sql, data)
+            conn.commit
+            row = cur.fetchone()
+            print(row)            
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
+        
+
+        finally:
+            if conn is not None:
+                conn.close()
+                print('Database connection closed.')
+        
+        
+        
+        
+
         #df = df.astype(str)
         #print(df)
         #tuples = [tuple(x) for x in df.to_numpy()]
@@ -178,8 +206,16 @@ class Database:
             
         #cols = ','.join(list(df.columns))
         #print(cols)
+
+        #for index, row in df.iterrows():
+        #    print(row[0])
+            
+            
+        '''
+
         
         #cols = ','.join(list(df.columns))
+
 
         query = "INSERT INTO table (cols) VALUES  (%s, %s)", ('1','2','3','4')
         cursor = self.conn.cursor()
