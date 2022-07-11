@@ -1,3 +1,4 @@
+from multiprocessing.sharedctypes import Value
 import pandas as pd
 
 class LicedataContainer:
@@ -13,8 +14,24 @@ class LicedataContainer:
 
     # should return a pandas dataframe with all the lice data
     def getDataFrame(self):
-        df_list = []
+        df_dict = {}
+        locnr = []
+        value = []
+        binary = []
+        week = []
+        year = []
+
         for licedata in self.licedatalist: 
             ldlist = licedata.getlist()
-            df_list.append(ldlist)
-        return pd.DataFrame(df_list)
+            locnr.append(ldlist[0])
+            binary.append(ldlist[1])
+            value.append(ldlist[2])
+            week.append(ldlist[3])
+            year.append(ldlist[4])
+            
+        df_dict["locnr"] = locnr
+        df_dict["value"] = value
+        df_dict["binary"] = binary
+        df_dict["week"] = week
+        df_dict["year"] = year
+        return pd.DataFrame(df_dict)

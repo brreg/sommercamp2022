@@ -133,7 +133,7 @@ class API:
                 licebinary = True
             else: 
                 licebinary = False
-            licedata = ld.licedata(fishhealthdata["localityNo"], 
+            licedata = ld.Licedata(fishhealthdata["localityNo"], 
                                     fishhealthdata["data"][week], 
                                     licebinary, 
                                     week, 
@@ -146,13 +146,13 @@ def __main__():
     bapi = API()
     
     locnrs= bapi.get_locnrs()
-    escapedata = bapi.get_escape_data(45017, 2022)
-    print(escapedata)
-    escapedata_object = ed.escapedata(escapedata["localityNo"], escapedata["year"], escapedata["data"])
-    edcontainer = edc.escapedataContainer()
-    edcontainer.add_escapedata(escapedata_object)
-    eddf = edcontainer.getDataFrame()
-    print(eddf)
+    #escapedata = bapi.get_escape_data(45017, 2022)
+    #print(escapedata)
+    #escapedata_object = ed.escapedata(escapedata["localityNo"], escapedata["year"], escapedata["data"])
+    #edcontainer = edc.escapedataContainer()
+    #edcontainer.add_escapedata(escapedata_object)
+    #eddf = edcontainer.getDataFrame()
+    #print(eddf)
 
     #dfas = pd.DataFrame(bapi.make_dfas(filename, locnrs))
     #print(dfas)
@@ -172,7 +172,7 @@ def __main__():
     licedatalist = bapi.putlicedataintoobjects(licedata)
 
     # put licedata objects into licedata container
-    licedata_container = ldc.licedataContainer()
+    licedata_container = ldc.LicedataContainer()
     licedata_container.addLiceDataList(licedatalist)
 
     df = licedata_container.getDataFrame()
