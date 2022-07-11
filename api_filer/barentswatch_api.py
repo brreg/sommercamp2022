@@ -20,7 +20,6 @@ filename = '/Users/ingunn/Documents/GitHub/sommercamp2022/Dataanalyse/smb.csv'
 
 class API:
     
-    
     def __init__(self):
         
         self.barentswatch = OAuth2Service(
@@ -157,7 +156,10 @@ def __main__():
 
     locnrs = bapi.get_locnrs()
     dfas = pd.DataFrame(bapi.make_dfas(filename, locnrs))
-    print(dfas)
+    print("locnrs")
+    print(locnrs[0:10])
+    print("dfas")
+    print(dfas[0:10])
 
     deadliness_data = bapi.generate_deadliness_data_for_all_locnrs(locnrs, dfas)
     print(pd.DataFrame(deadliness_data))
