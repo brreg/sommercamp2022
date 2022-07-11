@@ -154,28 +154,39 @@ class Database:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
             
-        finally:
-            if self.conn is not None:
-                self.conn.close()
+        #finally:
+        #    if self.conn is not None:
+        #        self.conn.close()
 
     
     def insert_lice_data(self, df, table):
         
-        df = df.astype(str)
-        print(df)
+        #df = df.astype(str)
+        #print(df)
         #tuples = [tuple(x) for x in df.to_numpy()]
+        
+        for col in df.columns:
+            df[col]=df[col].map(str)
+            
+        cols = ('locnr', 'escape_nr', 'escape_year', 'escape_week')
+        
+        df_list = df.values.tolist()
+        #print(df_list)
+        df_tuple = tuple(df_list[0])
+        print(df_tuple)
+            
+            
         #cols = ','.join(list(df.columns))
         #print(cols)
-        for index, row in df.iterrows():
-            print(row[0])
-        '''
-        cols = ','.join(list(df.columns))
+        
+        #cols = ','.join(list(df.columns))
 
-        query = "INSERT INTO %s(%s) VALUES %%s" % (table, cols)
+        query = "INSERT INTO table (cols) VALUES  (%s, %s)", ('1','2','3','4')
         cursor = self.conn.cursor()
 
         try:
-            extras.execute_values(cursor, query, tuples)
+            cursor.execute(query)
+            #extras.execute_values(cursor, query, df_tuple)
             self.conn.commit()
         except (Exception, psycopg2.DatabaseError) as error:
             print("Error: %s" % error)
@@ -192,7 +203,7 @@ class Database:
             password=os.environ["database_password"]
         
         )
-        '''
+        
 
 
     
