@@ -15,7 +15,7 @@ def main():
     escapedata = bapi.get_escape_data(45017, 2022)
     #print(escapedata)
     escapedata_object = ed.EscapeData(escapedata["localityNo"], escapedata["year"], escapedata["data"])
-    edcontainer = edc.EscapedataContainer()
+    edcontainer = edc.escapedataContainer()
     edcontainer.add_escapedata(escapedata_object)
     eddf = edcontainer.getDataFrame()
     #print(eddf)

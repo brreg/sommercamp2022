@@ -17,3 +17,4 @@ class escapedataContainer:
             edlist = escapedata.getlist()
             df_list.append(edlist)
         return pd.DataFrame(df_list)
+
