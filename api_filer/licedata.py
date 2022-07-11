@@ -1,4 +1,4 @@
-class LiceData: 
+class licedata: 
 
     def __init__(self, locnr, lice_value, lice_binary, lice_week, lice_year):
         self.locnr = locnr
