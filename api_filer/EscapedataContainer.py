@@ -1,6 +1,6 @@
 import pandas as pd
 
-class escapedataContainer: 
+class EscapedataContainer: 
 
     def __init__(self):
         self.escapedatalist = []
@@ -17,3 +17,4 @@ class escapedataContainer:
             edlist = escapedata.getlist()
             df_list.append(edlist)
         return pd.DataFrame(df_list)
+

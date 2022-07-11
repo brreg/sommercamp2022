@@ -7,7 +7,7 @@ import pandas as pd
 import licedata as ld
 import licedata_container as ldc
 import escapedata as ed
-import EscapedataContainer as edc
+import escapedataContainer as edc
 import random
 
 ## locality with lice data 45032
@@ -133,7 +133,7 @@ class API:
                 licebinary = True
             else: 
                 licebinary = False
-            licedata = ld.LiceData(fishhealthdata["localityNo"], 
+            licedata = ld.licedata(fishhealthdata["localityNo"], 
                                     fishhealthdata["data"][week], 
                                     licebinary, 
                                     week, 
@@ -145,44 +145,41 @@ class API:
 def __main__(): 
     bapi = API()
     
-    #locnrs= bapi.get_locnrs()
+    locnrs= bapi.get_locnrs()
     escapedata = bapi.get_escape_data(45017, 2022)
     print(escapedata)
-    escapedata_object = ed.EscapeData(escapedata["localityNo"], escapedata["year"], escapedata["data"])
-    edcontainer = edc.EscapedataContainer()
+    escapedata_object = ed.escapedata(escapedata["localityNo"], escapedata["year"], escapedata["data"])
+    edcontainer = edc.escapedataContainer()
     edcontainer.add_escapedata(escapedata_object)
     eddf = edcontainer.getDataFrame()
     print(eddf)
 
-    locnrs = bapi.get_locnrs()
-    dfas = pd.DataFrame(bapi.make_dfas(filename, locnrs))
-    print(dfas)
+    #dfas = pd.DataFrame(bapi.make_dfas(filename, locnrs))
+    #print(dfas)
 
-    deadliness_data = bapi.generate_deadliness_data_for_all_locnrs(locnrs, dfas)
-    print(pd.DataFrame(deadliness_data))
-
-    
+    #deadliness_data = bapi.generate_deadliness_data_for_all_locnrs(locnrs, dfas)
+    #print(pd.DataFrame(deadliness_data))
 
     # gets lice data about one locnr, in a given year, as a dictionary
-    fishhealthdata = bapi.get_lice_data(45017, 2022)
-    fishhealthdata.pop("type")
+    licedata = bapi.get_lice_data(45017, 2022)
+    licedata.pop("type")
 
     # changing form of the week data to a dictionary with weeks as keys and values as values
-    fishhealthdata["data"] = bapi.make_week_dict_lice(fishhealthdata["data"])
-    #print(fishhealthdata)
+    licedata["data"] = bapi.make_week_dict_lice(licedata["data"])
+    print(licedata)
 
     # put one fishhealthdata record into multiple LiceData objects
-    licedatalist = bapi.putlicedataintoobjects(fishhealthdata)
+    licedatalist = bapi.putlicedataintoobjects(licedata)
 
     # put licedata objects into licedata container
-    licedata_container = ldc.LicedataContainer()
+    licedata_container = ldc.licedataContainer()
     licedata_container.addLiceDataList(licedatalist)
 
     df = licedata_container.getDataFrame()
-    #print(df)
+    print(df)
 
 if __name__ == "__main__":
     __main__()
 
 
-#api = API()
+
