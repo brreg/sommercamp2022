@@ -14,17 +14,16 @@ def main():
     bapi = API()
     escapedata = bapi.get_escape_data(45017, 2022)
     #print(escapedata)
-    escapedata_object = ed.EscapeData(escapedata["localityNo"], escapedata["year"], escapedata["data"])
-    edcontainer = edc.EscapedataContainer()
-    edcontainer.add_escapedata(escapedata_object)
-    eddf = edcontainer.getDataFrame()
+    #escapedata_object = ed.EscapeData(escapedata["localityNo"], escapedata["year"], escapedata["data"])
+    #edcontainer = edc.EscapedataContainer()
+    #edcontainer.add_escapedata(escapedata_object)
+    #eddf = edcontainer.getDataFrame()
     #print(eddf)
     database1.connect()
     database1.config()
     database1.create_tables()
-    database1.insert_lice_data(eddf, 'escapes')
-
-
-main()    
+    database1.insert_lice_data([('12345', True, 3,'4','5','6')])
     
+
+main()
         
