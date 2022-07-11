@@ -7,7 +7,7 @@ import pandas as pd
 import licedata as ld
 import licedata_container as ldc
 import escapedata as ed
-import escapedataContainer as edc
+import EscapedataContainer as edc
 import random
 
 ## locality with lice data 45032
@@ -124,7 +124,7 @@ class API:
         #output is a dictionary with key=week, value=value
         return week_dict
 
-    def putlicedataintoobjects(self, fishhealthdata) :
+    def put_lice_data_into_objects(self, fishhealthdata) :
         # input is a dictionary of the form {localityNo: , year: , data: {weeks:values}}
         licedatalist = []
         for week in fishhealthdata["data"].keys():
