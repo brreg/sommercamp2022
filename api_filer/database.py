@@ -188,3 +188,9 @@ class Database:
             if self.conn is not None:
                 self.conn.close()
                 print('Database connection closed.')
+
+    
+    def insert_loc_nr(self, filename):
+        data = pd.read_csv(filename, delimiter=';')
+        loc_nr = data['LOK_NR'].tolist()
+        print(loc_nr)
