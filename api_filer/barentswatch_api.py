@@ -19,7 +19,7 @@ filename = '/Users/ingunn/Documents/GitHub/sommercamp2022/Dataanalyse/smb.csv'
 #Get fishhealth data 
 
 class API:
-    
+      
     def __init__(self):
         
         self.barentswatch = OAuth2Service(
@@ -35,8 +35,7 @@ class API:
             'grant_type': 'client_credentials',
             }
         
-        self.session = self.barentswatch.get_auth_session(data=self.data, decoder=json.loads)
-        
+        self.session = self.barentswatch.get_auth_session(data=self.data, decoder=json.loads) 
     
     def get_locnrs(self):
         res = r.get(
@@ -79,6 +78,7 @@ class API:
         
         escape_res = r.get('https://www.barentswatch.no/bwapi/v1/geodata/fishhealth/locality/'+str(locnr)+'/escape/'+str(year),
         headers = { 'Authorization' : 'Bearer ' + self.session.access_token})
+        
         
         escape_json = escape_res.json()
         
@@ -156,10 +156,7 @@ def __main__():
 
     locnrs = bapi.get_locnrs()
     dfas = pd.DataFrame(bapi.make_dfas(filename, locnrs))
-    print("locnrs")
-    print(locnrs[0:10])
-    print("dfas")
-    print(dfas[0:10])
+    print(dfas)
 
     deadliness_data = bapi.generate_deadliness_data_for_all_locnrs(locnrs, dfas)
     print(pd.DataFrame(deadliness_data))
@@ -188,3 +185,4 @@ if __name__ == "__main__":
     __main__()
 
 
+#api = API()
