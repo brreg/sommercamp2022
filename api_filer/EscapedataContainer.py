@@ -1,6 +1,6 @@
 import pandas as pd
 
-class escapedataContainer: 
+class EscapedataContainer: 
 
     def __init__(self):
         self.escapedatalist = []

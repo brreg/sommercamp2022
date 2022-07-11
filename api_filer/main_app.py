@@ -2,11 +2,11 @@ import threading
 import time
 import logging
 from barentswatch_api import API
-from licedata import LiceData
+from licedata import Licedata
 from licedata_container import LicedataContainer
 from database import Database
 import escapedata as ed
-import EscapedataContainer as edc
+import escapedataContainer as edc
 
 
 def main():
@@ -14,8 +14,8 @@ def main():
     bapi = API()
     escapedata = bapi.get_escape_data(45017, 2022)
     #print(escapedata)
-    escapedata_object = ed.EscapeData(escapedata["localityNo"], escapedata["year"], escapedata["data"])
-    edcontainer = edc.escapedataContainer()
+    escapedata_object = ed.Escapedata(escapedata["localityNo"], escapedata["year"], escapedata["data"])
+    edcontainer = edc.EscapedataContainer()
     edcontainer.add_escapedata(escapedata_object)
     eddf = edcontainer.getDataFrame()
     #print(eddf)

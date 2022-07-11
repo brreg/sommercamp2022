@@ -1,6 +1,6 @@
 import pandas as pd
 
-class licedataContainer:
+class LicedataContainer:
     def __init__(self): 
         self.licedatalist = []
 

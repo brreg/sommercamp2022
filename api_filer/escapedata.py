@@ -1,4 +1,4 @@
-class escapedata: 
+class Escapedata: 
 
     def __init__(self, locnr, year, data):
         self.locnr = locnr
