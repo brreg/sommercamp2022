@@ -12,9 +12,33 @@ class EscapedataContainer:
     # Kolonne navn:
     # Locnr, Year, Week, EscapeCount, Captured, CaptureStart, EscapeDescription
     def getDataFrame(self):
-        df_list = []
+        df_dict = {}
+        locnr = []
+        year = []
+        week = []
+        escapecount = []
+        captured = []
+        capturestart = []
+        escapedescription = []
+
+        #self.locnr, self.year, self.week, self.escapecount, self.captured, self.capturestart, self.escapedescription
         for escapedata in self.escapedatalist: 
             edlist = escapedata.getlist()
-            df_list.append(edlist)
-        return pd.DataFrame(df_list)
+            locnr.append(edlist[0])
+            year.append(edlist[1])
+            week.append(edlist[2])
+            escapecount.append(edlist[3])
+            captured.append(edlist[4])
+            capturestart.append(edlist[5])
+            escapedescription.append(edlist[6])
+            
+        df_dict["locnr"] = locnr
+        df_dict["year"] = year
+        df_dict["week"] = week
+        df_dict["escapecount"] = escapecount
+        df_dict["captured"] = captured
+        df_dict["capturestart"] = capturestart
+        df_dict["escapedescription"] = escapedescription
+
+        return pd.DataFrame(df_dict)
 

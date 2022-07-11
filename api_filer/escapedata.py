@@ -17,7 +17,7 @@ class Escapedata:
             self.escapedescription = None
 
     def getlist(self): 
-        return [self.locnr, self.escapecount, self.year, self.week]
+        return [self.locnr, self.year, self.week, self.escapecount, self.captured, self.capturestart, self.escapedescription]
 
     def print_data(self):
         print("Printing EscapeData")
