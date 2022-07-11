@@ -1,3 +1,2 @@
-class DeadlinessData: 
-    def __init__(): 
-        
+class deadlinessdata: 
+    def __init__(self, ): 
