@@ -102,8 +102,7 @@ class Database:
             CREATE TABLE salmonoid_lice (
                 loc_nr INTEGER PRIMARY KEY,
                 lice BOOL,
-                lice_nr INTEGER,
-                lice_limit INTEGER,
+                lice_nr FLOAT,
                 lice_week INTEGER,
                 live_year INTERVAL,
                 CONSTRAINT fk_loc_nr 
@@ -156,24 +155,70 @@ class Database:
         except (Exception, psycopg2.DatabaseError) as error:
             print("create", error)
             
-        #finally:
-        #    if self.conn is not None:
-        #        self.conn.close()
+        finally:
+            if self.conn is not None:
+                self.conn.close()
 
     
+
+    def insert_data(self, df, tablename):
+        print("trying to insert data")
+
+        try: 
+            self.conn = psycopg2.connect(
+            host="localhost",
+            database="postgres",
+            user=os.environ["database_user"],
+            password=os.environ["database_password"])
+
+            #df = df.astype(str)
+            #print(df)
+            #tuples = [tuple(x) for x in df.to_numpy()]
+            
+            df_list = df.values.tolist()
+            #print("df_list: ", df_list)
+            df_tuple = tuple(df_list[0])
+
+            print("df_tuple: ", df_tuple)
+
+            #cols = ','.join(list(df.columns))
+            #print(cols)
+            
+            
+            query = 'INSERT INTO ' + str(tablename) + ' VALUES ' + str(df_tuple)
+            print(query)
+            cursor = self.conn.cursor()
+
+            try:
+                cursor.execute(query)
+                #extras.execute_values(cursor, query, df_tuple)
+                self.conn.commit()
+            except (Exception, psycopg2.DatabaseError) as error:
+                print("Error: %s" % error)
+                self.conn.rollback()
+                cursor.close()
+                return 1
+            print("the dataframe is inserted")
+            cursor.close()
+            
+
+        except(Exception, psycopg2.DatabaseError) as error:
+            print(error)
+
+        finally: 
+            if self.conn is not None:
+                self.conn.close()
+        
+        
+        
+
     def insert_data(self):
         
         #sql = "INSERT INTO samlonoid_lice(loc_nr, lice, lice_nr, lice_limit, lice_week, live_year) VALUES(%s, %s, %s, %s, %s, %s)"
         #sql = "INSERT INTO samlonoid_lice VALUES (45017, True, 3, '4', '5', '6');"
         
         try:
-            
-            conn = psycopg2.connect(                
-                host="localhost",
-                database="postgres",
-                user=os.environ["database_user"],
-                password=os.environ["database_password"])
-            
+
             cur = conn.cursor()
             cur.execute(sql)
             conn.commit()
@@ -183,6 +228,7 @@ class Database:
                    
         except (Exception, psycopg2.DatabaseError) as error:
             print("insert", error)
+
 
         finally:
             if self.conn is not None:

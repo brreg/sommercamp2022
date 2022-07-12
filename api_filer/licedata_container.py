@@ -25,13 +25,13 @@ class LicedataContainer:
             ldlist = licedata.getlist()
             locnr.append(ldlist[0])
             binary.append(ldlist[1])
-            value.append(ldlist[2])
-            week.append(ldlist[3])
-            year.append(ldlist[4])
+            value.append(str(ldlist[2]))
+            week.append(str(ldlist[3]))
+            year.append(str(ldlist[4]))
             
         df_dict["locnr"] = locnr
-        df_dict["value"] = value
         df_dict["binary"] = binary
+        df_dict["value"] = value
         df_dict["week"] = week
         df_dict["year"] = year
         return pd.DataFrame(df_dict)
