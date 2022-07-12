@@ -5,6 +5,12 @@ from configparser import ConfigParser
 import pandas as pd
 import numpy as np
 import psycopg2.extras as extras
+import requests as r
+
+
+filename = '/Users/ingunn/Documents/GitHub/sommercamp2022/Dataanalyse/smb.csv'
+
+
 
 class Database:
 
@@ -65,9 +71,10 @@ class Database:
 
             """
             CREATE TABLE address (
-                org_address VARCHAR(255) PRIMARY KEY,
+                org_address VARCHAR(255),
                 org_zipcode INTEGER,
-                org_city VARCHAR(255)
+                org_city VARCHAR(255),
+                PRIMARY KEY(org_address, org_zipcode, org_city)
             )
             """,
             
@@ -98,11 +105,12 @@ class Database:
 
             """
             CREATE TABLE salmonoid_lice (
-                loc_nr INTEGER PRIMARY KEY,
+                loc_nr INTEGER,
                 lice BOOL,
                 lice_nr FLOAT,
                 lice_week INTEGER,
-                live_year INTERVAL,
+                lice_year INTERVAL,
+                PRIMARY KEY(loc_nr, lice_year, lice_week),
                 CONSTRAINT fk_loc_nr 
                     FOREIGN KEY (loc_nr) 
                         REFERENCES location(loc_nr)
@@ -147,6 +155,7 @@ class Database:
             for command in commands:
                 cur.execute(command)
 
+            # maybe populate smb and locnrs here? 
             cur.close()
             self.conn.commit()
 
@@ -174,29 +183,23 @@ class Database:
             
             df_list = df.values.tolist()
             #print("df_list: ", df_list)
-            df_tuple = tuple(df_list[0])
-
-            print("df_tuple: ", df_tuple)
-
-            #cols = ','.join(list(df.columns))
-            #print(cols)
+            for lst in df_list: 
             
-            
-            query = 'INSERT INTO ' + str(tablename) + ' VALUES ' + str(df_tuple)
-            print(query)
-            cursor = self.conn.cursor()
+                query = 'INSERT INTO ' + str(tablename) + ' VALUES ' + str(tuple(lst))
+                print(query)
+                cursor = self.conn.cursor()
 
-            try:
-                cursor.execute(query)
-                #extras.execute_values(cursor, query, df_tuple)
-                self.conn.commit()
-            except (Exception, psycopg2.DatabaseError) as error:
-                print("Error: %s" % error)
-                self.conn.rollback()
+                try:
+                    cursor.execute(query)
+                    #extras.execute_values(cursor, query, df_tuple)
+                    self.conn.commit()
+                except (Exception, psycopg2.DatabaseError) as error:
+                    print("Error: %s" % error)
+                    self.conn.rollback()
+                    cursor.close()
+                    return 1
+                print("the dataframe is inserted")
                 cursor.close()
-                return 1
-            print("the dataframe is inserted")
-            cursor.close()
             
 
         except(Exception, psycopg2.DatabaseError) as error:
@@ -205,23 +208,62 @@ class Database:
         finally: 
             if self.conn is not None:
                 self.conn.close()
-        
-        
-        
-            
-            
-        
-
-        
-        
-
-
     
+    def get_locnrs(self):
+        res = r.get(
+        'https://www.barentswatch.no/bwapi/v1/geodata/fishhealth/localitieswithsalmonoids',
+        headers = { 'Authorization' : 'Bearer ' + self.session.access_token })
 
+        df = pd.DataFrame(res.json())
 
-'''
-database1 = Database()
-database1.connect()
-database1.config()
-database1.create_tables()
-'''
+        locnrs = df['localityNo'].tolist()
+        
+        return locnrs
+        
+    def insert_address_and_locnr_from_csv(self, filename): 
+        df = pd.read_csv(filename, sep = ';')
+
+        addresses = []
+
+        for tup in df.itertuples():
+            address_record = (tup[3], int(tup[4]), tup[5])
+            print(address)
+            addresses.append(address_record)
+            #locnr
+            break
+        
+        """
+        data = [
+                ('Jane', date(2005, 2, 12)),
+                ('Joe', date(2006, 5, 23)),
+                ('John', date(2010, 10, 3)),
+        ]
+        stmt = "INSERT INTO employees (first_name, hire_date) VALUES (%s, %s)"
+        cursor.executemany(stmt, data)
+
+        """
+
+        try: 
+            self.conn = psycopg2.connect(
+            host="localhost",
+            database="postgres",
+            user=os.environ["database_user"],
+            password=os.environ["database_password"])
+
+            ### execute many insertion commands
+
+        except(Exception, psycopg2.DatabaseError) as error:
+            print(error)
+
+        finally: 
+            if self.conn is not None:
+                self.conn.close()
+        
+
+    def insert_address_record(self, address): 
+        print("here comes a function to insert one address record into DB")
+
+        
+        
+    def insert_locnr_record(self, record): 
+        print("here comes a function to insert one locrnr record into DB")

@@ -10,6 +10,8 @@ import escapedataContainer as edc
 
 
 # 45032 og 45017
+filename = '/Users/ingunn/Documents/GitHub/sommercamp2022/Dataanalyse/smb.csv'
+
 
 def main():
     database1 = Database()
@@ -38,8 +40,10 @@ def main():
     database1.connect()
     database1.config()
     database1.create_tables()
-    time.sleep(1)
-    database1.insert_data(df, 'salmonoid_lice')
+    
+    database1.insert_address_and_locnr_from_csv(filename)
+    
+    #database1.insert_data(df, 'salmonoid_lice')
 
 
 main()
