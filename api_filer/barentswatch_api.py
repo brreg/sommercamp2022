@@ -95,7 +95,7 @@ class API:
         #output is a dictionary with key=week, value=value
         return week_dict
 
-    def putlicedataintoobjects(self, fishhealthdata) :
+    def put_lice_data_into_objects(self, fishhealthdata) :
         # input is a dictionary of the form {localityNo: , year: , data: {weeks:values}}
         licedatalist = []
         for week in fishhealthdata["data"].keys():

@@ -23,6 +23,7 @@ class Database:
         try:
 
             print("Connecting to the PostgreSQL database...")
+            
             self.conn = psycopg2.connect(
                 host="localhost",
                 database="postgres",
@@ -40,7 +41,9 @@ class Database:
             cur.close()
 
         except (Exception, psycopg2.DatabaseError) as error:
-                print(error)
+            
+                print("connect",error)
+            
 
         finally:
             if self.conn is not None:
@@ -64,17 +67,16 @@ class Database:
             raise Exception('Section {0} not found in the {1} file'.format(self.section, self.filename))
 
         return db
-
+    
     def create_tables(self):
 
         commands = (
 
             """
             CREATE TABLE address (
-                org_address VARCHAR(255),
+                org_address VARCHAR(255) PRIMARY KEY,
                 org_zipcode INTEGER,
-                org_city VARCHAR(255),
-                PRIMARY KEY(org_address, org_zipcode, org_city)
+                org_city VARCHAR(255)
             )
             """,
             
@@ -109,7 +111,7 @@ class Database:
                 lice BOOL,
                 lice_nr FLOAT,
                 lice_week INTEGER,
-                lice_year INTERVAL,
+                lice_year VARCHAR,
                 PRIMARY KEY(loc_nr, lice_year, lice_week),
                 CONSTRAINT fk_loc_nr 
                     FOREIGN KEY (loc_nr) 
@@ -121,7 +123,7 @@ class Database:
             CREATE TABLE escapes (
                 loc_nr INTEGER,
                 escape_nr INTEGER,
-                escape_year INTERVAL,
+                escape_year VARCHAR,
                 escape_week INTEGER,
                 CONSTRAINT fk_loc_nr    
                     FOREIGN KEY (loc_nr) 
@@ -133,7 +135,7 @@ class Database:
             CREATE TABLE salmon_death(
                 loc_nr INTEGER,
                 death_nr INTEGER,
-                death_year INTERVAL,
+                death_year VARCHAR,
                 CONSTRAINT fk_loc_nr
                     FOREIGN KEY (loc_nr) 
                         REFERENCES location(loc_nr)
@@ -160,13 +162,13 @@ class Database:
             self.conn.commit()
 
         except (Exception, psycopg2.DatabaseError) as error:
-            print(error)
+            print("create", error)
             
         finally:
             if self.conn is not None:
                 self.conn.close()
 
-    
+ 
     def insert_data(self, df, tablename):
         print("trying to insert data")
 
@@ -227,8 +229,9 @@ class Database:
 
         for tup in df.itertuples():
             address_record = (tup[3], int(tup[4]), tup[5])
-            print(address)
+            print(address_record)
             addresses.append(address_record)
+            
             #locnr
             break
         
@@ -238,7 +241,7 @@ class Database:
                 ('Joe', date(2006, 5, 23)),
                 ('John', date(2010, 10, 3)),
         ]
-        stmt = "INSERT INTO employees (first_name, hire_date) VALUES (%s, %s)"
+        stmt = "INSERT INTO employees (first_name, hire_date) VALUES(%s, %s)"
         cursor.executemany(stmt, data)
 
         """
@@ -250,7 +253,13 @@ class Database:
             user=os.environ["database_user"],
             password=os.environ["database_password"])
 
+            cursor = self.conn.cursor()
+
+            stmt = """INSERT INTO address (org_address, org_zipcode, org_city) VALUES(%s, %s, %s)"""
+            print(addresses)
+            cursor.executemany(stmt, addresses)
             ### execute many insertion commands
+            print("command should have been executed")
 
         except(Exception, psycopg2.DatabaseError) as error:
             print(error)

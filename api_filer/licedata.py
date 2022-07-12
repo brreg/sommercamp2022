@@ -1,9 +1,9 @@
 class Licedata: 
 
     def __init__(self, locnr, lice_value, lice_binary, lice_week, lice_year):
-        self.locnr = locnr
+        self.locnr = int(locnr)
         self.lice_value = lice_value
-        self.lice_binary = lice_binary
+        self.lice_binary = bool(lice_binary)
         self.lice_week = lice_week
         self.lice_year = lice_year
         

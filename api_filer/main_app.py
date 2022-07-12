@@ -22,7 +22,6 @@ def main():
     #edcontainer = edc.EscapedataContainer()
     #edcontainer.add_escapedata(escapedata_object)
     #eddf = edcontainer.getDataFrame()
-    #print(eddf)
 
     licedata = bapi.get_lice_data(45017, 2022)
     licedata.pop("type")
@@ -30,7 +29,7 @@ def main():
     print(licedata)
 
     # put one fishhealthdata record into multiple LiceData objects
-    licedatalist = bapi.putlicedataintoobjects(licedata)
+    licedatalist = bapi.put_lice_data_into_objects(licedata)
 
     # put licedata objects into licedata container
     licedata_container = ldc.LicedataContainer()
@@ -45,5 +44,6 @@ def main():
     
     #database1.insert_data(df, 'salmonoid_lice')
 
+    
 
 main()
