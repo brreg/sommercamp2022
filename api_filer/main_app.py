@@ -38,7 +38,8 @@ def main():
     database1.connect()
     database1.config()
     database1.create_tables()
-    database1.insert_data(df, 'samlonoid_lice')
+    time.sleep(1)
+    database1.insert_data(df, 'salmonoid_lice')
 
 
 main()

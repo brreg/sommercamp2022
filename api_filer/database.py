@@ -97,11 +97,10 @@ class Database:
             """,
 
             """
-            CREATE TABLE samlonoid_lice (
+            CREATE TABLE salmonoid_lice (
                 loc_nr INTEGER PRIMARY KEY,
                 lice BOOL,
-                lice_nr INTEGER,
-                lice_limit INTEGER,
+                lice_nr FLOAT,
                 lice_week INTEGER,
                 live_year INTERVAL,
                 CONSTRAINT fk_loc_nr 
@@ -160,7 +159,8 @@ class Database:
 
     
     def insert_data(self, df, tablename):
-        
+        print("trying to insert data")
+
         try: 
             self.conn = psycopg2.connect(
             host="localhost",
@@ -173,21 +173,20 @@ class Database:
             #tuples = [tuple(x) for x in df.to_numpy()]
             
             df_list = df.values.tolist()
-            print(df_list)
+            #print("df_list: ", df_list)
             df_tuple = tuple(df_list[0])
-            print(df_tuple)
+
+            print("df_tuple: ", df_tuple)
 
             #cols = ','.join(list(df.columns))
             #print(cols)
             
-            liststring = ' '.join(str(e) for e in df_list)
-
-            query = "INSERT INTO " + str(tablename) + " VALUES  (%s)", liststring
-            #query = "INSERT INTO " + str(tablename) + " VALUES  (%s, %s)", ('1','2','3','4')
+            
+            query = 'INSERT INTO ' + str(tablename) + ' VALUES ' + str(df_tuple)
             print(query)
-            #cursor = self.conn.cursor()
+            cursor = self.conn.cursor()
 
-            """try:
+            try:
                 cursor.execute(query)
                 #extras.execute_values(cursor, query, df_tuple)
                 self.conn.commit()
@@ -198,7 +197,7 @@ class Database:
                 return 1
             print("the dataframe is inserted")
             cursor.close()
-            """
+            
 
         except(Exception, psycopg2.DatabaseError) as error:
             print(error)
