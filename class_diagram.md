@@ -1,14 +1,15 @@
 ```mermaid
 classDiagram
 
-    Brregkraft <|-- APIController
-    Database <|-- Brregkraft
+    Main <|-- APIController
+    Database <|-- Main
 	Database <|-- DatabaseINI
-	Lice_data <|-- APIController
-	Brregkraft <|-- Lice_data_aggregated
-	Lice_data_aggregated <|-- Lice_data
-
-    class Brregkraft {
+	LiceData <|-- APIController
+	Main <|-- LicedataContainer
+	LicedataContainer <|-- LiceData
+	EscapedataContainer <|-- Escapedata
+	Main <|-- EscapedataContainer
+    class Main {
           main()
     }
 
@@ -34,15 +35,33 @@ classDiagram
       
     }
 
-	class Lice_data_aggregated {
+	class LicedataContainer {
       + dict = 'lice_data'
+	  + addLiceData()
+	  + addLiceDataList()
+	  + getDataFrame()
+	  
     }
 
-	class Lice_data {
+	class LiceData {
       + locnr
 	  + lice_binary
 	  + lice_week
 	  + lice_year
+    }
+	
+	class Escapedata {
+      + init()
+	  + getlist()
+	  + print_data()
+	  
+    }
+	
+	class EscapedataContainer {
+      + init()
+	  + add_escapedata()
+	  + getDataFrame()
+	  
     }
 	
 ```
