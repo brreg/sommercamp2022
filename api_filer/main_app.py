@@ -6,7 +6,7 @@ from licedata import Licedata
 import licedata_container as ldc
 from database import Database
 import escapedata as ed
-import escapedataContainer as edc
+import EscapedataContainer as edc
 
 
 # 45032 og 45017
@@ -20,7 +20,9 @@ def main():
     #edcontainer = edc.EscapedataContainer()
     #edcontainer.add_escapedata(escapedata_object)
     #eddf = edcontainer.getDataFrame()
-    #print(eddf)
+
+
+
 
     licedata = bapi.get_lice_data(45017, 2022)
     licedata.pop("type")
@@ -38,8 +40,10 @@ def main():
     database1.connect()
     database1.config()
     database1.create_tables()
+
     time.sleep(1)
     database1.insert_data(df, 'salmonoid_lice')
 
+    
 
-main()
+Main()
