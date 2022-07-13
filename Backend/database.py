@@ -1,3 +1,4 @@
+from calendar import c
 from turtle import turtles
 import psycopg2
 import os
@@ -6,13 +7,10 @@ import pandas as pd
 import numpy as np
 import psycopg2.extras as extras
 import requests as r
-
 import math
 
 
 filename = '/Users/ingunn/Documents/GitHub/sommercamp2022/Dataanalyse/smb.csv'
-
-
 
 class Database:
 
@@ -127,6 +125,7 @@ class Database:
                 escape_nr INTEGER,
                 escape_year VARCHAR,
                 escape_week INTEGER,
+                PRIMARY KEY(loc_nr, escape_year, escape_week),
                 CONSTRAINT fk_loc_nr    
                     FOREIGN KEY (loc_nr) 
                         REFERENCES location(loc_nr)
@@ -138,6 +137,7 @@ class Database:
                 loc_nr INTEGER,
                 death_nr INTEGER,
                 death_year VARCHAR,
+                PRIMARY KEY(loc_nr, death_year),
                 CONSTRAINT fk_loc_nr
                     FOREIGN KEY (loc_nr) 
                         REFERENCES location(loc_nr)
@@ -170,9 +170,20 @@ class Database:
             if self.conn is not None:
                 self.conn.close()
 
+    def decide_command(self, tablename): 
+        if (tablename == "salmonoid_lice"):
+            return ' ON CONFLICT (loc_nr, lice_year, lice_week) DO NOTHING;'
+        elif (tablename == "escapes"): 
+            return ' ON CONFLICT (loc_nr, escape_year, escape_week) DO NOTHING;'
+        elif (tablename == "salmon_death"):
+            return ' ON CONFLICT (loc_nr, death_year) DO NOTHING;'
+
  
     def insert_data(self, df, tablename):
         print("trying to insert data")
+
+        command = self.decide_command(tablename)
+        print(command)
 
         try: 
             self.conn = psycopg2.connect(
@@ -180,16 +191,13 @@ class Database:
             database="postgres",
             user=os.environ["database_user"],
             password=os.environ["database_password"])
-
-            #df = df.astype(str)
-            #print(df)
-            #tuples = [tuple(x) for x in df.to_numpy()]
             
             df_list = df.values.tolist()
+            print("len: " + str(len(df_list)))
             #print("df_list: ", df_list)
             for lst in df_list: 
             
-                query = 'INSERT INTO ' + str(tablename) + ' VALUES ' + str(tuple(lst))
+                query = 'INSERT INTO ' + str(tablename) + ' VALUES ' + str(tuple(lst)) + command
                 print(query)
                 cursor = self.conn.cursor()
 

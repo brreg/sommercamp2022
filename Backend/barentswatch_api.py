@@ -112,46 +112,6 @@ class API:
             licedatalist.append(licedata)
         #return list of LiceData objects
         return licedatalist
-        
-def __main__(): 
-    bapi = API()
-    
-    locnrs= bapi.get_locnrs()
-    print(locnrs)
-    escapedata = bapi.get_escape_data(45017, 2022)
-    print(escapedata)
-    escapedata_object = ed.Escapedata(escapedata["localityNo"], escapedata["year"], escapedata["data"])
-    edcontainer = edc.EscapedataContainer()
-    edcontainer.add_escapedata(escapedata_object)
-    eddf = edcontainer.getDataFrame()
-    print(eddf)
-
-    dfas = pd.DataFrame(bapi.make_dfas(filename, locnrs))
-    print(dfas)
-
-    #deadliness_data = bapi.generate_deadliness_data_for_all_locnrs(locnrs, dfas)
-    #print(pd.DataFrame(deadliness_data))
-
-    # gets lice data about one locnr, in a given year, as a dictionary
-    licedata = bapi.get_lice_data(45017, 2022)
-    licedata.pop("type")
-
-    # changing form of the week data to a dictionary with weeks as keys and values as values
-    licedata["data"] = bapi.make_week_dict_lice(licedata["data"])
-    print(licedata)
-
-    # put one fishhealthdata record into multiple LiceData objects
-    licedatalist = bapi.putlicedataintoobjects(licedata)
-
-    # put licedata objects into licedata container
-    licedata_container = ldc.LicedataContainer()
-    licedata_container.addLiceDataList(licedatalist)
-
-    df = licedata_container.getDataFrame()
-    print(df)
-
-if __name__ == "__main__":
-    __main__()
 
 
 
