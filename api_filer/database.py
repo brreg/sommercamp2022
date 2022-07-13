@@ -7,6 +7,8 @@ import numpy as np
 import psycopg2.extras as extras
 import requests as r
 
+import math
+
 
 filename = '/Users/ingunn/Documents/GitHub/sommercamp2022/Dataanalyse/smb.csv'
 
@@ -228,12 +230,16 @@ class Database:
         addresses = []
 
         for tup in df.itertuples():
-            address_record = (str(tup[3]), int(tup[4]), str(tup[5]))
+            if (math.isnan(tup[4])):
+                postcode = 0000
+            else: 
+                postcode = int(tup[4])
+            address_record = (str(tup[3]), postcode, str(tup[5]))
             #print(address_record)
             addresses.append(address_record)
             
             #locnr
-            break
+            
         
         """
         data = [
@@ -255,11 +261,10 @@ class Database:
 
             cur = self.conn.cursor()
 
-            stmt = """INSERT INTO address (org_address, org_zipcode, org_city) VALUES(%s, %s, %s);"""
-            print(addresses[0])
-            cur.execute("INSERT INTO address (org_address, org_zipcode, org_city) VALUES(%s, %s, %s);", addresses[0])
+            stmt = """INSERT INTO address (org_address, org_zipcode, org_city) VALUES(%s, %s, %s) ON CONFLICT (org_address) DO NOTHING;"""
+            #cur.execute(stmt, addresses[0])
             
-            #cursor.executemany(stmt, addresses)
+            cur.executemany(stmt, addresses)
             ### execute many insertion commands
             self.conn.commit()
             print("command should have been executed")
