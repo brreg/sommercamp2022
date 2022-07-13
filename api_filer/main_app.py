@@ -40,7 +40,7 @@ def main():
     database1.config()
     database1.create_tables()
     
-    database1.insert_address_and_locnr_from_csv(filename)
+    database1.insert_address_smb_locnr_csv(filename)
     
     #database1.insert_data(df, 'salmonoid_lice')
 

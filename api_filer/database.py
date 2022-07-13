@@ -99,7 +99,7 @@ class Database:
                 loc_nr INTEGER PRIMARY KEY,
                 org_nr INTEGER,
                 loc_name VARCHAR(255),
-                loc_capacity INTEGER,
+                loc_capacity FLOAT,
                 CONSTRAINT fk_org_nr 
                     FOREIGN KEY (org_nr)
                         REFERENCES smb(org_nr)
@@ -224,10 +224,12 @@ class Database:
         
         return locnrs
         
-    def insert_address_and_locnr_from_csv(self, filename): 
+    def insert_address_smb_locnr_csv(self, filename): 
         df = pd.read_csv(filename, sep = ';')
-
+        df['LOK_KAP'] = df['LOK_KAP'].str.replace(',','.')
         addresses = []
+        smbs = []
+        locs = []
 
         for tup in df.itertuples():
             if (math.isnan(tup[4])):
@@ -235,22 +237,11 @@ class Database:
             else: 
                 postcode = int(tup[4])
             address_record = (str(tup[3]), postcode, str(tup[5]))
-            #print(address_record)
             addresses.append(address_record)
-            
-            #locnr
-            
-        
-        """
-        data = [
-                ('Jane', date(2005, 2, 12)),
-                ('Joe', date(2006, 5, 23)),
-                ('John', date(2010, 10, 3)),
-        ]
-        stmt = "INSERT INTO employees (first_name, hire_date) VALUES(%s, %s)"
-        cursor.executemany(stmt, data)
-
-        """
+            smb_record = (int(tup[1]), str(tup[2]), str(tup[3]))
+            smbs.append(smb_record)
+            loc_record = (int(tup[6]), int(tup[1]), str(tup[7]), float(tup[10]))
+            locs.append(loc_record)
 
         try: 
             self.conn = psycopg2.connect(
@@ -261,14 +252,17 @@ class Database:
 
             cur = self.conn.cursor()
 
-            stmt = """INSERT INTO address (org_address, org_zipcode, org_city) VALUES(%s, %s, %s) ON CONFLICT (org_address) DO NOTHING;"""
-            #cur.execute(stmt, addresses[0])
-            
-            cur.executemany(stmt, addresses)
-            ### execute many insertion commands
-            self.conn.commit()
-            print("command should have been executed")
+            ### execute many insertion commands for address, smb and loc
+            stmt_address = """INSERT INTO address (org_address, org_zipcode, org_city) VALUES(%s, %s, %s) ON CONFLICT (org_address) DO NOTHING;"""
+            cur.executemany(stmt_address, addresses)
 
+            stmt_smb = """INSERT INTO smb (org_nr, org_name, org_address) VALUES(%s, %s, %s) ON CONFLICT (org_nr) DO NOTHING;"""
+            cur.executemany(stmt_smb, smbs)
+
+            stmt_loc = """INSERT INTO location (loc_nr, org_nr, loc_name, loc_capacity) VALUES(%s, %s, %s, %s);"""
+            cur.executemany(stmt_loc, locs)
+
+            self.conn.commit()
             cur.close()
 
         except(Exception, psycopg2.DatabaseError) as error:
@@ -278,11 +272,3 @@ class Database:
             if self.conn is not None:
                 self.conn.close()
         
-
-    def insert_address_record(self, address): 
-        print("here comes a function to insert one address record into DB")
-
-        
-        
-    def insert_locnr_record(self, record): 
-        print("here comes a function to insert one locrnr record into DB")
