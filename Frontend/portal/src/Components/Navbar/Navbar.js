@@ -12,7 +12,7 @@ const NavBar = () => {
                         <a href="/#Bærekraft">Bærekraft</a>
                     </li>
                     <li>
-                        <a href="/#Bedrifter">Bedrifer</a>
+                        <a href="/#Bedrifter">Bedrifter</a>
                     </li>
                     <li>
                         <a href="/#about">Om oss</a>
