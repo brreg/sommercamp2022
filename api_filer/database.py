@@ -17,7 +17,7 @@ class Database:
     def __init__(self):
         self.filename='database.ini'
         self.conn = None
-        self.section='postgresql'
+        self.section='postgresql' 
     
     def connect(self):
         try:
@@ -228,8 +228,8 @@ class Database:
         addresses = []
 
         for tup in df.itertuples():
-            address_record = (tup[3], int(tup[4]), tup[5])
-            print(address_record)
+            address_record = (str(tup[3]), int(tup[4]), str(tup[5]))
+            #print(address_record)
             addresses.append(address_record)
             
             #locnr
@@ -253,13 +253,18 @@ class Database:
             user=os.environ["database_user"],
             password=os.environ["database_password"])
 
-            cursor = self.conn.cursor()
+            cur = self.conn.cursor()
 
-            stmt = """INSERT INTO address (org_address, org_zipcode, org_city) VALUES(%s, %s, %s)"""
-            print(addresses)
-            cursor.executemany(stmt, addresses)
+            stmt = """INSERT INTO address (org_address, org_zipcode, org_city) VALUES(%s, %s, %s);"""
+            print(addresses[0])
+            cur.execute("INSERT INTO address (org_address, org_zipcode, org_city) VALUES(%s, %s, %s);", addresses[0])
+            
+            #cursor.executemany(stmt, addresses)
             ### execute many insertion commands
+            self.conn.commit()
             print("command should have been executed")
+
+            cur.close()
 
         except(Exception, psycopg2.DatabaseError) as error:
             print(error)
