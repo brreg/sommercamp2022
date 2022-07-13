@@ -6,16 +6,16 @@ const NavBar = () => {
             <nav>
                 <ul>
                     <li>
-                        <a href="/">Hjem</a>
-                    </li>
-                    <li>
-                        <a href="/#about">Om oss</a>
+                        <a href="/"><img src={require('../Navbar/images/logo.jpeg')} width="300" alt="logo"></img></a>
                     </li>
                     <li>
                         <a href="/#Bærekraft">Bærekraft</a>
                     </li>
                     <li>
                         <a href="/#Bedrifter">Bedrifer</a>
+                    </li>
+                    <li>
+                        <a href="/#about">Om oss</a>
                     </li>
                 </ul>
             </nav>
