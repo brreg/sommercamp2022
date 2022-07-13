@@ -111,7 +111,7 @@ class Database:
                 lice BOOL,
                 lice_nr FLOAT,
                 lice_week INTEGER,
-                lice_year VARCHAR,
+                lice_year VARCHAR(8),
                 PRIMARY KEY(loc_nr, lice_year, lice_week),
                 CONSTRAINT fk_loc_nr 
                     FOREIGN KEY (loc_nr) 
@@ -122,9 +122,12 @@ class Database:
             """
             CREATE TABLE escapes (
                 loc_nr INTEGER,
-                escape_nr INTEGER,
-                escape_year VARCHAR,
+                escape_year VARCHAR(8),
                 escape_week INTEGER,
+                escape_count INTEGER,
+                escape_captured INTEGER,
+                escape_capturestart BOOL,
+                escape_description VARCHAR(1000),
                 PRIMARY KEY(loc_nr, escape_year, escape_week),
                 CONSTRAINT fk_loc_nr    
                     FOREIGN KEY (loc_nr) 
@@ -136,7 +139,7 @@ class Database:
             CREATE TABLE salmon_death(
                 loc_nr INTEGER,
                 death_nr INTEGER,
-                death_year VARCHAR,
+                death_year VARCHAR(8),
                 PRIMARY KEY(loc_nr, death_year),
                 CONSTRAINT fk_loc_nr
                     FOREIGN KEY (loc_nr) 

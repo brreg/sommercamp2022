@@ -11,7 +11,7 @@ class Escapedata:
             self.escapedescription = data[0]["escapes"][0]["description"]
         else: 
             self.week = None
-            self.escapecount = None
+            self.escapecount = 0
             self.captured = None
             self.capturestart = None
             self.escapedescription = None

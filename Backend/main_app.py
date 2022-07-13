@@ -10,6 +10,9 @@ import EscapedataContainer as edc
 
 
 # 45032 og 45017
+
+# locality 30156 has escape data in year 2016
+
 filename = '/Users/ingunn/Documents/GitHub/sommercamp2022/Dataanalyse/smb.csv'
 
 
@@ -32,16 +35,18 @@ def main():
 
 
     #### Inserting all escape data into database
-
-    #escapedata = bapi.get_escape_data(45032, 2022)
-    #print(escapedata)
-    #escapedata_object = ed.Escapedata(escapedata["localityNo"], escapedata["year"], escapedata["data"])
-    #edcontainer = edc.EscapedataContainer()
-    #edcontainer.add_escapedata(escapedata_object)
-    #eddf = edcontainer.getDataFrame()
+    
+    escapedata = bapi.get_escape_data(30156, 2016)
+    print(escapedata)
+    escapedata_object = ed.Escapedata(escapedata["localityNo"], escapedata["year"], escapedata["data"])
+    edcontainer = edc.EscapedataContainer()
+    edcontainer.add_escapedata(escapedata_object)
+    eddf = edcontainer.getDataFrame()
+    ## ensure eddf only has the data that we are inserting into escapes.
+    database1.insert_data(eddf, 'escapes')
 
     
-    ### Inserting all deadliness data into database
+    ### Generating all deadliness data and inserting into database
     
     
     
