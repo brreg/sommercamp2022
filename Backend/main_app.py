@@ -25,26 +25,7 @@ def main():
     years = [2015, 2016, 2017, 2018, 2019, 2020, 2021]
 
     #### Inserting all lice data into database, for each year and each location number? 
-    
-    licedata_container = ldc.LicedataContainer() # container to store all lice data
-    i = 0
-    for year in years: 
-        for locnr in locnrs: 
-
-            licedata = bapi.get_lice_data(locnr, year)
-            licedata.pop("type")
-            licedata["data"] = bapi.make_week_dict_lice(licedata["data"])
-            print(licedata)
-
-            # put one fishhealthdata record into multiple LiceData objects
-            licedatalist = bapi.put_lice_data_into_objects(licedata)
-
-            # put licedata objects into licedata container
-            licedata_container.addLiceDataList(licedatalist)
-            if (i==20): 
-                break
-            i = i+1
-
+    licedata_container = bapi.get_many_lice_data(locnrs, years)
     # After extracting all licedata from barentswatch API, insert into our DB
     df = licedata_container.getDataFrame()
     database1.insert_data(df, 'salmonoid_lice')

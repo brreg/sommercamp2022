@@ -64,7 +64,7 @@ class API:
         return dfas
 
     
-        
+    # returns licedata from one year at one locnr in json format
     def get_lice_data(self, locnr, year):
 
         lice_res = r.get('https://www.barentswatch.no/bwapi/v1/geodata/fishhealth/locality/'+str(locnr)+'/avgfemalelice/'+str(year), 
@@ -73,6 +73,29 @@ class API:
         lice_json = lice_res.json()
         
         return lice_json
+
+    # input is a list of locnrs and a list of years
+    # returns a licedata container with many licedata objects inside
+    def get_many_lice_data(self, locnrs, years):
+        licedata_container = ldc.LicedataContainer() # container to store all lice data
+        i = 0
+        for year in years: 
+            for locnr in locnrs: 
+
+                licedata = self.get_lice_data(locnr, year)
+                licedata.pop("type")
+                licedata["data"] = self.make_week_dict_lice(licedata["data"])
+                print(licedata)
+
+                # put one fishhealthdata record into multiple LiceData objects
+                licedatalist = self.put_lice_data_into_objects(licedata)
+
+                # put licedata objects into licedata container
+                licedata_container.addLiceDataList(licedatalist)
+                if (i==20): 
+                    break
+                i = i+1
+        return licedata_container
     
     def get_escape_data(self, locnr, year):
         
