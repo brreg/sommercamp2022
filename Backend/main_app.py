@@ -10,6 +10,8 @@ import EscapedataContainer as edc
 
 
 # 45032 og 45017
+filename = '/Users/ingunn/Documents/GitHub/sommercamp2022/Dataanalyse/smb.csv'
+
 
 def main():
     database1 = Database()
@@ -21,16 +23,13 @@ def main():
     #edcontainer.add_escapedata(escapedata_object)
     #eddf = edcontainer.getDataFrame()
 
-
-
-
     licedata = bapi.get_lice_data(45017, 2022)
     licedata.pop("type")
     licedata["data"] = bapi.make_week_dict_lice(licedata["data"])
     print(licedata)
 
     # put one fishhealthdata record into multiple LiceData objects
-    licedatalist = bapi.putlicedataintoobjects(licedata)
+    licedatalist = bapi.put_lice_data_into_objects(licedata)
 
     # put licedata objects into licedata container
     licedata_container = ldc.LicedataContainer()
@@ -40,10 +39,11 @@ def main():
     database1.connect()
     database1.config()
     database1.create_tables()
-
-    time.sleep(1)
-    database1.insert_data(df, 'salmonoid_lice')
+    
+    database1.insert_address_smb_locnr_csv(filename)
+    
+    #database1.insert_data(df, 'salmonoid_lice')
 
     
 
-Main()
+main()

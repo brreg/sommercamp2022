@@ -117,6 +117,7 @@ def __main__():
     bapi = API()
     
     locnrs= bapi.get_locnrs()
+    print(locnrs)
     escapedata = bapi.get_escape_data(45017, 2022)
     print(escapedata)
     escapedata_object = ed.Escapedata(escapedata["localityNo"], escapedata["year"], escapedata["data"])
@@ -125,8 +126,8 @@ def __main__():
     eddf = edcontainer.getDataFrame()
     print(eddf)
 
-    #dfas = pd.DataFrame(bapi.make_dfas(filename, locnrs))
-    #print(dfas)
+    dfas = pd.DataFrame(bapi.make_dfas(filename, locnrs))
+    print(dfas)
 
     #deadliness_data = bapi.generate_deadliness_data_for_all_locnrs(locnrs, dfas)
     #print(pd.DataFrame(deadliness_data))
