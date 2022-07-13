@@ -6,7 +6,7 @@ from licedata import Licedata
 import licedata_container as ldc
 from database import Database
 import escapedata as ed
-import escapedataContainer as edc
+import EscapedataContainer as edc
 
 
 # 45032 og 45017
