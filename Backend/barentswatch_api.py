@@ -78,7 +78,6 @@ class API:
     # returns a licedata container with many licedata objects inside
     def get_many_lice_data(self, locnrs, years):
         licedata_container = ldc.LicedataContainer() # container to store all lice data
-        i = 0
         for year in years: 
             for locnr in locnrs: 
 
@@ -92,9 +91,7 @@ class API:
 
                 # put licedata objects into licedata container
                 licedata_container.addLiceDataList(licedatalist)
-                if (i==20): 
-                    break
-                i = i+1
+                
         return licedata_container
     
     def get_escape_data(self, locnr, year):

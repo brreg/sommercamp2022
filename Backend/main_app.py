@@ -21,8 +21,8 @@ def main():
     database1.insert_address_smb_locnr_csv(filename)
 
     bapi = API()
-    locnrs = bapi.get_locnrs()
-    years = [2015, 2016, 2017, 2018, 2019, 2020, 2021]
+    locnrs = bapi.get_locnrs()[0:10]
+    years = [2015, 2016, 2017, 2018, 2019, 2020, 2021][0:2]
 
     #### Inserting all lice data into database, for each year and each location number? 
     licedata_container = bapi.get_many_lice_data(locnrs, years)
