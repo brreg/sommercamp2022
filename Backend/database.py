@@ -325,16 +325,25 @@ class Database:
             if self.conn is not None:
                 self.conn.close()
 
-    def generate_deadliness_data(self, locnrmedas, filename): 
+    def generate_deadliness_data(self, locnrs, filename): 
         dfdead = pd.DataFrame()
         dfas = pd.read_csv(filename, sep = ';')
         dfas['LOK_KAP'] = dfas['LOK_KAP'].str.replace(',','.')
 
+        totalgood = 0
+        totalfail = 0
+        locnrmedas = []
+        for i in locnrs:
+            if len(dfas.loc[dfas['LOK_NR'] == i]) == 1:
+                totalgood += 1
+                locnrmedas.append(i)
+            else:
+                totalfail +=1
+
         deadlighet = []
         for i in locnrmedas:
-
             enhet = dfas.loc[dfas['LOK_NR'] == i]['LOK_ENHET'].values[0]
-            kapasitet = dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0]
+            #kapasitet = dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0]
             
             if enhet == 'STK':
                 konvertert = int(int(dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0])/5)
