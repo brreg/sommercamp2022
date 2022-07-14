@@ -1,7 +1,7 @@
 import React from 'react';
-import "./Bedrifter_miljo.css"
+import "./Bedrifter_sosial.css"
 
-const Bedrifter_miljo = () => {
+const Bedrifter_sosial = () => {
 
     return (
         <div class="btn-toolbar" style = {{position: "absolute", top: 140}}>
@@ -14,7 +14,7 @@ const Bedrifter_miljo = () => {
         
         <div class="card" style = {{position: "absolute", top: 160}}>
         <div class="container">
-                <p><h4>Miljø</h4></p>
+                <p><h4>Sosial</h4></p>
         </div>
         </div>
         </div>
@@ -22,4 +22,4 @@ const Bedrifter_miljo = () => {
     )
 }
 
-export default Bedrifter_miljo;
+export default Bedrifter_sosial;
