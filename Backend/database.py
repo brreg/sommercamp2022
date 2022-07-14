@@ -70,6 +70,7 @@ class Database:
 
         return db
     
+    # Creates database tables
     def create_tables(self):
 
         commands = (
@@ -166,7 +167,6 @@ class Database:
             for command in commands:
                 cur.execute(command)
 
-            # maybe populate smb and locnrs here? 
             cur.close()
             self.conn.commit()
 
@@ -177,7 +177,7 @@ class Database:
             if self.conn is not None:
                 self.conn.close()
     
-    ### Inserts data in df into either salmonoid_lice ELLER escapes
+    ### Inserts data in df into either salmonoid_lice ELLER escapes tables in our database
     def insert_data(self, df, tablename):
         print("Inserting data")
         try: 
@@ -212,14 +212,12 @@ class Database:
 
                 try:
                     cursor.execute(stmt, newtup)
-                    #extras.execute_values(cursor, query, df_tuple)
                     self.conn.commit()
                 except (Exception, psycopg2.DatabaseError) as error:
                     print("Error: %s" % error)
                     self.conn.rollback()
                     cursor.close()
                     return 1
-                #print("the dataframe is inserted")
                 cursor.close()
             
 
@@ -230,7 +228,7 @@ class Database:
             if self.conn is not None:
                 self.conn.close()
 
-
+    # Returns a list of location numbers with salmonoids that are fetched from Barentswatch
     def get_locnrs(self):
         res = r.get(
         'https://www.barentswatch.no/bwapi/v1/geodata/fishhealth/localitieswithsalmonoids',
@@ -272,7 +270,8 @@ class Database:
         finally: 
             if self.conn is not None:
                 self.conn.close()
-        
+    
+    # Inserts address, smb and locnr data from the filename.csv and inserts it into our database
     def insert_address_smb_locnr_csv(self, filename): 
         df = pd.read_csv(filename, sep = ';')
         df['LOK_KAP'] = df['LOK_KAP'].str.replace(',','.')
