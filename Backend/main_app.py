@@ -35,7 +35,7 @@ def main():
     #### Inserting all escape data into database
     edcontainer = bapi.get_many_escape_data(locnrs, years)
     eddf = edcontainer.getDataFrame()
-    database1.insert_data(eddf, 'escapes')
+    #database1.insert_data(eddf, 'escapes')
     
     ### Generating all deadliness data and inserting into database
     

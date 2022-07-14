@@ -294,11 +294,16 @@ class Database:
             stmt_address = """INSERT INTO address (org_address, org_zipcode, org_city) VALUES(%s, %s, %s);"""
             cur.executemany(stmt_address, addresses)
             
-            stmt_smb = """INSERT INTO smb (org_nr, org_name, org_address) VALUES(%s, %s, %s) ON CONFLICT (org_nr) DO NOTHING;"""
-            cur.executemany(stmt_smb, smbs)
+            ## how to get this statement to convert org_address to org_address_ID ???? 
+            #stmt_smb = """INSERT INTO smb (org_nr, org_name, org_address) VALUES(%s, %s, %s) ON CONFLICT (org_nr) DO NOTHING;"""
+            #cur.executemany(stmt_smb, smbs)
 
-            stmt_loc = """INSERT INTO location (loc_nr, org_nr, loc_name, loc_capacity) VALUES(%s, %s, %s, %s) ON CONFLICT (loc_nr) DO NOTHING;"""
-            cur.executemany(stmt_loc, locs)
+            """SELECT ID FROM address
+                WHERE (org_address=this.org_address, org_zipcode = this.org_zipcode, org_city=this.org_city);
+                """
+
+            #stmt_loc = """INSERT INTO location (loc_nr, org_nr, loc_name, loc_capacity) VALUES(%s, %s, %s, %s) ON CONFLICT (loc_nr) DO NOTHING;"""
+            #cur.executemany(stmt_loc, locs)
 
             self.conn.commit()
             cur.close()
