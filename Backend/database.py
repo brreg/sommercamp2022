@@ -186,12 +186,24 @@ class Database:
             
             df_list = df.values.tolist()
             for lst in df_list:
-                stmt = 'INSERT INTO salmonoid_lice (loc_nr, lice, lice_nr, lice_week, lice_year) VALUES (%s, %s, %s, %s, %s) ON CONFLICT (loc_nr, lice_week, lice_year) DO NOTHING;'
+                tup = tuple(lst)
+                print(tup)
+
+                """ INSERT INTO salmonoid_lice (loc_nr, lice, lice_nr, lice_week, lice_year)
+                    SELECT 10029, True, 0.4, 20, '2020'
+                    WHERE  EXISTS (
+                    SELECT loc_nr from location where loc_nr = 10029
+                    FOR SHARE
+                    );
+                        """
+
+                stmt = """INSERT INTO salmonoid_lice (loc_nr, lice, lice_nr, lice_week, lice_year) SELECT %s, %s, %s, %s, %s WHERE EXISTS (SELECT loc_nr from location where loc_nr = 10029
+                    FOR SHARE);"""
                 print(stmt)
                 cursor = self.conn.cursor()
 
                 try:
-                    cursor.execute(stmt)
+                    cursor.execute(stmt, tup)
                     #extras.execute_values(cursor, query, df_tuple)
                     self.conn.commit()
                 except (Exception, psycopg2.DatabaseError) as error:
@@ -213,7 +225,7 @@ class Database:
     def insert_escape_data(self, df, tablename):
         print("trying to insert data")
 
-        command = self.decide_command(tablename)
+        command = "ON CONFLICT(loc_nr) DO NOTHING;"
         print(command)
 
         try: 
@@ -301,12 +313,9 @@ class Database:
             print(stmt_smb)
             cur.executemany(stmt_smb, smbs)
 
-            """SELECT ID FROM address
-                WHERE (org_address=this.org_address, org_zipcode = this.org_zipcode, org_city=this.org_city);
-                """
 
-            #stmt_loc = """INSERT INTO location (loc_nr, org_nr, loc_name, loc_capacity) VALUES(%s, %s, %s, %s) ON CONFLICT (loc_nr) DO NOTHING;"""
-            #cur.executemany(stmt_loc, locs)
+            stmt_loc = """INSERT INTO location (loc_nr, org_nr, loc_name, loc_capacity) VALUES(%s, %s, %s, %s) ON CONFLICT (loc_nr) DO NOTHING;"""
+            cur.executemany(stmt_loc, locs)
 
             self.conn.commit()
             cur.close()
