@@ -74,7 +74,8 @@ class Database:
 
             """
             CREATE TABLE address (
-                org_address VARCHAR(255) PRIMARY KEY,
+                address_id int NOT NULL AUTO_INCREMENT,
+                org_address VARCHAR(255),
                 org_zipcode INTEGER,
                 org_city VARCHAR(255)
             )
@@ -82,7 +83,8 @@ class Database:
             
             """
             CREATE TABLE smb (
-                org_nr INTEGER PRIMARY KEY,
+                smb_id int NOT NULL AUTO_INCREMENT,
+                org_nr INTEGER,
                 org_name VARCHAR(255),
                 org_address VARCHAR(255),
                 CONSTRAINT fk_org_address 
@@ -94,7 +96,8 @@ class Database:
         
             """
             CREATE TABLE location (
-                loc_nr INTEGER PRIMARY KEY,
+                location_id int NOT NULL AUTO_INCREMENT,
+                loc_nr INTEGER,
                 org_nr INTEGER,
                 loc_name VARCHAR(255),
                 loc_capacity FLOAT,
@@ -107,12 +110,12 @@ class Database:
 
             """
             CREATE TABLE salmonoid_lice (
+                lice_id int NOT NULL AUTO_INCREMENT,
                 loc_nr INTEGER,
                 lice BOOL,
                 lice_nr FLOAT,
                 lice_week INTEGER,
                 lice_year VARCHAR(8),
-                PRIMARY KEY(loc_nr, lice_year, lice_week),
                 CONSTRAINT fk_loc_nr 
                     FOREIGN KEY (loc_nr) 
                         REFERENCES location(loc_nr)
@@ -121,6 +124,7 @@ class Database:
 
             """
             CREATE TABLE escapes (
+                escape_id int NOT NULL AUTO_INCREMENT,
                 loc_nr INTEGER,
                 escape_year VARCHAR(8),
                 escape_week INTEGER,
@@ -128,7 +132,6 @@ class Database:
                 escape_captured INTEGER,
                 escape_capturestart BOOL,
                 escape_description VARCHAR(1000),
-                PRIMARY KEY(loc_nr, escape_year, escape_week),
                 CONSTRAINT fk_loc_nr    
                     FOREIGN KEY (loc_nr) 
                         REFERENCES location(loc_nr)
@@ -137,10 +140,10 @@ class Database:
 
             """
             CREATE TABLE salmon_death(
+                death_id int NOT NULL AUTO_INCREMENT,
                 loc_nr INTEGER,
                 death_nr INTEGER,
                 death_year VARCHAR(8),
-                PRIMARY KEY(loc_nr, death_year),
                 CONSTRAINT fk_loc_nr
                     FOREIGN KEY (loc_nr) 
                         REFERENCES location(loc_nr)
