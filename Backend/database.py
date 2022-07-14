@@ -176,9 +176,10 @@ class Database:
         finally:
             if self.conn is not None:
                 self.conn.close()
- 
-    def insert_lice_data(self, df):
-        print("Inserting lice data")
+    
+    ### Inserts data in df into either salmonoid_lice ELLER escapes
+    def insert_data(self, df, tablename):
+        print("Inserting data")
         try: 
             self.conn = psycopg2.connect(
             host="localhost",
@@ -188,18 +189,25 @@ class Database:
             
             df_list = df.values.tolist()
             for lst in df_list:
+                
+                if (tablename == "salmonoid_lice"): 
+                    newtup = (lst[0], lst[1], lst[2], lst[3], lst[4], lst[0])
+                    stmt = """INSERT INTO salmonoid_lice (loc_nr, lice, lice_nr, lice_week, lice_year) 
+                                SELECT %s, %s, %s, %s, %s 
+                                WHERE EXISTS (SELECT loc_nr from location where loc_nr = %s
+                                FOR SHARE);"""
 
-                """ INSERT INTO salmonoid_lice (loc_nr, lice, lice_nr, lice_week, lice_year)
-                    SELECT 10029, True, 0.4, 20, '2020'
-                    WHERE  EXISTS (
-                    SELECT loc_nr from location where loc_nr = 10029
-                    FOR SHARE
-                    );
-                        """
-                newtup = (lst[0], lst[1], lst[2], lst[3], lst[4], lst[0])
-                stmt = """INSERT INTO salmonoid_lice (loc_nr, lice, lice_nr, lice_week, lice_year) SELECT %s, %s, %s, %s, %s WHERE EXISTS (SELECT loc_nr from location where loc_nr = %s
-                    FOR SHARE);"""
-                #print(stmt)
+                elif (tablename == "escapes"): 
+                    newtup = (lst[0], lst[1], lst[2], lst[3], lst[4], lst[5], lst[6], lst[0])
+                    stmt = """INSERT INTO escapes (loc_nr, escape_year, escape_week, escape_count, escape_captured, escape_capturestart, escape_description) 
+                                SELECT %s, %s, %s, %s, %s, %s, %s
+                                WHERE EXISTS (SELECT loc_nr from location where loc_nr = %s
+                                FOR SHARE);"""
+
+                else: 
+                    print("Tablename should be salmonoid_lice or escape")
+                    break
+
                 cursor = self.conn.cursor()
 
                 try:
@@ -222,48 +230,7 @@ class Database:
             if self.conn is not None:
                 self.conn.close()
 
-    def insert_escape_data(self, df, tablename):
-        print("trying to insert data")
 
-        command = "ON CONFLICT(loc_nr) DO NOTHING;"
-        print(command)
-
-        try: 
-            self.conn = psycopg2.connect(
-            host="localhost",
-            database="postgres",
-            user=os.environ["database_user"],
-            password=os.environ["database_password"])
-            
-            df_list = df.values.tolist()
-            print("len: " + str(len(df_list)))
-            #print("df_list: ", df_list)
-            for lst in df_list:
-            
-                query = 'INSERT INTO ' + str(tablename) + ' VALUES ' + str(tuple(lst)) + command
-                print(query)
-                cursor = self.conn.cursor()
-
-                try:
-                    cursor.execute(query)
-                    #extras.execute_values(cursor, query, df_tuple)
-                    self.conn.commit()
-                except (Exception, psycopg2.DatabaseError) as error:
-                    print("Error: %s" % error)
-                    self.conn.rollback()
-                    cursor.close()
-                    return 1
-                print("the dataframe is inserted")
-                cursor.close()
-            
-
-        except(Exception, psycopg2.DatabaseError) as error:
-            print(error)
-
-        finally: 
-            if self.conn is not None:
-                self.conn.close()
-    
     def get_locnrs(self):
         res = r.get(
         'https://www.barentswatch.no/bwapi/v1/geodata/fishhealth/localitieswithsalmonoids',
@@ -341,7 +308,7 @@ class Database:
             ## how to get this statement to convert org_address to org_address_ID ???? 
             ## need to select ID where org_address = org_address
             stmt_smb = """INSERT INTO smb (org_nr, org_name, org_address_id) VALUES(%s, %s, (SELECT ID from address WHERE org_address=%s LIMIT 1)) ON CONFLICT (org_nr) DO NOTHING;"""
-            print(stmt_smb)
+            #print(stmt_smb)
             cur.executemany(stmt_smb, smbs)
 
 
