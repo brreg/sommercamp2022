@@ -74,7 +74,7 @@ class Database:
 
             """
             CREATE TABLE address (
-                address_id int NOT NULL AUTO_INCREMENT,
+                ID SERIAL PRIMARY KEY,
                 org_address VARCHAR(255),
                 org_zipcode INTEGER,
                 org_city VARCHAR(255)
@@ -83,21 +83,19 @@ class Database:
             
             """
             CREATE TABLE smb (
-                smb_id int NOT NULL AUTO_INCREMENT,
-                org_nr INTEGER,
+                org_nr INTEGER PRIMARY KEY,
                 org_name VARCHAR(255),
-                org_address VARCHAR(255),
-                CONSTRAINT fk_org_address 
-                    FOREIGN KEY (org_address) 
-                        REFERENCES address(org_address)
+                org_address_id INTEGER,
+                CONSTRAINT fk_org_address_id
+                    FOREIGN KEY (org_address_id) 
+                        REFERENCES address(ID)
             )
             """,
 
         
             """
             CREATE TABLE location (
-                location_id int NOT NULL AUTO_INCREMENT,
-                loc_nr INTEGER,
+                loc_nr INTEGER PRIMARY KEY,
                 org_nr INTEGER,
                 loc_name VARCHAR(255),
                 loc_capacity FLOAT,
@@ -110,7 +108,7 @@ class Database:
 
             """
             CREATE TABLE salmonoid_lice (
-                lice_id int NOT NULL AUTO_INCREMENT,
+                ID SERIAL PRIMARY KEY,
                 loc_nr INTEGER,
                 lice BOOL,
                 lice_nr FLOAT,
@@ -124,7 +122,7 @@ class Database:
 
             """
             CREATE TABLE escapes (
-                escape_id int NOT NULL AUTO_INCREMENT,
+                ID SERIAL PRIMARY KEY,
                 loc_nr INTEGER,
                 escape_year VARCHAR(8),
                 escape_week INTEGER,
@@ -140,7 +138,7 @@ class Database:
 
             """
             CREATE TABLE salmon_death(
-                death_id int NOT NULL AUTO_INCREMENT,
+                ID SERIAL PRIMARY KEY,
                 loc_nr INTEGER,
                 death_nr INTEGER,
                 death_year VARCHAR(8),
@@ -175,17 +173,43 @@ class Database:
         finally:
             if self.conn is not None:
                 self.conn.close()
-
-    def decide_command(self, tablename): 
-        if (tablename == "salmonoid_lice"):
-            return ' ON CONFLICT (loc_nr, lice_year, lice_week) DO NOTHING'
-        elif (tablename == "escapes"): 
-            return ' ON CONFLICT (loc_nr, escape_year, escape_week) DO NOTHING'
-        elif (tablename == "salmon_death"):
-            return ' ON CONFLICT (loc_nr, death_year) DO NOTHING'
-
  
-    def insert_data(self, df, tablename):
+    def insert_lice_data(self, df):
+
+        try: 
+            self.conn = psycopg2.connect(
+            host="localhost",
+            database="postgres",
+            user=os.environ["database_user"],
+            password=os.environ["database_password"])
+            
+            df_list = df.values.tolist()
+            for lst in df_list:
+                stmt = 'INSERT INTO salmonoid_lice (loc_nr, lice, lice_nr, lice_week, lice_year) VALUES (%s, %s, %s, %s, %s) ON CONFLICT (loc_nr, lice_week, lice_year) DO NOTHING;'
+                print(stmt)
+                cursor = self.conn.cursor()
+
+                try:
+                    cursor.execute(stmt)
+                    #extras.execute_values(cursor, query, df_tuple)
+                    self.conn.commit()
+                except (Exception, psycopg2.DatabaseError) as error:
+                    print("Error: %s" % error)
+                    self.conn.rollback()
+                    cursor.close()
+                    return 1
+                print("the dataframe is inserted")
+                cursor.close()
+            
+
+        except(Exception, psycopg2.DatabaseError) as error:
+            print(error)
+
+        finally: 
+            if self.conn is not None:
+                self.conn.close()
+
+    def insert_escape_data(self, df, tablename):
         print("trying to insert data")
 
         command = self.decide_command(tablename)
@@ -267,9 +291,9 @@ class Database:
             cur = self.conn.cursor()
 
             ### execute many insertion commands for address, smb and loc
-            stmt_address = """INSERT INTO address (org_address, org_zipcode, org_city) VALUES(%s, %s, %s) ON CONFLICT (org_address) DO NOTHING;"""
+            stmt_address = """INSERT INTO address (org_address, org_zipcode, org_city) VALUES(%s, %s, %s);"""
             cur.executemany(stmt_address, addresses)
-
+            
             stmt_smb = """INSERT INTO smb (org_nr, org_name, org_address) VALUES(%s, %s, %s) ON CONFLICT (org_nr) DO NOTHING;"""
             cur.executemany(stmt_smb, smbs)
 
