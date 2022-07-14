@@ -175,11 +175,11 @@ class Database:
 
     def decide_command(self, tablename): 
         if (tablename == "salmonoid_lice"):
-            return ' ON CONFLICT (loc_nr, lice_year, lice_week) DO NOTHING;'
+            return ' ON CONFLICT (loc_nr, lice_year, lice_week) DO NOTHING'
         elif (tablename == "escapes"): 
-            return ' ON CONFLICT (loc_nr, escape_year, escape_week) DO NOTHING;'
+            return ' ON CONFLICT (loc_nr, escape_year, escape_week) DO NOTHING'
         elif (tablename == "salmon_death"):
-            return ' ON CONFLICT (loc_nr, death_year) DO NOTHING;'
+            return ' ON CONFLICT (loc_nr, death_year) DO NOTHING'
 
  
     def insert_data(self, df, tablename):
@@ -198,7 +198,7 @@ class Database:
             df_list = df.values.tolist()
             print("len: " + str(len(df_list)))
             #print("df_list: ", df_list)
-            for lst in df_list: 
+            for lst in df_list:
             
                 query = 'INSERT INTO ' + str(tablename) + ' VALUES ' + str(tuple(lst)) + command
                 print(query)

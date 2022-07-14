@@ -104,6 +104,22 @@ class API:
         
         return escape_json
 
+    def get_many_escape_data(self, locnrs, years): 
+
+        edcontainer = edc.EscapedataContainer()
+        for year in years: 
+            for locnr in locnrs: 
+
+                escapedata = self.get_escape_data(locnr, year)
+                ## check if there is any escape data! if no escape data, don't add to edcontainer
+                if (len(escapedata["data"]) > 0):
+                    escapedata_object = ed.Escapedata(escapedata["localityNo"], escapedata["year"], escapedata["data"])
+                    edcontainer.add_escapedata(escapedata_object)
+                else: 
+                    pass
+
+        return edcontainer
+
 
     def make_week_dict_lice(self, week_value_list):
         # input is a list of dictionaries with week and value
