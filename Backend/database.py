@@ -6,13 +6,12 @@ import pandas as pd
 import numpy as np
 import psycopg2.extras as extras
 import requests as r
-
+import json
 import math
+import time
 
 
 filename = '/Users/ingunn/Documents/GitHub/sommercamp2022/Dataanalyse/smb.csv'
-
-
 
 class Database:
 
@@ -223,6 +222,37 @@ class Database:
         locnrs = df['localityNo'].tolist()
         
         return locnrs
+    
+    #Select data from database, return in json-format (or dict?)
+    def select_lice_data(self, condition):
+        
+        cols = ['loc_nr', 'lice', 'lice_nr', 'lice_week', 'lice_year']
+        d = {}
+        
+        try: 
+            self.conn = psycopg2.connect(
+            host="localhost",
+            database="postgres",
+            user=os.environ["database_user"],
+            password=os.environ["database_password"])
+            cur = self.conn.cursor()
+            sql = ("SELECT * FROM salmonoid_lice WHERE" + ' '+ str(condition))
+            cur.execute(sql)
+            row = cur.fetchone()
+
+            for i in range(len(cols)):
+                d[cols[i]] = row[i]
+        
+            return d
+            
+            #return (json.dumps(d, default=str))
+            
+        except(Exception, psycopg2.DatabaseError) as error:
+            print(error)
+
+        finally: 
+            if self.conn is not None:
+                self.conn.close()
         
     def insert_address_smb_locnr_csv(self, filename): 
         df = pd.read_csv(filename, sep = ';')
@@ -243,7 +273,7 @@ class Database:
             loc_record = (int(tup[6]), int(tup[1]), str(tup[7]), float(tup[10]))
             locs.append(loc_record)
 
-        try: 
+        try:
             self.conn = psycopg2.connect(
             host="localhost",
             database="postgres",
@@ -271,4 +301,4 @@ class Database:
         finally: 
             if self.conn is not None:
                 self.conn.close()
-        
+                
