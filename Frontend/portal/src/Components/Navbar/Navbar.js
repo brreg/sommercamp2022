@@ -5,8 +5,8 @@ const NavBar = () => {
         <div className={navbar.Navbar}>
             <nav>
                 <ul>
-                    <li>
-                        <a href="/"><img src={require('../Navbar/images/logo.jpeg')} width="300" alt="logo"></img></a>
+                    <li> 
+                        <a href="/"><img src={require('../Navbar/images/logo.jpeg')} className={navbar.Image} width="300" alt="logo"></img></a>
                     </li>
                     <li>
                         <a href="/Bærekraft">Bærekraft</a>
