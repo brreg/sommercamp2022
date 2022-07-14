@@ -296,8 +296,10 @@ class Database:
             cur.executemany(stmt_address, addresses)
             
             ## how to get this statement to convert org_address to org_address_ID ???? 
-            #stmt_smb = """INSERT INTO smb (org_nr, org_name, org_address) VALUES(%s, %s, %s) ON CONFLICT (org_nr) DO NOTHING;"""
-            #cur.executemany(stmt_smb, smbs)
+            ## need to select ID where org_address = org_address
+            stmt_smb = """INSERT INTO smb (org_nr, org_name, org_address_id) VALUES(%s, %s, (SELECT ID from address WHERE org_address=%s LIMIT 1)) ON CONFLICT (org_nr) DO NOTHING;"""
+            print(stmt_smb)
+            cur.executemany(stmt_smb, smbs)
 
             """SELECT ID FROM address
                 WHERE (org_address=this.org_address, org_zipcode = this.org_zipcode, org_city=this.org_city);
