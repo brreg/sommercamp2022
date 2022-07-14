@@ -176,7 +176,7 @@ class Database:
                 self.conn.close()
  
     def insert_lice_data(self, df):
-
+        print("Inserting lice data")
         try: 
             self.conn = psycopg2.connect(
             host="localhost",
@@ -186,8 +186,6 @@ class Database:
             
             df_list = df.values.tolist()
             for lst in df_list:
-                tup = tuple(lst)
-                print(tup)
 
                 """ INSERT INTO salmonoid_lice (loc_nr, lice, lice_nr, lice_week, lice_year)
                     SELECT 10029, True, 0.4, 20, '2020'
@@ -196,10 +194,10 @@ class Database:
                     FOR SHARE
                     );
                         """
-                newtup = (tup[0], tup[1], tup[2], tup[3], tup[4], tup[0])
+                newtup = (lst[0], lst[1], lst[2], lst[3], lst[4], lst[0])
                 stmt = """INSERT INTO salmonoid_lice (loc_nr, lice, lice_nr, lice_week, lice_year) SELECT %s, %s, %s, %s, %s WHERE EXISTS (SELECT loc_nr from location where loc_nr = %s
                     FOR SHARE);"""
-                print(stmt)
+                #print(stmt)
                 cursor = self.conn.cursor()
 
                 try:
@@ -211,7 +209,7 @@ class Database:
                     self.conn.rollback()
                     cursor.close()
                     return 1
-                print("the dataframe is inserted")
+                #print("the dataframe is inserted")
                 cursor.close()
             
 

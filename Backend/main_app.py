@@ -24,8 +24,8 @@ def main():
     database1.insert_address_smb_locnr_csv(filename)
 
     bapi = API()
-    locnrs = bapi.get_locnrs()[10:50]
-    years = [2015, 2016, 2017, 2018, 2019, 2020, 2021][2:4]
+    locnrs = bapi.get_locnrs()
+    years = [2020]#[2015, 2016, 2017, 2018, 2019, 2020, 2021][0:1]
 
     #### Inserting all lice data into database, for each year and each location number
     licedata_container = bapi.get_many_lice_data(locnrs, years)
@@ -35,7 +35,7 @@ def main():
     #### Inserting all escape data into database
     #edcontainer = bapi.get_many_escape_data(locnrs, years)
     #eddf = edcontainer.getDataFrame()
-    #database1.insert_data(eddf, 'escapes')
+    #database1.insert_escapedata(eddf, 'escapes')
     
     ### Generating all deadliness data and inserting into database
     

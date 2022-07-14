@@ -84,7 +84,7 @@ class API:
                 licedata = self.get_lice_data(locnr, year)
                 licedata.pop("type")
                 licedata["data"] = self.make_week_dict_lice(licedata["data"])
-                print(licedata)
+                #print(licedata)
 
                 # put one fishhealthdata record into multiple LiceData objects
                 licedatalist = self.put_lice_data_into_objects(licedata)
