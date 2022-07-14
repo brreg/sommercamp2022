@@ -77,7 +77,8 @@ class Database:
                 ID SERIAL PRIMARY KEY,
                 org_address VARCHAR(255),
                 org_zipcode INTEGER,
-                org_city VARCHAR(255)
+                org_city VARCHAR(255),
+                UNIQUE(org_address, org_zipcode, org_city)
             )
             """,
             
@@ -291,7 +292,7 @@ class Database:
             cur = self.conn.cursor()
 
             ### execute many insertion commands for address, smb and loc
-            stmt_address = """INSERT INTO address (org_address, org_zipcode, org_city) VALUES(%s, %s, %s);"""
+            stmt_address = """INSERT INTO address (org_address, org_zipcode, org_city) VALUES(%s, %s, %s) ON CONFLICT (org_address, org_zipcode, org_city) DO NOTHING;"""
             cur.executemany(stmt_address, addresses)
             
             ## how to get this statement to convert org_address to org_address_ID ???? 
