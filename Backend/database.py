@@ -196,14 +196,14 @@ class Database:
                     FOR SHARE
                     );
                         """
-
-                stmt = """INSERT INTO salmonoid_lice (loc_nr, lice, lice_nr, lice_week, lice_year) SELECT %s, %s, %s, %s, %s WHERE EXISTS (SELECT loc_nr from location where loc_nr = 10029
+                newtup = (tup[0], tup[1], tup[2], tup[3], tup[4], tup[0])
+                stmt = """INSERT INTO salmonoid_lice (loc_nr, lice, lice_nr, lice_week, lice_year) SELECT %s, %s, %s, %s, %s WHERE EXISTS (SELECT loc_nr from location where loc_nr = %s
                     FOR SHARE);"""
                 print(stmt)
                 cursor = self.conn.cursor()
 
                 try:
-                    cursor.execute(stmt, tup)
+                    cursor.execute(stmt, newtup)
                     #extras.execute_values(cursor, query, df_tuple)
                     self.conn.commit()
                 except (Exception, psycopg2.DatabaseError) as error:
