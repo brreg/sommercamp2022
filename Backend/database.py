@@ -10,6 +10,7 @@ import requests as r
 import json
 import math
 import time
+import random
 
 
 filename = '/Users/ingunn/Documents/GitHub/sommercamp2022/Dataanalyse/smb.csv'
@@ -70,6 +71,7 @@ class Database:
 
         return db
     
+    # Creates database tables
     def create_tables(self):
 
         commands = (
@@ -166,7 +168,6 @@ class Database:
             for command in commands:
                 cur.execute(command)
 
-            # maybe populate smb and locnrs here? 
             cur.close()
             self.conn.commit()
 
@@ -177,7 +178,7 @@ class Database:
             if self.conn is not None:
                 self.conn.close()
     
-    ### Inserts data in df into either salmonoid_lice ELLER escapes
+    ### Inserts data in df into either salmonoid_lice ELLER escapes tables in our database
     def insert_data(self, df, tablename):
         print("Inserting data")
         try: 
@@ -212,14 +213,12 @@ class Database:
 
                 try:
                     cursor.execute(stmt, newtup)
-                    #extras.execute_values(cursor, query, df_tuple)
                     self.conn.commit()
                 except (Exception, psycopg2.DatabaseError) as error:
                     print("Error: %s" % error)
                     self.conn.rollback()
                     cursor.close()
                     return 1
-                #print("the dataframe is inserted")
                 cursor.close()
             
 
@@ -230,7 +229,7 @@ class Database:
             if self.conn is not None:
                 self.conn.close()
 
-
+    # Returns a list of location numbers with salmonoids that are fetched from Barentswatch
     def get_locnrs(self):
         res = r.get(
         'https://www.barentswatch.no/bwapi/v1/geodata/fishhealth/localitieswithsalmonoids',
@@ -272,7 +271,8 @@ class Database:
         finally: 
             if self.conn is not None:
                 self.conn.close()
-        
+    
+    # Inserts address, smb and locnr data from the filename.csv and inserts it into our database
     def insert_address_smb_locnr_csv(self, filename): 
         df = pd.read_csv(filename, sep = ';')
         df['LOK_KAP'] = df['LOK_KAP'].str.replace(',','.')
@@ -324,4 +324,44 @@ class Database:
         finally: 
             if self.conn is not None:
                 self.conn.close()
-                
+
+    def generate_deadliness_data(self, locnrs, filename): 
+        dfdead = pd.DataFrame()
+        dfas = pd.read_csv(filename, sep = ';')
+        dfas['LOK_KAP'] = dfas['LOK_KAP'].str.replace(',','.')
+
+        totalgood = 0
+        totalfail = 0
+        locnrmedas = []
+        for i in locnrs:
+            if len(dfas.loc[dfas['LOK_NR'] == i]) == 1:
+                totalgood += 1
+                locnrmedas.append(i)
+            else:
+                totalfail +=1
+
+        deadlighet = []
+        for i in locnrmedas:
+            enhet = dfas.loc[dfas['LOK_NR'] == i]['LOK_ENHET'].values[0]
+            #kapasitet = dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0]
+            
+            if enhet == 'STK':
+                konvertert = int(int(dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0])/5)
+                dfas['LOK_KAP'][dfas.loc[dfas['LOK_NR']==i].index[0]] = konvertert
+                dfas['LOK_ENHET'][dfas.loc[dfas['LOK_NR']==i].index[0]] = 'TN'
+            elif enhet == 'KG':
+                konvertert = int(int(dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0])/1000)
+                dfas['LOK_KAP'][dfas.loc[dfas['LOK_NR']==i].index[0]] = konvertert
+                dfas['LOK_ENHET'][dfas.loc[dfas['LOK_NR']==i].index[0]] = 'TN'
+            elif enhet == 'M3':
+                konvertert = int(int(dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0])*0.005)
+                dfas['LOK_KAP'][dfas.loc[dfas['LOK_NR']==i].index[0]] = konvertert
+                dfas['LOK_ENHET'][dfas.loc[dfas['LOK_NR']==i].index[0]] = 'TN'
+            
+            
+            deadlighet.append(int(float(dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0])*random.uniform(12.5, 17.5)/100))
+            
+        dictdead = {'LOK_NR':locnrmedas,'Year': 2022,'Deadlighet':deadlighet, 'Enhet': 'TN'}
+        dfdead = pd.DataFrame(dictdead)
+        return dfdead
+    
