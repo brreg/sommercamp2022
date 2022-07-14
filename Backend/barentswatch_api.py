@@ -64,7 +64,7 @@ class API:
         return dfas
 
     
-        
+    # returns licedata from one year at one locnr in json format
     def get_lice_data(self, locnr, year):
 
         lice_res = r.get('https://www.barentswatch.no/bwapi/v1/geodata/fishhealth/locality/'+str(locnr)+'/avgfemalelice/'+str(year), 
@@ -73,6 +73,26 @@ class API:
         lice_json = lice_res.json()
         
         return lice_json
+
+    # input is a list of locnrs and a list of years
+    # returns a licedata container with many licedata objects inside
+    def get_many_lice_data(self, locnrs, years):
+        licedata_container = ldc.LicedataContainer() # container to store all lice data
+        for year in years: 
+            for locnr in locnrs: 
+
+                licedata = self.get_lice_data(locnr, year)
+                licedata.pop("type")
+                licedata["data"] = self.make_week_dict_lice(licedata["data"])
+                #print(licedata)
+
+                # put one fishhealthdata record into multiple LiceData objects
+                licedatalist = self.put_lice_data_into_objects(licedata)
+
+                # put licedata objects into licedata container
+                licedata_container.addLiceDataList(licedatalist)
+                
+        return licedata_container
     
     def get_escape_data(self, locnr, year):
         
@@ -83,6 +103,22 @@ class API:
         escape_json = escape_res.json()
         
         return escape_json
+
+    def get_many_escape_data(self, locnrs, years): 
+
+        edcontainer = edc.EscapedataContainer()
+        for year in years: 
+            for locnr in locnrs: 
+
+                escapedata = self.get_escape_data(locnr, year)
+                ## check if there is any escape data! if no escape data, don't add to edcontainer
+                if (len(escapedata["data"]) > 0):
+                    escapedata_object = ed.Escapedata(escapedata["localityNo"], escapedata["year"], escapedata["data"])
+                    edcontainer.add_escapedata(escapedata_object)
+                else: 
+                    pass
+
+        return edcontainer
 
 
     def make_week_dict_lice(self, week_value_list):
@@ -112,46 +148,6 @@ class API:
             licedatalist.append(licedata)
         #return list of LiceData objects
         return licedatalist
-        
-def __main__(): 
-    bapi = API()
-    
-    locnrs= bapi.get_locnrs()
-    print(locnrs)
-    escapedata = bapi.get_escape_data(45017, 2022)
-    print(escapedata)
-    escapedata_object = ed.Escapedata(escapedata["localityNo"], escapedata["year"], escapedata["data"])
-    edcontainer = edc.EscapedataContainer()
-    edcontainer.add_escapedata(escapedata_object)
-    eddf = edcontainer.getDataFrame()
-    print(eddf)
-
-    dfas = pd.DataFrame(bapi.make_dfas(filename, locnrs))
-    print(dfas)
-
-    #deadliness_data = bapi.generate_deadliness_data_for_all_locnrs(locnrs, dfas)
-    #print(pd.DataFrame(deadliness_data))
-
-    # gets lice data about one locnr, in a given year, as a dictionary
-    licedata = bapi.get_lice_data(45017, 2022)
-    licedata.pop("type")
-
-    # changing form of the week data to a dictionary with weeks as keys and values as values
-    licedata["data"] = bapi.make_week_dict_lice(licedata["data"])
-    print(licedata)
-
-    # put one fishhealthdata record into multiple LiceData objects
-    licedatalist = bapi.putlicedataintoobjects(licedata)
-
-    # put licedata objects into licedata container
-    licedata_container = ldc.LicedataContainer()
-    licedata_container.addLiceDataList(licedatalist)
-
-    df = licedata_container.getDataFrame()
-    print(df)
-
-if __name__ == "__main__":
-    __main__()
 
 
 

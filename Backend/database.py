@@ -1,3 +1,4 @@
+from calendar import c
 from turtle import turtles
 import psycopg2
 import os
@@ -75,9 +76,11 @@ class Database:
 
             """
             CREATE TABLE address (
-                org_address VARCHAR(255) PRIMARY KEY,
+                ID SERIAL PRIMARY KEY,
+                org_address VARCHAR(255),
                 org_zipcode INTEGER,
-                org_city VARCHAR(255)
+                org_city VARCHAR(255),
+                UNIQUE(org_address, org_zipcode, org_city)
             )
             """,
             
@@ -85,10 +88,10 @@ class Database:
             CREATE TABLE smb (
                 org_nr INTEGER PRIMARY KEY,
                 org_name VARCHAR(255),
-                org_address VARCHAR(255),
-                CONSTRAINT fk_org_address 
-                    FOREIGN KEY (org_address) 
-                        REFERENCES address(org_address)
+                org_address_id INTEGER,
+                CONSTRAINT fk_org_address_id
+                    FOREIGN KEY (org_address_id) 
+                        REFERENCES address(ID)
             )
             """,
 
@@ -108,12 +111,12 @@ class Database:
 
             """
             CREATE TABLE salmonoid_lice (
+                ID SERIAL PRIMARY KEY,
                 loc_nr INTEGER,
                 lice BOOL,
                 lice_nr FLOAT,
                 lice_week INTEGER,
-                lice_year VARCHAR,
-                PRIMARY KEY(loc_nr, lice_year, lice_week),
+                lice_year VARCHAR(8),
                 CONSTRAINT fk_loc_nr 
                     FOREIGN KEY (loc_nr) 
                         REFERENCES location(loc_nr)
@@ -122,10 +125,14 @@ class Database:
 
             """
             CREATE TABLE escapes (
+                ID SERIAL PRIMARY KEY,
                 loc_nr INTEGER,
-                escape_nr INTEGER,
-                escape_year VARCHAR,
+                escape_year VARCHAR(8),
                 escape_week INTEGER,
+                escape_count INTEGER,
+                escape_captured INTEGER,
+                escape_capturestart BOOL,
+                escape_description VARCHAR(1000),
                 CONSTRAINT fk_loc_nr    
                     FOREIGN KEY (loc_nr) 
                         REFERENCES location(loc_nr)
@@ -134,9 +141,10 @@ class Database:
 
             """
             CREATE TABLE salmon_death(
+                ID SERIAL PRIMARY KEY,
                 loc_nr INTEGER,
                 death_nr INTEGER,
-                death_year VARCHAR,
+                death_year VARCHAR(8),
                 CONSTRAINT fk_loc_nr
                     FOREIGN KEY (loc_nr) 
                         REFERENCES location(loc_nr)
@@ -168,10 +176,57 @@ class Database:
         finally:
             if self.conn is not None:
                 self.conn.close()
-
  
-    def insert_data(self, df, tablename):
+    def insert_lice_data(self, df):
+        print("Inserting lice data")
+        try: 
+            self.conn = psycopg2.connect(
+            host="localhost",
+            database="postgres",
+            user=os.environ["database_user"],
+            password=os.environ["database_password"])
+            
+            df_list = df.values.tolist()
+            for lst in df_list:
+
+                """ INSERT INTO salmonoid_lice (loc_nr, lice, lice_nr, lice_week, lice_year)
+                    SELECT 10029, True, 0.4, 20, '2020'
+                    WHERE  EXISTS (
+                    SELECT loc_nr from location where loc_nr = 10029
+                    FOR SHARE
+                    );
+                        """
+                newtup = (lst[0], lst[1], lst[2], lst[3], lst[4], lst[0])
+                stmt = """INSERT INTO salmonoid_lice (loc_nr, lice, lice_nr, lice_week, lice_year) SELECT %s, %s, %s, %s, %s WHERE EXISTS (SELECT loc_nr from location where loc_nr = %s
+                    FOR SHARE);"""
+                #print(stmt)
+                cursor = self.conn.cursor()
+
+                try:
+                    cursor.execute(stmt, newtup)
+                    #extras.execute_values(cursor, query, df_tuple)
+                    self.conn.commit()
+                except (Exception, psycopg2.DatabaseError) as error:
+                    print("Error: %s" % error)
+                    self.conn.rollback()
+                    cursor.close()
+                    return 1
+                #print("the dataframe is inserted")
+                cursor.close()
+            
+
+        except(Exception, psycopg2.DatabaseError) as error:
+            print(error)
+
+        finally: 
+            if self.conn is not None:
+                self.conn.close()
+
+    def insert_escape_data(self, df, tablename):
         print("trying to insert data")
+
+        command = "ON CONFLICT(loc_nr) DO NOTHING;"
+        print(command)
 
         try: 
             self.conn = psycopg2.connect(
@@ -179,16 +234,13 @@ class Database:
             database="postgres",
             user=os.environ["database_user"],
             password=os.environ["database_password"])
-
-            #df = df.astype(str)
-            #print(df)
-            #tuples = [tuple(x) for x in df.to_numpy()]
             
             df_list = df.values.tolist()
+            print("len: " + str(len(df_list)))
             #print("df_list: ", df_list)
-            for lst in df_list: 
+            for lst in df_list:
             
-                query = 'INSERT INTO ' + str(tablename) + ' VALUES ' + str(tuple(lst))
+                query = 'INSERT INTO ' + str(tablename) + ' VALUES ' + str(tuple(lst)) + command
                 print(query)
                 cursor = self.conn.cursor()
 
@@ -283,11 +335,15 @@ class Database:
             cur = self.conn.cursor()
 
             ### execute many insertion commands for address, smb and loc
-            stmt_address = """INSERT INTO address (org_address, org_zipcode, org_city) VALUES(%s, %s, %s) ON CONFLICT (org_address) DO NOTHING;"""
+            stmt_address = """INSERT INTO address (org_address, org_zipcode, org_city) VALUES(%s, %s, %s) ON CONFLICT (org_address, org_zipcode, org_city) DO NOTHING;"""
             cur.executemany(stmt_address, addresses)
-
-            stmt_smb = """INSERT INTO smb (org_nr, org_name, org_address) VALUES(%s, %s, %s) ON CONFLICT (org_nr) DO NOTHING;"""
+            
+            ## how to get this statement to convert org_address to org_address_ID ???? 
+            ## need to select ID where org_address = org_address
+            stmt_smb = """INSERT INTO smb (org_nr, org_name, org_address_id) VALUES(%s, %s, (SELECT ID from address WHERE org_address=%s LIMIT 1)) ON CONFLICT (org_nr) DO NOTHING;"""
+            print(stmt_smb)
             cur.executemany(stmt_smb, smbs)
+
 
             stmt_loc = """INSERT INTO location (loc_nr, org_nr, loc_name, loc_capacity) VALUES(%s, %s, %s, %s) ON CONFLICT (loc_nr) DO NOTHING;"""
             cur.executemany(stmt_loc, locs)
