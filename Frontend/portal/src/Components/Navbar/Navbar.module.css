@@ -1,0 +1,35 @@
+.Navbar {
+    background-color: #fff;
+    height: 80px;
+    width: 100%;
+    opacity: 0.9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    display: inline-block;
+    margin: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+    font-size: 19px;
+    font-weight: 500;
+}
+
+a:hover {
+    border-bottom: 2px solid #000;
+}
+
+img {
+    object-fit: cover;
+}

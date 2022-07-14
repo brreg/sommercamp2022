@@ -5,11 +5,14 @@ classDiagram
     Database <|-- Main
 	Database <|-- DatabaseINI
 	LiceData <|-- APIController
+	Escapedata <|-- APIController
 	Main <|-- LicedataContainer
 	LicedataContainer <|-- LiceData
 	EscapedataContainer <|-- Escapedata
 	Main <|-- EscapedataContainer
-    class Main {
+    
+	
+	class Main {
           main()
     }
 
@@ -63,5 +66,7 @@ classDiagram
 	  + getDataFrame()
 	  
     }
+	
+
 	
 ```
