@@ -142,7 +142,7 @@ class Database:
             """,
 
             """
-            CREATE TABLE salmon_death(
+            CREATE TABLE salmon_death (
                 ID SERIAL PRIMARY KEY,
                 loc_nr INTEGER,
                 death_nr INTEGER,
@@ -150,6 +150,33 @@ class Database:
                 CONSTRAINT fk_loc_nr
                     FOREIGN KEY (loc_nr) 
                         REFERENCES location(loc_nr)
+            )
+
+            """,
+            """
+            CREATE TABLE greenhouse_gas_emissions (
+                ID SERIAL PRIMARY KEY,
+                loc_nr INTEGER,
+                year VARCHAR(8),
+                producer_id INTEGER,
+                eFcr FLOAT,
+                production FLOAT,
+                co2e_feed FLOAT,
+                co2e_transport FLOAT,
+                CONSTRAINT fk_producer_id
+                    FOREIGN KEY(producer_id)
+                        REFERENCES producers(producer_id)
+                CONSTRAINT fk_loc_nr
+                    FOREIGN KEY(loc_nr)
+                        REFERENCES location(loc_nr)
+            )
+            """, 
+            
+            """
+            CREATE TABLE producers (
+                producer_id PRIMARY KEY,
+                producer VARCHAR(255),
+                co2_ekvival FLOAT
             )
 
             """
