@@ -205,8 +205,15 @@ class Database:
                                 WHERE EXISTS (SELECT loc_nr from location where loc_nr = %s
                                 FOR SHARE);"""
 
+                elif (tablename == "salmon_death"): 
+                    newtup = (lst[0], lst[1], lst[2], lst[0])
+                    stmt = """INSERT INTO salmon_death (loc_nr, death_nr, death_year) 
+                                SELECT %s, %s, %s
+                                WHERE EXISTS (SELECT loc_nr from location where loc_nr = %s
+                                FOR SHARE);"""
+                
                 else: 
-                    print("Tablename should be salmonoid_lice or escape")
+                    print("Tablename should be salmonoid_lice, salmon_death or escape")
                     break
 
                 cursor = self.conn.cursor()
@@ -325,7 +332,7 @@ class Database:
             if self.conn is not None:
                 self.conn.close()
 
-    def generate_deadliness_data(self, locnrs, filename): 
+    def generate_deadliness_data(self, locnrs, filename, year): 
         dfdead = pd.DataFrame()
         dfas = pd.read_csv(filename, sep = ';')
         dfas['LOK_KAP'] = dfas['LOK_KAP'].str.replace(',','.')
@@ -361,7 +368,10 @@ class Database:
             
             deadlighet.append(int(float(dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0])*random.uniform(12.5, 17.5)/100))
             
-        dictdead = {'LOK_NR':locnrmedas,'Year': 2022,'Deadlighet':deadlighet, 'Enhet': 'TN'}
+        dictdead = {'LOK_NR':locnrmedas,'Deadlighet':deadlighet, 'Year': year}#, 'Enhet': 'TN'}
         dfdead = pd.DataFrame(dictdead)
         return dfdead
     
+
+
+# make a function to generate
