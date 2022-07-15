@@ -304,37 +304,6 @@ class Database:
         
         return locnrs
     
-    #Select data from database, return in json-format (or dict?)
-    def select_lice_data(self, condition):
-        
-        cols = ['loc_nr', 'lice', 'lice_nr', 'lice_week', 'lice_year']
-        d = {}
-        
-        try: 
-            self.conn = psycopg2.connect(
-            host="localhost",
-            database="postgres",
-            user=os.environ["database_user"],
-            password=os.environ["database_password"])
-            cur = self.conn.cursor()
-            sql = ("SELECT * FROM salmonoid_lice WHERE" + ' '+ str(condition))
-            cur.execute(sql)
-            row = cur.fetchone()
-
-            for i in range(len(cols)):
-                d[cols[i]] = row[i]
-        
-            return d
-            
-            #return (json.dumps(d, default=str))
-            
-        except(Exception, psycopg2.DatabaseError) as error:
-            print(error)
-
-        finally: 
-            if self.conn is not None:
-                self.conn.close()
-    
     # Inserts address, smb and locnr data from the filename.csv and inserts it into our database
     def insert_address_smb_locnr_csv(self, filename): 
         df = pd.read_csv(filename, sep = ';')
@@ -420,14 +389,41 @@ class Database:
                 konvertert = int(int(dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0])*0.005)
                 dfas['LOK_KAP'][dfas.loc[dfas['LOK_NR']==i].index[0]] = konvertert
                 dfas['LOK_ENHET'][dfas.loc[dfas['LOK_NR']==i].index[0]] = 'TN'
-            
-            
+               
             deadlighet.append(int(float(dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0])*random.uniform(12.5, 17.5)/100))
             
         dictdead = {'LOK_NR':locnrmedas,'Deadlighet':deadlighet, 'Year': year}#, 'Enhet': 'TN'}
         dfdead = pd.DataFrame(dictdead)
         return dfdead
-    
 
 
-# make a function to generate
+    #Select data from database, return in json-format (or dict?)
+    def select_lice_data(self, condition):
+        
+        cols = ['loc_nr', 'lice', 'lice_nr', 'lice_week', 'lice_year']
+        d = {}
+        
+        try: 
+            self.conn = psycopg2.connect(
+            host="localhost",
+            database="postgres",
+            user=os.environ["database_user"],
+            password=os.environ["database_password"])
+            cur = self.conn.cursor()
+            sql = ("SELECT * FROM salmonoid_lice WHERE" + ' '+ str(condition))
+            cur.execute(sql)
+            row = cur.fetchone()
+
+            for i in range(len(cols)):
+                d[cols[i]] = row[i]
+        
+            return d
+            
+            #return (json.dumps(d, default=str))
+            
+        except(Exception, psycopg2.DatabaseError) as error:
+            print(error)
+
+        finally: 
+            if self.conn is not None:
+                self.conn.close()
