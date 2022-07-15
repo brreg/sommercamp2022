@@ -179,6 +179,37 @@ class Database:
                 co2_ekvival FLOAT
             )
 
+            """, 
+            
+            """
+            CREATE TABLE key_financial_figures (
+                ID SERIAL PRIMARY KEY,
+                org_nr INTEGER,
+                year VARCHAR(8),
+                liquidity_ratio FLOAT,
+                return_on_assets FLOAT,
+                solidity FLOAT,
+                CONSTRAINT fk_org_nr
+                    FOREIGN KEY(org_nr)
+                        REFERENCES smb(org_nr)
+
+            )
+
+            """, 
+            
+            """
+            CREATE TABLE social_figures (
+                ID SERIAL PRIMARY KEY,
+                org_nr INTEGER,
+                year VARCHAR(8),
+                female_percent FLOAT,
+                male_percent FLOAT,
+                CONSTRAINT fk_org_nr
+                    FOREIGN KEY(org_nr)
+                        REFERENCES smb(org_nr)
+
+            )
+
             """
         )
 
