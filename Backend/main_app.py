@@ -38,8 +38,9 @@ def main():
     #database1.insert_data(eddf, "escapes")
     
     ### Generating all deadliness data and inserting into database
-    dfdead = database1.generate_deadliness_data(locnrs, filename)
+    dfdead = database1.generate_deadliness_data(locnrs, filename, 2022)
     print(dfdead)
+    database1.insert_data(dfdead, "salmon_death")
     
 
 main()
