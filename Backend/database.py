@@ -142,6 +142,14 @@ class Database:
             """,
 
             """
+            CREATE TABLE producers (
+                producer_id INTEGER PRIMARY KEY,
+                producer VARCHAR(255),
+                co2_ekvival FLOAT
+            )
+            """, 
+
+            """
             CREATE TABLE salmon_death (
                 ID SERIAL PRIMARY KEY,
                 loc_nr INTEGER,
@@ -153,6 +161,7 @@ class Database:
             )
 
             """,
+
             """
             CREATE TABLE greenhouse_gas_emissions (
                 ID SERIAL PRIMARY KEY,
@@ -163,22 +172,42 @@ class Database:
                 production FLOAT,
                 co2e_feed FLOAT,
                 co2e_transport FLOAT,
+                CONSTRAINT fk_loc_nr
+                    FOREIGN KEY(loc_nr)
+                        REFERENCES location(loc_nr),
                 CONSTRAINT fk_producer_id
                     FOREIGN KEY(producer_id)
                         REFERENCES producers(producer_id)
-                CONSTRAINT fk_loc_nr
-                    FOREIGN KEY(loc_nr)
-                        REFERENCES location(loc_nr)
+              
             )
             """, 
-            
-            """
-            CREATE TABLE producers (
-                producer_id PRIMARY KEY,
-                producer VARCHAR(255),
-                co2_ekvival FLOAT
-            )
 
+            """
+            CREATE TABLE key_financial_figures (
+                ID SERIAL PRIMARY KEY,
+                org_nr INTEGER,
+                year VARCHAR(8),
+                liquidity_ratio FLOAT,
+                return_on_assets FLOAT,
+                solidity FLOAT,
+                CONSTRAINT fk_org_nr
+                    FOREIGN KEY(org_nr)
+                        REFERENCES smb(org_nr)
+            )
+            """,
+
+            """
+            CREATE TABLE social_figures (
+                ID SERIAL PRIMARY KEY,
+                org_nr INTEGER,
+                year VARCHAR(8),
+                female_percent FLOAT,
+                male_percent FLOAT,
+                CONSTRAINT fk_org_nr
+                    FOREIGN KEY(org_nr)
+                        REFERENCES smb(org_nr)
+
+            )
             """
         )
 
