@@ -7,6 +7,8 @@ import Bedrifter_miljo from './Pages/Bedrifter_miljo';
 import Bedrifter from './Pages/Bedrifter';
 import Navbar from './Components/Navbar/Navbar';
 
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+
 export default function App() {
   return (
     <BrowserRouter>

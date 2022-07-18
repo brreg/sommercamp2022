@@ -1,0 +1,25 @@
+.container-body {
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
+.card {
+    width: 70%;
+    height: 90%;
+    margin-top: 15%;
+    margin-left: 15%;
+}
+
+.card:hover {
+    box-shadow: 5px 5px 10px 20px 1px rgba(0, 0, 0, 0.253)
+}
+
+.card-body {
+    padding: 3rem 0;
+}
+
+.card-text {
+    font-size: 19px;
+    padding: 0.5rem 2rem;
+}
+
