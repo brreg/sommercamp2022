@@ -9,6 +9,8 @@ import Bedrifter_okonomi from './Pages/Bedrifter_okonomi';
 import Bedrifter from './Pages/Bedrifter';
 import Navbar from './Components/Navbar/Navbar';
 
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+
 export default function App() {
   return (
     <BrowserRouter>
