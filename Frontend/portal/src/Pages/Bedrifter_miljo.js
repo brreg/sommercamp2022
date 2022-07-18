@@ -1,28 +1,26 @@
 import React from 'react';
-
 import "./Bedrifter_miljo.css"
 import Card from '../Components/Cards/Cards'
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from 'react-router-dom'
 
 const Bedrifter_miljo = () => {
 
     const navigate = useNavigate();
 
-    return {
-
-        <div class="btn-toolbar" style = {{position: "absolute", top: 140}}>
+    return (
+        <div>
+            <div class="btn-toolbar" style = {{position: "absolute", top: 140}}>
             <button onClick={function handleClick(){navigate("/Bedrifter")}}>Generelt</button>
             <button onClick={function handleClick(){navigate("/Bedrifter_miljo")}}> Miljø</button>
             <button onClick={function handleClick(){navigate("/Bedrifter_sosial")}}>Sosial</button>
             <button onClick={function handleClick(){navigate("/Bedrifter_okonomi")}}>Økonomi</button>
+        </div>
 
-        
-        </div>
-        
-        <div className="card-">
+            <div className="card-">
                 <Card />
+            </div>
+        
         </div>
-   
     )  
 }
 

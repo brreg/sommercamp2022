@@ -3,11 +3,16 @@
     margin-bottom: 10%;
 }
 
+.row {
+    background-color: rgb(171, 164, 164, 0.1);
+    padding-left: 7%;
+    padding-right: 7%;
+}
+
 .card {
-    width: 70%;
+    width: 80%;
     height: 90%;
-    margin-top: 15%;
-    margin-left: 15%;
+    margin-top: 14%; 
 }
 
 .card:hover {
