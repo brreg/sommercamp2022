@@ -1,14 +1,13 @@
-from flask import Flask, jsonify 
+from flask import Flask, jsonify
+from traitlets import default
+from database import Database
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 
 locnr = 45017
 orgnr = 12345
 
-lice_data = [
-    #Mock data for testing:    
-    {'locnr':str(locnr), 'lice':'True', 'lice_nr':'1.8', 'lice_week':'22', 'lice_year':'2022'}
-    ]
+#lice_data = {'locnr':45017, 'lice':'True', 'lice_nr':'1.8', 'lice_week':'22', 'lice_year':'2022'}
 
 escape_data = [
     #Mock data for testing:
@@ -24,6 +23,8 @@ smb = [
     #Mock data for testing:
     {'orgnr':str(12345), 'org_name':'Aqua', 'org_address':'Brønnveien 4'}
 ]
+db1 = Database()
+lice_data = db1.select_lice_data('loc_nr = ' +str(locnr))
 
 #Endpoint for SMB info:
 @app.route('/smb/'+str(orgnr), methods=['GET'])
@@ -49,4 +50,3 @@ def get_escape_data():
 @app.route('/location/'+str(locnr)+'/deaths/', methods=['GET'])
 def get_death_data():
     return jsonify(death_data)
-
