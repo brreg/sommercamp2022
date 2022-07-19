@@ -1,27 +1,44 @@
 ```mermaid
 classDiagram
 
-    Main <|-- APIController
+    Main <|-- BarentswatchAPIController
+    Main <|-- RegnskapsAPIController
+    Main <|-- RegnDataContainer
+    RegnDataContainer <|-- RegnData
     Database <|-- Main
 	Database <|-- DatabaseINI
-	LiceData <|-- APIController
-	Escapedata <|-- APIController
+	LiceData <|-- BarentswatchAPIController
+	Escapedata <|-- BarentswatchAPIController
 	Main <|-- LicedataContainer
 	LicedataContainer <|-- LiceData
 	EscapedataContainer <|-- Escapedata
 	Main <|-- EscapedataContainer
+	RegnData <|-- RegnskapsAPIController
+	RegnDataContainer <|-- RegnskapsAPIController
+	
     
 	
 	class Main {
           main()
     }
 
-    class APIController {
+    class BarentswatchAPIController {
       + get_lice_data()
 	  + get_escape_data()
 	  + get_locnrs()
 	  + init()
     }
+
+    class RegnskapsAPIController {
+      + get_orgnrs()
+	  + get_regnskap()
+	  + get_nokkeltall()
+	  + get_many_nokkeltall()
+	  + get_object()
+	  + init()
+    }
+
+
 
     class Database {
       + config()
@@ -58,6 +75,17 @@ classDiagram
 	  + getlist()
 	  + print_data()
 	  
+    }
+	class RegnData {
+      + init()
+	  + get_list()
+    }
+    
+    class RegnDataContainer {
+      + init()
+	  + add_regndata()
+	  + add_regndata_list()
+	  + get_dataframe()
     }
 	
 	class EscapedataContainer {
