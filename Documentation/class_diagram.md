@@ -14,7 +14,6 @@ classDiagram
 	EscapedataContainer <|-- Escapedata
 	Main <|-- EscapedataContainer
 	RegnData <|-- RegnskapsAPIController
-	RegnDataContainer <|-- RegnskapsAPIController
 	
     
 	
