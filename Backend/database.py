@@ -415,7 +415,7 @@ class Database:
             row = cur.fetchone()
 
             for i in range(len(cols)):
-                d[cols[i]] = row[i]
+                d[cols[i]] = row[i+1]
         
             return d
             
