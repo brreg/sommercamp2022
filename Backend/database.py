@@ -401,7 +401,7 @@ class Database:
     def select_lice_data(self, condition):
         
         cols = ['loc_nr', 'lice', 'lice_nr', 'lice_week', 'lice_year']
-        d = {}
+        many_d = []
         
         try: 
             self.conn = psycopg2.connect(
@@ -412,12 +412,15 @@ class Database:
             cur = self.conn.cursor()
             sql = ("SELECT * FROM salmonoid_lice WHERE" + ' '+ str(condition))
             cur.execute(sql)
-            row = cur.fetchone()
-
-            for i in range(len(cols)):
-                d[cols[i]] = row[i]
+            #row = cur.fetchone()
+            rows = cur.fetchall()
+            for row in rows:
+                d = {}
+                for i in range(len(cols)):
+                    d[cols[i]] = row[i+1]
+                many_d.append(d)
         
-            return d
+            return many_d #d
             
             #return (json.dumps(d, default=str))
             
