@@ -1,6 +1,7 @@
 .container-body {
     margin-top: 10%;
     margin-bottom: 10%;
+    position: absolute;
 }
 
 .row {
@@ -9,7 +10,11 @@
     padding-right: 7%;
 }
 
-.card {
+.card{
+    z-index: 1000;
+}
+
+.small {
     width: 80%;
     height: 90%;
     margin-top: 14%; 
@@ -26,5 +31,11 @@
 .card-text {
     font-size: 19px;
     padding: 0.5rem 2rem;
+}
+
+.large {
+    width: 160%;
+    height: 90%;
+    margin-top: 14%;
 }
 
