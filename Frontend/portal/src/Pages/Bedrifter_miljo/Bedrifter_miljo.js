@@ -1,6 +1,6 @@
 import React from 'react';
 import "./Bedrifter_miljo.css"
-import Card from '../Components/Cards/Cards'
+import Card from '../../Components/Cards/Cards'
 import {useNavigate} from 'react-router-dom'
 
 const Bedrifter_miljo = () => {
