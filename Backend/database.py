@@ -268,8 +268,16 @@ class Database:
                                 WHERE EXISTS (SELECT loc_nr from location where loc_nr = %s
                                 FOR SHARE);"""
                 
+                elif (tablename == "key_financial_figures"):
+                    newtup = (lst[0], lst[1], lst[2], lst[3], lst[4], lst[0])
+                    print(newtup)
+                    stmt = """INSERT INTO key_financial_figures (org_nr, year, liquidity_ratio, return_on_assets, solidity) 
+                                SELECT %s, %s, %s, %s, %s
+                                WHERE EXISTS (SELECT org_nr from smb where org_nr = %s
+                                FOR SHARE);"""
+                
                 else: 
-                    print("Tablename should be salmonoid_lice, salmon_death or escape")
+                    print("Tablename should be salmonoid_lice, salmon_death, key_financial_figures or escape")
                     break
 
                 cursor = self.conn.cursor()
