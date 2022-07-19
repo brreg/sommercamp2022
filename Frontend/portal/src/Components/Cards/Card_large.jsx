@@ -1,15 +1,11 @@
 import React from 'react';
 import './Cards.css';
-import Card from 'react-bootstrap/Card';
 
-
-
-
-const Card = props => {
+const Card_Large = props => {
     return (
-        <div className="card small text-center">
+        <div className="card large text-center">
             <div>
-                <img src={props.imgsrc} alt="Image" className="card-img-top"/>
+                <img src={props.imgsrc} alt="Image" className="card-img"/>
             </div>
             <div className="card-body">
                 <h4 className="card-title">{props.title}</h4>
@@ -21,7 +17,6 @@ const Card = props => {
             </div>
         </div>
     )
-
 }
 
-export default Card;
+export default Card_Large;
