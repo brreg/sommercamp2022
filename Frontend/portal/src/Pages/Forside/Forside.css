@@ -1,5 +1,5 @@
 .background_color{
-    background-image: url(mountain_background.jpeg);
+    background-image: url(./Images/mountain_background.jpeg);
     width: 100%;
     height:200px;
     position: relative;

@@ -2,11 +2,11 @@ import React from 'react';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import Forside from './Pages/Forside';
-import Bedrifter_miljo from './Pages/Bedrifter_miljo';
-import Bedrifter_sosial from './Pages/Bedrifter_sosial';
-import Bedrifter_okonomi from './Pages/Bedrifter_okonomi';
-import Bedrifter from './Pages/Bedrifter';
+import Forside from './Pages/Forside/Forside';
+import Bedrifter_miljo from './Pages/Bedrifter_miljo/Bedrifter_miljo';
+import Bedrifter_sosial from './Pages/Bedrifter_sosial/Bedrifter_sosial';
+import Bedrifter_okonomi from './Pages/Bedrifter_okonomi/Bedrifter_okonomi';
+import Bedrifter from './Pages/Bedrifter/Bedrifter';
 import Navbar from './Components/Navbar/Navbar';
 
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
