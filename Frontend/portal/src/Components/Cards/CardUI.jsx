@@ -1,9 +1,5 @@
 import React from 'react';
 import './Cards.css';
-import Card from 'react-bootstrap/Card';
-
-
-
 
 const Card = props => {
     return (
@@ -21,7 +17,6 @@ const Card = props => {
             </div>
         </div>
     )
-
 }
 
 export default Card;
