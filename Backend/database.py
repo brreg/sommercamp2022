@@ -12,7 +12,6 @@ import math
 import time
 import random
 
-
 filename = '/Users/ingunn/Documents/GitHub/sommercamp2022/Dataanalyse/smb.csv'
 
 class Database:
@@ -422,8 +421,8 @@ class Database:
                     d[cols[i]] = row[i+1]
                 many_d.append(d)
         
-            return {"data": many_d}#many_d #d
-            #return json.dumps(many_d)
+            #return {"data": many_d}#many_d #d
+            return many_d
             
         except(Exception, psycopg2.DatabaseError) as error:
             print(error)
