@@ -12,7 +12,6 @@ import math
 import time
 import random
 
-
 filename = '/Users/ingunn/Documents/GitHub/sommercamp2022/Dataanalyse/smb.csv'
 
 class Database:
@@ -119,6 +118,7 @@ class Database:
                 lice_nr FLOAT,
                 lice_week INTEGER,
                 lice_year VARCHAR(8),
+                UNIQUE(loc_nr, lice_week, lice_year),
                 CONSTRAINT fk_loc_nr 
                     FOREIGN KEY (loc_nr) 
                         REFERENCES location(loc_nr)
@@ -407,6 +407,7 @@ class Database:
 
     #Select data from database, return in json-format (or dict?)
     def select_lice_data(self, condition):
+        print("Trying to fetch lice data to API")
         
         cols = ['loc_nr', 'lice', 'lice_nr', 'lice_week', 'lice_year']
         many_d = []
@@ -428,9 +429,8 @@ class Database:
                     d[cols[i]] = row[i+1]
                 many_d.append(d)
         
-            return many_d #d
-            
-            #return (json.dumps(d, default=str))
+            #return {"data": many_d}#many_d #d
+            return many_d
             
         except(Exception, psycopg2.DatabaseError) as error:
             print(error)
@@ -438,3 +438,4 @@ class Database:
         finally: 
             if self.conn is not None:
                 self.conn.close()
+
