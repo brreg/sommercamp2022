@@ -20,7 +20,9 @@ class RegnskapsAPI:
         dfas = pd.read_csv('as.csv', sep = ';')
         dfas['LOK_KAP'] = dfas['LOK_KAP'].str.replace(',','.')
         as_liste = dfas['ORG.NR/PERS.NR'].tolist()
-        return as_liste
+        as_liste_uten_duplikater = list(dict.fromkeys(as_liste))
+        
+        return as_liste_uten_duplikater
 
     def get_regnskap(self, orgnr, year):
         url = 'https://data.brreg.no/regnskapsregisteret/regnskap/'+str(orgnr)+'?%C3%A5r='+str(year)+'&regnskapstype=SELSKAP'
