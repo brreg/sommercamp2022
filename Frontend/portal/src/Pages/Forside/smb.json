@@ -1,0 +1,22 @@
+[
+    {
+        "org_name": "Sea AS",
+        "org_number": 12345
+    },
+    {
+        "org_name": "Flyndre AS",
+        "org_number": 56789
+    },
+    {
+        "org_name": "Toft AS",
+        "org_number": 45678
+    },
+    {
+        "org_name": "Mowi AS",
+        "org_number": 23456
+    },
+    {
+        "org_name": "Akva AS",
+        "org_number": 78912
+    }
+]

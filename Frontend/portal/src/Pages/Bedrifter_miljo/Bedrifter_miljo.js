@@ -9,7 +9,7 @@ const Bedrifter_miljo = () => {
 
     return (
         <div>
-            <div class="btn-toolbar" style = {{position: "absolute", top: 140}}>
+            <div className="btn-toolbar" style = {{position: "absolute", top: 140}}>
             <button onClick={function handleClick(){navigate("/Bedrifter")}}>Generelt</button>
             <button onClick={function handleClick(){navigate("/Bedrifter_miljo")}}> Miljø</button>
             <button onClick={function handleClick(){navigate("/Bedrifter_sosial")}}>Sosial</button>
