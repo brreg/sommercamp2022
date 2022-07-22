@@ -25,10 +25,22 @@ const Test = () => {
     const [chartData, setChartData] = useState({
         datasets: [],
     })
+    const [employeeSalary, setEmployeeSalary] = useState([]);
+    const [employeeAge, setEmployeeAge] = useState([]);
 
     const [chartOptions, setChartOptions] = useState({})
+    const axios = require('axios')
 
     useEffect(() => {
+
+        axios.get("https://dummy.restapiexample.com/api/v1/employees")
+        .then( res => {
+            console.log(res)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+
         setChartData({
             labels: ['john', 'kevin', 'george', 'michael', 'oreo'],
             datasets: [
