@@ -32,12 +32,30 @@ const Test = () => {
     const axios = require('axios')
 
     useEffect(() => {
-        let empSal = [];
-        let empAge = [];
+        //let empSal = [];
+        //let empAge = [];
+        let week = []
+        let lice = []
         
         axios.get("http://127.0.0.1:5000/location/15196/licedata/")
         .then( res=> {
             console.log(res)
+            for (const dataObj of res.data.data) {
+                week.push(parseInt(dataObj.lice_week))
+                lice.push(parseFloat(dataObj.lice_nr))
+            }
+            setChartData({
+                labels: week,
+                datasets: [
+                    {
+                        label: "Licenrs",
+                        data: lice,
+                        borderColor: "rgb(53, 162, 235)",
+                        backgroundColor: "rgb(53, 162, 235, 0.4)",
+                    },
+                    
+                ],
+            });
         })
         .catch( err=> {
             console.log(err)
@@ -76,7 +94,7 @@ const Test = () => {
                 },
                 title: {
                     display: true,
-                    text: "Whom'st let the dogs out"
+                    text: "Lice data"
                 }
             }
         })
