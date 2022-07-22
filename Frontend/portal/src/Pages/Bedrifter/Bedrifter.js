@@ -9,7 +9,7 @@ const Bedrifter = () => {
 
     return (
 
-        <div class="btn-toolbar" style = {{position: "absolute", top: 140}}>
+        <div className="btn-toolbar" style = {{position: "absolute", top: 140}}>
     
             <button onClick={function handleClick(){navigate("/Bedrifter")}}>Generelt</button>
             <button onClick={function handleClick(){navigate("/Bedrifter_miljo")}}> Miljø</button>
@@ -18,8 +18,8 @@ const Bedrifter = () => {
         
        
         
-        <div class="card" style = {{position: "absolute", top: 160}}>
-        <div class="container">
+        <div className="card" style = {{position: "absolute", top: 160}}>
+        <div className="container">
             <p><h4>Generelt</h4></p>
         </div>
         </div>
