@@ -8,7 +8,7 @@ import Bedrifter_sosial from './Pages/Bedrifter_sosial/Bedrifter_sosial';
 import Bedrifter_okonomi from './Pages/Bedrifter_okonomi/Bedrifter_okonomi';
 import Bedrifter from './Pages/Bedrifter/Bedrifter';
 import Navbar from './Components/Navbar/Navbar';
-import Test from './Components/Cards/test'
+import Test from './Graphs/test'
 
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 

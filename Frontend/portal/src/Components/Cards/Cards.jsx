@@ -5,7 +5,7 @@ import img1 from '../Cards/images/graf.jpeg';
 import img2 from '../Cards/images/personer.jpeg';
 import img3 from '../Cards/images/klode.jpeg';
 import img4 from '../Cards/images/lus.jpeg';
-import Test from '../Cards/test'
+import Test from '../../Graphs/test'
 
 
 class Cards extends Component {
