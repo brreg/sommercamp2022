@@ -1,12 +1,12 @@
 import React, { Component} from 'react';
 import Card from './CardUI'
-import Card_Large from './Card_large'
 import img1 from '../Cards/images/graf.jpeg';
 import img2 from '../Cards/images/personer.jpeg';
 import img3 from '../Cards/images/klode.jpeg';
 import img4 from '../Cards/images/lus.jpeg';
 
 class Cards extends Component {
+
     render() {
         return (
             <div className="container-body">

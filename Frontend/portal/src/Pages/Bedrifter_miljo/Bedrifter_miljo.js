@@ -17,7 +17,7 @@ const Bedrifter_miljo = () => {
         </div>
 
             <div className="card-">
-                <Card />
+                <Card /> 
             </div>
         
         </div>
