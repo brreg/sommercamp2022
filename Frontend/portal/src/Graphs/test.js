@@ -34,7 +34,15 @@ const Test = () => {
     useEffect(() => {
         let empSal = [];
         let empAge = [];
-        axios.get("https://dummy.restapiexample.com/api/v1/employees")
+        
+        axios.get("http://127.0.0.1:5000/location/15196/licedata/")
+        .then( res=> {
+            console.log(res)
+        })
+        .catch( err=> {
+            console.log(err)
+        })
+        /*axios.get("https://dummy.restapiexample.com/api/v1/employees")
         .then( res => {
             console.log(res)
             for(const dataObj of res.data.data) {
@@ -58,7 +66,7 @@ const Test = () => {
             console.log(err)
         });
         console.log(empSal, empAge);
-
+        */
         
         setChartOptions({
             responsive: true,
