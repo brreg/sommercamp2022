@@ -18,7 +18,7 @@ class Cards extends Component {
             <div className="container-body">
                 <div className="row">
                     <div className="col-md-4">
-                        <Test/>
+                        <Card graph={<Test/>}/>
                     </div>
                     <div className="col-md-4">
                         <Card imgsrc={img2} title="Personer"/>

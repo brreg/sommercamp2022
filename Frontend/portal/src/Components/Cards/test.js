@@ -56,7 +56,6 @@ const Test = () => {
 
     return (
         <div className="test">
-            <h1>Test</h1>
             <Bar options={chartOptions} data={chartData} />
         </div>
     )
