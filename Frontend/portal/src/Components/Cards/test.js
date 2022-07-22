@@ -32,26 +32,34 @@ const Test = () => {
     const axios = require('axios')
 
     useEffect(() => {
-
+        let empSal = [];
+        let empAge = [];
         axios.get("https://dummy.restapiexample.com/api/v1/employees")
         .then( res => {
             console.log(res)
+            for(const dataObj of res.data.data) {
+                empSal.push(parseInt(dataObj.employee_salary))
+                empAge.push(parseInt(dataObj.employee_age))
+            }
+            setChartData({
+                labels: empAge,
+                datasets: [
+                    {
+                        label: "Whom'st let the dogs out",
+                        data: empSal,
+                        borderColor: "rgb(53, 162, 235)",
+                        backgroundColor: "rgb(53, 162, 235, 0.4)",
+                    },
+                    
+                ],
+            });
         })
         .catch(err => {
             console.log(err)
-        })
-
-        setChartData({
-            labels: ['john', 'kevin', 'george', 'michael', 'oreo'],
-            datasets: [
-                {
-                    label: "Whom'st let the dogs out",
-                    data: [12, 55, 34, 120, 720],
-                    borderColor: "rgb(53, 162, 235)",
-                    backgroundColor: "rgb(53, 162, 235, 0.4)",
-                },
-            ],
         });
+        console.log(empSal, empAge);
+
+        
         setChartOptions({
             responsive: true,
             plugins: {
