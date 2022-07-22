@@ -5,7 +5,7 @@ import img1 from '../Cards/images/graf.jpeg';
 import img2 from '../Cards/images/personer.jpeg';
 import img3 from '../Cards/images/klode.jpeg';
 import img4 from '../Cards/images/lus.jpeg';
-import Test from '../Cards/test'
+import Test from '../../Graphs/test'
 
 
 class Cards extends Component {
@@ -18,7 +18,7 @@ class Cards extends Component {
             <div className="container-body">
                 <div className="row">
                     <div className="col-md-4">
-                        <Test/>
+                        <Card graph={<Test/>}/>
                     </div>
                     <div className="col-md-4">
                         <Card imgsrc={img2} title="Personer"/>

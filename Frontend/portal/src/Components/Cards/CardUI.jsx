@@ -5,7 +5,7 @@ const Card = props => {
     return (
         <div className="card small text-center">
             <div>
-                <img src={props.imgsrc} alt="Image" className="card-img-top"/>
+                {props.graph}
             </div>
             <div className="card-body">
                 <h4 className="card-title">{props.title}</h4>
