@@ -429,8 +429,8 @@ class Database:
                     d[cols[i]] = row[i+1]
                 many_d.append(d)
         
-            #return {"data": many_d}#many_d #d
-            return many_d
+            return {"data": many_d}#many_d #d
+            #return many_d
             
         except(Exception, psycopg2.DatabaseError) as error:
             print(error)

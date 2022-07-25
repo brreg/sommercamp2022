@@ -3,8 +3,9 @@ import "./Bedrifter_miljo.css"
 import Card from '../../Components/Cards/Cards'
 import {useNavigate} from 'react-router-dom'
 
-const Bedrifter_miljo = () => {
 
+const Bedrifter_miljo = () => {
+    
     const navigate = useNavigate();
 
     return (
@@ -22,6 +23,7 @@ const Bedrifter_miljo = () => {
         
         </div>
     )  
-}
+
+    }
 
 export default Bedrifter_miljo;

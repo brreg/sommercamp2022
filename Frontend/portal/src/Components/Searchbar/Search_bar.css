@@ -1,7 +1,8 @@
 .searchInputs {
-    margin-top: 105px;
+    margin-top: 50px;
     display: flex;
     border: 1px solid black;
+    width: 550px;
 
   }
   
@@ -15,7 +16,7 @@
     font-size: 18px;
     padding: 15px;
     height: 50px;
-    width: 600px;
+    width: 550px;
   }
   
   #exitBtn {

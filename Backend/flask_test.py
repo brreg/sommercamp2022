@@ -8,8 +8,10 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 import os
 from sqlalchemy import create_engine
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 app.config['JSON_SORT_KEYS'] = False
 
 Base = automap_base()
@@ -126,6 +128,9 @@ def get_bedrift():
 '''
 ''' 
 locnr = 45017
+
+locnr = 15196#45017
+
 orgnr = 12345
 
 #lice_data = {'locnr':45017, 'lice':'True', 'lice_nr':'1.8', 'lice_week':'22', 'lice_year':'2022'}
@@ -160,7 +165,9 @@ def all_location_data():
 #Endpoint for a locations licedata
 @app.route('/location/'+str(locnr)+'/licedata/', methods=['GET'])
 def get_lice_data():
-    return jsonify(lice_data)
+    db2 = Database()
+    lice_data2 = db2.select_lice_data('loc_nr = ' +str(locnr))
+    return jsonify(lice_data2)
 
 #Endpoint for a locations escape data
 @app.route('/location/'+str(locnr)+'/escapedata/', methods=['GET'])

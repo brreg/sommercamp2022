@@ -1,4 +1,3 @@
 set-password.sh
 .DS_Store
-as.csv
-smb.csv
+node_modules
