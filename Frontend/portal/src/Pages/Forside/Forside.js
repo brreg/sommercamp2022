@@ -11,7 +11,7 @@ function Forside() {
                 <p className="overskrift_forside">Bærekraftsportalen</p>
                 <p className="tekstboks_overskrift_forside">«Bærekraft er en utvikling som tilfredstiller behovene til menneskene som lever nå, 
                     uten å ødelegge for mulighetene til fremtidige genrasjoner.» På denne nettsiden kan du lese om hvor bærekraftige ulike bedrifter er</p>
-                <SearchBar placeholder="Søk etter organisasjon..." data={OrgData} />
+                <SearchBar placeholder="Søk etter organisasjon..." /> 
             </div>
         
             <div className="row_forside">

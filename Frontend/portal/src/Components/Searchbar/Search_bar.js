@@ -3,15 +3,28 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Search_bar.css";
 
-function SearchBar({ placeholder, data }) {
+function SearchBar({ placeholder}) {
 
+  const [searchResults, setSearchResults] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [wordEntered, setWordEntered] = useState("");
+
+  const fetchPost = () => {
+    fetch('http://127.0.0.1:5000/orgs/')
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res)
+        setSearchResults(res.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
 
   const handleFilter = (event) => {
     const searchWord = event.target.value;
     setWordEntered(searchWord);
-    const newFilter = data.filter((value) => {
+    const newFilter = searchResults.filter((value) => {
       return value.org_name.toLowerCase().includes(searchWord.toLowerCase());
     });
 
@@ -29,7 +42,7 @@ function SearchBar({ placeholder, data }) {
 
   function performSearch() {
     console.log(wordEntered);
-  }  
+  }
   
   const navigate = useNavigate();
   
@@ -39,6 +52,10 @@ function SearchBar({ placeholder, data }) {
     setWordEntered(fillSearch);
     navigate(fillSearch);
   }
+
+  useEffect(() => {
+    fetchPost()
+  }, []);
   
 
   return (

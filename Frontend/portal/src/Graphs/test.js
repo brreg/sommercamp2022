@@ -36,7 +36,7 @@ const Test = () => {
         let week = []
         let lice = []
         
-        axios.get("http://127.0.0.1:5000/location/15196/licedata/")
+        axios.get("http://127.0.0.1:5000/locations/15196/licedata/")
         .then( res=> {
             console.log(res)
             for (const dataObj of res.data.data) {
