@@ -403,39 +403,3 @@ class Database:
         dictdead = {'LOK_NR':locnrmedas,'Deadlighet':deadlighet, 'Year': year}#, 'Enhet': 'TN'}
         dfdead = pd.DataFrame(dictdead)
         return dfdead
-
-
-    #Select data from database, return in json-format (or dict?)
-    def select_lice_data(self, condition):
-        print("Trying to fetch lice data to API")
-        
-        cols = ['loc_nr', 'lice', 'lice_nr', 'lice_week', 'lice_year']
-        many_d = []
-        
-        try: 
-            self.conn = psycopg2.connect(
-            host="localhost",
-            database="postgres",
-            user=os.environ["database_user"],
-            password=os.environ["database_password"])
-            cur = self.conn.cursor()
-            sql = ("SELECT * FROM salmonoid_lice WHERE" + ' '+ str(condition))
-            cur.execute(sql)
-            #row = cur.fetchone()
-            rows = cur.fetchall()
-            for row in rows:
-                d = {}
-                for i in range(len(cols)):
-                    d[cols[i]] = row[i+1]
-                many_d.append(d)
-        
-            return {"data": many_d}#many_d #d
-            #return many_d
-            
-        except(Exception, psycopg2.DatabaseError) as error:
-            print(error)
-
-        finally: 
-            if self.conn is not None:
-                self.conn.close()
-
