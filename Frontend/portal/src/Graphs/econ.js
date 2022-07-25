@@ -21,7 +21,7 @@ ChartJS.register(
 );
 
 
-const Test = () => {
+const Econ = () => {
     const [chartData, setChartData] = useState({
         datasets: [],
     })
@@ -31,25 +31,39 @@ const Test = () => {
 
     useEffect(() => {
 
-        let week = []
-        let lice = []
+        let liquidity_ratio = []
+        let return_on_assets = []
+        let solidity = []
         
-        axios.get("http://127.0.0.1:5000/locations/15196/licedata/")
+        axios.get("http://127.0.0.1:5000/accounts/969159570/")
         .then( res=> {
             console.log(res)
             for (const dataObj of res.data.data) {
-                week.push(parseInt(dataObj.lice_week))
-                lice.push(parseFloat(dataObj.lice_nr))
+                liquidity_ratio.push(parseInt(dataObj. liquidity_ratio))
+                return_on_assets.push(parseFloat(dataObj.return_on_assets))
+                solidity.push(parseFloat(dataObj.solidity))
             }
             setChartData({
-                labels: week,
+                labels: ["liquidity_ratio", "return_on_assets", "solidity"],
                 datasets: [
                     {
-                        label: "Licenrs",
-                        data: lice,
+                        label: "Liquidity ratio",
+                        data: liquidity_ratio,
                         borderColor: "rgb(53, 162, 235)",
                         backgroundColor: "rgb(53, 162, 235, 0.4)",
                     },
+                    {
+                        label: "Return on assets",
+                        data: return_on_assets,
+                        borderColor: "rgb(53, 162, 235)",
+                        backgroundColor: "rgb(53, 162, 235, 0.4)",
+                    },
+                    {
+                        label: "Solidity",
+                        data: solidity,
+                        borderColor: "rgb(53, 162, 235)",
+                        backgroundColor: "rgb(53, 162, 235, 0.4)",
+                    }
                     
                 ],
             });
@@ -75,7 +89,7 @@ const Test = () => {
     }, []);
 
     return (
-        <div className="test">
+        <div className="econ">
             <Bar options={chartOptions} data={chartData} />
         </div>
     )
@@ -84,4 +98,4 @@ const Test = () => {
 }
 
 
-export default Test;
+export default Econ;
