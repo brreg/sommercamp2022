@@ -208,6 +208,16 @@ class Database:
                         REFERENCES smb(org_nr)
 
             )
+            """,
+            
+            """
+            CREATE TABLE areal_figures (
+                ID SERIAL PRIMARY KEY,
+                loc_nr INTEGER,
+                CONSTRAINT fk_loc_nr
+                    FOREIGN KEY(loc_nr)
+                        REFERENCES location(loc_nr)
+            )
             """
         )
 
@@ -403,3 +413,9 @@ class Database:
         dictdead = {'LOK_NR':locnrmedas,'Deadlighet':deadlighet, 'Year': year}#, 'Enhet': 'TN'}
         dfdead = pd.DataFrame(dictdead)
         return dfdead
+
+
+database1 = Database()
+database1.connect()
+database1.config()
+database1.create_tables()
