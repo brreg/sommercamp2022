@@ -8,9 +8,10 @@ import Bedrifter_sosial from './Pages/Bedrifter_sosial/Bedrifter_sosial';
 import Bedrifter_okonomi from './Pages/Bedrifter_okonomi/Bedrifter_okonomi';
 import Bedrifter from './Pages/Bedrifter/Bedrifter';
 import Navbar from './Components/Navbar/Navbar';
-import Test from './Graphs/test'
 
-import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import DetailsPage from './Pages/DetailsPage/DetailsPage';
+
+import Test from './Graphs/test'
 
 export default function App() {
   return (
@@ -23,7 +24,7 @@ export default function App() {
           <Route path="Bedrifter_miljo" element={<Bedrifter_miljo/>}/>
           <Route path="Bedrifter_sosial" element={<Bedrifter_sosial/>}/>
           <Route path="Bedrifter_okonomi" element={<Bedrifter_okonomi/>}/>
-          <Route path="test" element={<Test/>}/>
+          <Route path="/:id" element={<DetailsPage/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
