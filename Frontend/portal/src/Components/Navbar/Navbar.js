@@ -9,7 +9,6 @@ const NavBar = () => {
                         <a className="nav-a" href="/Bedrifter" >Virksomheter</a>
                         <a className="nav-a" href="/Bærekraft">Bærekraft</a>
                         <a className="nav-a" href="/about">Regelverk</a>
-                        <a className="nav-a">Språk</a>
                         <a className="nav-a">Meny</a>
             </nav>
        </div>
