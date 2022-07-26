@@ -130,11 +130,8 @@ class Database:
                 ID SERIAL PRIMARY KEY,
                 loc_nr INTEGER,
                 escape_year VARCHAR(8),
-                escape_week INTEGER,
-                escape_count INTEGER,
-                escape_captured INTEGER,
-                escape_capturestart BOOL,
-                escape_description VARCHAR(1000),
+                escape_data JSON,
+                escape_count_sum INTEGER,
                 CONSTRAINT fk_loc_nr    
                     FOREIGN KEY (loc_nr) 
                         REFERENCES location(loc_nr)
@@ -280,10 +277,11 @@ class Database:
                                 WHERE EXISTS (SELECT loc_nr from location where loc_nr = %s
                                 FOR SHARE);"""
 
+
                 elif (tablename == "escapes"): 
-                    newtup = (lst[0], lst[1], lst[2], lst[3], lst[4], lst[5], lst[6], lst[0])
-                    stmt = """INSERT INTO escapes (loc_nr, escape_year, escape_week, escape_count, escape_captured, escape_capturestart, escape_description) 
-                                SELECT %s, %s, %s, %s, %s, %s, %s
+                    newtup = (lst[0], lst[1], extras.Json(lst[2]), lst[3], lst[0])
+                    stmt = """INSERT INTO escapes (loc_nr, escape_year, escape_data, escape_count_sum) 
+                                SELECT %s, %s, %s, %s
                                 WHERE EXISTS (SELECT loc_nr from location where loc_nr = %s
                                 FOR SHARE);"""
 
