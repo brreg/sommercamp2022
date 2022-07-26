@@ -248,7 +248,7 @@ class Database:
             cur = self.conn.cursor()
 
             for command in commands:
-                cur.execute(commands)
+                cur.execute(command)
 
             cur.close()
             self.conn.commit()
@@ -272,7 +272,6 @@ class Database:
             
             df_list = df.values.tolist()
             for lst in df_list:
-                print(lst)
                 
                 if (tablename == "salmonoid_lice"): 
                     newtup = (lst[0], lst[1], extras.Json(lst[2]), lst[3], lst[4], lst[0])
@@ -297,7 +296,6 @@ class Database:
                 
                 elif (tablename == "key_financial_figures"):
                     newtup = (lst[0], lst[1], lst[2], lst[3], lst[4], lst[0])
-                    print(newtup)
                     stmt = """INSERT INTO key_financial_figures (org_nr, year, liquidity_ratio, return_on_assets, solidity) 
                                 SELECT %s, %s, %s, %s, %s
                                 WHERE EXISTS (SELECT org_nr from smb where org_nr = %s
@@ -310,7 +308,6 @@ class Database:
                 cursor = self.conn.cursor()
 
                 try:
-                    print("trying to execute stmt and newtup: %s,  %s", stmt, newtup)
                     cursor.execute(stmt, newtup)
                     self.conn.commit()
                 except (Exception, psycopg2.DatabaseError) as error:
