@@ -1,3 +1,4 @@
+import json
 from flask import Flask, jsonify
 from flask_cors import CORS
 from sqlalchemy.ext.automap import automap_base
@@ -34,10 +35,17 @@ class Deadliness(Base):
     
 class Smb(Base):
     __tablename__='smb'
+    
+class Areal(Base):
+    __tablename__='areal_figures'
+    
+class PartTime(Base):
+    __tablename__='part_time'
 
 engine = create_engine('postgresql://'+os.environ["database_user"]+':'+os.environ["database_password"]+'@localhost:5432/postgres')
 Base.prepare(autoload_with=engine)
 session = Session(engine)
+
 
 #Endpoint to get all accounts in database
 @app.route('/accounts/')
@@ -126,5 +134,33 @@ def get_all_orgdata():
 def get_one_orgdata(orgnr):
     return jsonify({'data':[{
         'org_nr':org.org_nr, 'org_name': org.org_name, 'org_address_id':org.org_address_id} for org in session.query(Smb).filter(Smb.org_nr==orgnr)
+    ]})
+
+#Endpoint to get all areal data
+@app.route('/locations/areal/')
+def get_all_areals():
+    return jsonify({'data':[{
+        'id:': loc.id, 'loc_nr': loc.loc_nr, 'areal_use': loc.areal_use} for loc in session.query(Areal).all()
+    ]})
+    
+#Endpoint to get specific areal data from locnr
+@app.route('/locations/<locnr>/areal/')
+def get_one_areals(locnr):
+    return jsonify({'data':[{
+        'id:': loc.id, 'loc_nr': loc.loc_nr, 'areal_use': loc.areal_use} for loc in session.query(Areal).filter(Areal.loc_nr == locnr)
+    ]})
+
+#Endpoint to get all part time data
+@app.route('/locations/parttime/')
+def get_all_parttime():
+    return jsonify({'data':[{
+        'id': loc.id, 'loc_nr': loc.loc_nr, 'part_time_percentage':loc.part_time_percentage} for loc in session.query(PartTime).all()
+    ]})
+
+#Endpoint to get specific part time data
+@app.route('/locations/<locnr>/parttime/')
+def get__parttime(locnr):
+    return jsonify({'data':[{
+        'id': loc.id, 'loc_nr': loc.loc_nr, 'part_time_percentage':loc.part_time_percentage} for loc in session.query(PartTime).filter(PartTime.loc_nr==locnr)
     ]})
 
