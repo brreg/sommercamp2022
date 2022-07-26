@@ -99,7 +99,7 @@ class API:
         
         
         escape_json = escape_res.json()
-        
+        print(escape_json)
         return escape_json
 
     def get_many_escape_data(self, locnrs, years): 
