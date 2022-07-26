@@ -83,14 +83,12 @@ class API:
 
                 licedata = self.get_lice_data(locnr, year)
                 licedata.pop("type")
-                licedata["data"] = self.make_week_dict_lice(licedata["data"])
-                #print(licedata)
 
-                # put one fishhealthdata record into multiple LiceData objects
-                licedatalist = self.put_lice_data_into_objects(licedata)
+                # put one fishhealthdata record into a LiceData object
+                licedataObj = self.put_lice_data_into_object(licedata)
 
                 # put licedata objects into licedata container
-                licedata_container.addLiceDataList(licedatalist)
+                licedata_container.addLiceData(licedataObj)
                 
         return licedata_container
     
@@ -120,34 +118,26 @@ class API:
 
         return edcontainer
 
-
-    def make_week_dict_lice(self, week_value_list):
-        # input is a list of dictionaries with week and value
-        week_dict = {}
-        for dct in week_value_list: 
-            week = dct["week"]
-            value = dct["value"]
-            week_dict[week] = value
-        #output is a dictionary with key=week, value=value
-        return week_dict
-
-    def put_lice_data_into_objects(self, fishhealthdata) :
+    def put_lice_data_into_object(self, fishhealthdata) :
         # input is a dictionary of the form {localityNo: , year: , data: {weeks:values}}
-        licedatalist = []
-        for week in fishhealthdata["data"].keys():
-            # if there are no lice, licebinary = FALSE, otherwise, licebinary = TRUE
-            if (fishhealthdata["data"][week] > 0):
-                licebinary = True
-            else: 
-                licebinary = False
-            licedata = ld.Licedata(fishhealthdata["localityNo"], 
-                                    fishhealthdata["data"][week], 
-                                    licebinary, 
-                                    week, 
-                                    fishhealthdata["year"])
-            licedatalist.append(licedata)
-        #return list of LiceData objects
-        return licedatalist
+        licebinary=False
+        lice_sum = 0
+        count = 0
+        for minidict in fishhealthdata["data"]:
+            lice_sum += minidict["value"]
+            count += 1
+        if count > 0:
+            lice_average = lice_sum/count
+            if lice_average > 0 : licebinary=True
+            licedataObj = ld.Licedata(fishhealthdata["localityNo"], 
+                                licebinary, 
+                                fishhealthdata["data"], 
+                                fishhealthdata["year"],
+                                lice_average)
+            return licedataObj
+        else:
+            return None
+        
 
 
 

@@ -115,10 +115,10 @@ class Database:
                 ID SERIAL PRIMARY KEY,
                 loc_nr INTEGER,
                 lice BOOL,
-                lice_nr FLOAT,
-                lice_week INTEGER,
+                lice_data JSON,
                 lice_year VARCHAR(8),
-                UNIQUE(loc_nr, lice_week, lice_year),
+                lice_average FLOAT,
+                UNIQUE(loc_nr, lice_year),
                 CONSTRAINT fk_loc_nr 
                     FOREIGN KEY (loc_nr) 
                         REFERENCES location(loc_nr)
@@ -256,11 +256,12 @@ class Database:
             
             df_list = df.values.tolist()
             for lst in df_list:
+                print(lst)
                 
                 if (tablename == "salmonoid_lice"): 
-                    newtup = (lst[0], lst[1], lst[2], lst[3], lst[4], lst[0])
-                    stmt = """INSERT INTO salmonoid_lice (loc_nr, lice, lice_nr, lice_week, lice_year) 
-                                SELECT %s, %s, %s, %s, %s 
+                    newtup = (lst[0], lst[1], extras.Json(lst[2]), lst[3], lst[4], lst[0])
+                    stmt = """INSERT INTO salmonoid_lice (loc_nr, lice, lice_data, lice_year, lice_average) 
+                                SELECT %s, %s, %s, %s, %s
                                 WHERE EXISTS (SELECT loc_nr from location where loc_nr = %s
                                 FOR SHARE);"""
 
@@ -293,6 +294,7 @@ class Database:
                 cursor = self.conn.cursor()
 
                 try:
+                    print("trying to execute stmt and newtup: %s,  %s", stmt, newtup)
                     cursor.execute(stmt, newtup)
                     self.conn.commit()
                 except (Exception, psycopg2.DatabaseError) as error:

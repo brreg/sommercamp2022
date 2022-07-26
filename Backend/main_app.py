@@ -26,12 +26,12 @@ def main():
 
     bapi = API()
     locnrs = bapi.get_locnrs()[0:50]
-    years = [2020]#[2017, 2018, 2019, 2020, 2021][0:1]
+    years = [2017, 2018, 2019, 2021]#[0:1]
 
     #### Inserting all lice data into database, for each year and each location number
-    #licedata_container = bapi.get_many_lice_data(locnrs, years)
-    #df = licedata_container.getDataFrame()
-    #database1.insert_data(df, "salmonoid_lice") 
+    licedata_container = bapi.get_many_lice_data(locnrs, years)
+    df = licedata_container.getDataFrame()
+    database1.insert_data(df, "salmonoid_lice") 
 
     #### Inserting all escape data into database
     #edcontainer = bapi.get_many_escape_data(locnrs, years)
@@ -43,11 +43,11 @@ def main():
     #print(dfdead)
     #database1.insert_data(dfdead, "salmon_death")
     
-    rapi = RegnskapsAPI()
-    orgnrs = rapi.get_orgnrs()[0:50]
-    rdcontainer = rapi.get_many_nokkeltall(orgnrs, years)
-    df_regnskap = rdcontainer.get_dataframe()
-    database1.insert_data(df_regnskap, "key_financial_figures")
+    #rapi = RegnskapsAPI()
+    #orgnrs = rapi.get_orgnrs()[0:50]
+    #rdcontainer = rapi.get_many_nokkeltall(orgnrs, years)
+    #df_regnskap = rdcontainer.get_dataframe()
+    #database1.insert_data(df_regnskap, "key_financial_figures")
 
 
 main()

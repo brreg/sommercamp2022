@@ -6,7 +6,8 @@ class LicedataContainer:
         self.licedatalist = []
 
     def addLiceData(self, licedata): 
-        self.licedatalist.append(licedata)
+        if licedata is not None:
+            self.licedatalist.append(licedata)
 
     def addLiceDataList(self, licedatalist):
         for licedata in licedatalist: 
@@ -16,22 +17,22 @@ class LicedataContainer:
     def getDataFrame(self):
         df_dict = {}
         locnr = []
-        value = []
+        data = []
         binary = []
-        week = []
         year = []
+        average = []
 
         for licedata in self.licedatalist: 
             ldlist = licedata.getlist()
             locnr.append(ldlist[0])
             binary.append(ldlist[1])
-            value.append(str(ldlist[2]))
-            week.append(str(ldlist[3]))
-            year.append(str(ldlist[4]))
+            data.append(ldlist[2])
+            year.append(str(ldlist[3]))
+            average.append(ldlist[4])
             
         df_dict["locnr"] = locnr
         df_dict["binary"] = binary
-        df_dict["value"] = value
-        df_dict["week"] = week
+        df_dict["data"] = data
         df_dict["year"] = year
+        df_dict["average"] = average
         return pd.DataFrame(df_dict)
