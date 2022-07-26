@@ -1,0 +1,16 @@
+.overskrift-miljo-bedrifter {
+    font-size: 40px;
+    padding: 3%;
+    margin: -1%;
+  }
+  
+  .btn-floater {
+    padding: 3%;
+  }
+  
+  /* Add some padding inside the card container */
+  .container {
+    padding: 2px 16px;
+    position: relative;
+  }
+  

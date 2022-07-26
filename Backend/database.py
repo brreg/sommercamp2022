@@ -74,7 +74,7 @@ class Database:
     def create_tables(self):
 
         commands = (
-
+            
             """
             CREATE TABLE address (
                 ID SERIAL PRIMARY KEY,
@@ -214,11 +214,27 @@ class Database:
             CREATE TABLE areal_figures (
                 ID SERIAL PRIMARY KEY,
                 loc_nr INTEGER,
+                areal_use FLOAT,
+                CONSTRAINT fk_loc_nr
+                    FOREIGN KEY(loc_nr)
+                        REFERENCES location(loc_nr)
+            )
+            """,
+            
+
+           
+            """
+            CREATE TABLE part_time(
+                ID SERIAL PRIMARY KEY,
+                loc_nr INTEGER,
+                part_time_percentage FLOAT,
                 CONSTRAINT fk_loc_nr
                     FOREIGN KEY(loc_nr)
                         REFERENCES location(loc_nr)
             )
             """
+            
+            
         )
 
         try:
@@ -232,7 +248,7 @@ class Database:
             cur = self.conn.cursor()
 
             for command in commands:
-                cur.execute(command)
+                cur.execute(commands)
 
             cur.close()
             self.conn.commit()
@@ -323,6 +339,61 @@ class Database:
         locnrs = df['localityNo'].tolist()
         
         return locnrs
+    
+    #Insert areal data from CSV-file with areal data
+    def insert_areal_data(self, filename):
+        df = pd.read_csv(filename)
+        t = list(df.itertuples(index=False, name=None))
+        
+        try:
+            self.conn = psycopg2.connect(
+            host="localhost",
+            database="postgres",
+            user=os.environ["database_user"],
+            password=os.environ["database_password"])
+            cur = self.conn.cursor()
+            sql = """INSERT INTO areal_figures (loc_nr, areal_use) 
+            SELECT %s, %s
+            WHERE EXISTS (SELECT loc_nr from location where loc_nr = %s)
+            FOR SHARE;"""
+            cur.executemany(sql, t)
+            self.conn.commit()
+            cur.close()
+        
+        except(Exception, psycopg2.DatabaseError) as error:
+            print(error)
+
+        finally: 
+            if self.conn is not None:
+                self.conn.close()
+                
+    #Insert data describing part time from CSV-file with data
+    def insert_part_time_data(self, filename):
+        df = pd.read_csv(filename)
+        t = list(df.itertuples(index=False, name=None))
+        
+        try:
+            self.conn = psycopg2.connect(
+            host="localhost",
+            database="postgres",
+            user=os.environ["database_user"],
+            password=os.environ["database_password"])
+            cur = self.conn.cursor()
+            sql = """INSERT INTO part_time (loc_nr, part_time_percentage) 
+            SELECT %s, %s
+            WHERE EXISTS (SELECT loc_nr from location where loc_nr = %s)
+            FOR SHARE;"""
+            cur.executemany(sql, t)
+            self.conn.commit()
+            cur.close()
+        
+        except(Exception, psycopg2.DatabaseError) as error:
+            print(error)
+
+        finally: 
+            if self.conn is not None:
+                self.conn.close()
+                
     
     # Inserts address, smb and locnr data from the filename.csv and inserts it into our database
     def insert_address_smb_locnr_csv(self, filename): 
@@ -415,9 +486,3 @@ class Database:
         dictdead = {'LOK_NR':locnrmedas,'Deadlighet':deadlighet, 'Year': year}#, 'Enhet': 'TN'}
         dfdead = pd.DataFrame(dictdead)
         return dfdead
-
-
-database1 = Database()
-database1.connect()
-database1.config()
-database1.create_tables()
