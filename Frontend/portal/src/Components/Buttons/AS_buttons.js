@@ -9,7 +9,7 @@ function AS_buttons() {
     const navigate = useNavigate();
 
         return(
-            <div className="btn-toolbar" style = {{position: "relative", top: 10}}>
+            <div className="btn-toolbar">
 
             <button onClick={function handleClick(){navigate(`/${id}`)}}>Generelt</button>
             <button onClick={function handleClick(){navigate(`/${id}/Miljo`)}}> Miljø</button>
