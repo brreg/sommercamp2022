@@ -164,3 +164,35 @@ def get__parttime(locnr):
         'id': loc.id, 'loc_nr': loc.loc_nr, 'part_time_percentage':loc.part_time_percentage} for loc in session.query(PartTime).filter(PartTime.loc_nr==locnr)
     ]})
 
+
+
+
+#Endpoint to get data for specific endpoint
+@app.route('/brreg/hallo/<orgnr>/')
+def get_brreg(orgnr):
+    return jsonify({'data':[{
+        'loc_nr':loc.loc_nr, 'org_nr':loc.org_nr, 'loc_name':loc.loc_name, 'loc_capacity':loc.loc_capacity} for loc in session.query(Location).filter(Location.org_nr == orgnr)
+    ]})
+
+
+#Endpoint to get specific deadliness data
+@app.route('/brreg/hei/<orgnr>/')
+def get_all_locations_for_orgnr(orgnr):
+    return jsonify({'data':[{
+        'loc_nr':loc.loc_nr, 'org_nr':loc.org_nr, 'loc_name':loc.loc_name, 'loc_capacity':loc.loc_capacity, 'loc_deadliness': loc.death_nr, 'loc_year': loc.death_year} for loc in session.query(
+        Smb.org_nr,
+        Location.loc_nr,
+        Location.loc_name,
+        Location.loc_capacity,
+        Deadliness.death_nr,
+        Deadliness.death_year
+    ).filter(
+        Smb.org_nr == orgnr
+    ).join(
+        Location, Smb.org_nr == Location.org_nr
+    ).join(
+        Deadliness, Location.loc_nr == Deadliness.loc_nr
+    )
+    ]})
+
+    
