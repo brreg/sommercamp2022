@@ -14,13 +14,14 @@ from regn import RegnskapsAPI
 
 # locality 30156 has escape data in year 2016
 
-filename = '/Users/ingunn/Documents/GitHub/sommercamp2022/Dataanalyse/smb.csv'
+filename = 'smb.csv'
 
 def fill_db(locnrs, years):
     ### function that fills the database in every category for the given locnrs and years
     print("a")
 
 def main():
+
     db = Database()
     db.connect()
     db.config()

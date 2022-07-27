@@ -3,7 +3,7 @@ import './Cards.css';
 
 const Card = props => {
     return (
-        <div className="card small text-center">
+        <div className="small text-center">
             <div>
                 {props.graph}
             </div>
