@@ -9,7 +9,6 @@ const Sosial = () => {
     const {id} = useParams();
 
     return (
-        
         <div>
         <p className="overskrift-sosial-bedrifter">{id}</p>
         <div className="btn-floater">
