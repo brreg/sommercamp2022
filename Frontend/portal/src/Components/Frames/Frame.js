@@ -1,32 +1,45 @@
 import React from 'react';
+import './Frame.css'
 
 const Frame = props => {
-
     return (
-        <div className="container">
+        <div className="container-frame">
+
             <div className="overskrift-frame">
-                <h1> Overskrift </h1>
+                <p className="p-oversrkfit overskrift-frame"> {props.overskrift} </p>
             </div>
+
             <div className="nøkkeltall-frame">
-                <div className="nøkkeltall-1">
-                    123
+                <div className="nøkkeltall">
+                    <p className="p-props tekst-nøkkeltall"> {props.nokkeltall1}</p>
                 </div>
-                <div className="nøkkeltall-2">
-                    123
+                <div className="nøkkeltall">
+                    <p className="p-props tekst-nøkkeltall">{props.nokkeltall2}</p>
                 </div>
-                <div className="nøkkeltall-3">
-                    123
+                <div className="nøkkeltall">
+                    <p className="p-props tekst-nøkkeltall">{props.nokkeltall3}</p>
                 </div>
-                <p> Beskrivende tekst til nøkkeltall</p>
             </div>
+            
+            <div className="tekst-til-nøkkeltall">
+                <p className="p-tekst"> Beskrivende tekst til nøkkeltall:</p>
+            </div>
+
             <div>
                 <div className="graf-frame">
-                    TestGraf
+                    <p className="p-graf">Props Testgraf</p>
                 </div>
                 <div className="tekstboks-frame">
-                    Beskrivende tekst til grafen
+                    <p className="p-tekst">
+                        Beskrivende tekst til grafen:
+                    <br></br> 
+                    <br></br> 
+                        Kilde: 
+
+                    </p>
                 </div>
             </div>
+
         </div>
     )
 
