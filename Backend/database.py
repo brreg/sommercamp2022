@@ -118,6 +118,7 @@ class Database:
                 lice_data JSON,
                 lice_year VARCHAR(8),
                 lice_average FLOAT,
+                lice_limit FLOAT,
                 UNIQUE(loc_nr, lice_year),
                 CONSTRAINT fk_loc_nr 
                     FOREIGN KEY (loc_nr) 
@@ -259,6 +260,8 @@ class Database:
         finally:
             if self.conn is not None:
                 self.conn.close()
+                
+    
     
     ### Inserts data in df into either salmonoid_lice ELLER escapes tables in our database
     def insert_data(self, df, tablename):
@@ -279,6 +282,7 @@ class Database:
                                 SELECT %s, %s, %s, %s, %s
                                 WHERE EXISTS (SELECT loc_nr from location where loc_nr = %s
                                 FOR SHARE);"""
+                    
 
                 elif (tablename == "escapes"): 
                     newtup = (lst[0], lst[1], lst[2], lst[3], lst[4], lst[5], lst[6], lst[0])
@@ -316,12 +320,15 @@ class Database:
                     cursor.close()
                     return 1
                 cursor.close()
+        
             
 
         except(Exception, psycopg2.DatabaseError) as error:
             print(error)
 
         finally: 
+            if tablename == "salmonoid_lice":
+                self.insert_lice_limit('lice_limit.csv')
             if self.conn is not None:
                 self.conn.close()
 
@@ -364,7 +371,9 @@ class Database:
             if self.conn is not None:
                 self.conn.close()
                 
-    #Insert data describing part time from CSV-file with data
+                    
+                
+    #Insert data describing part time from CSV-file with data 
     def insert_part_time_data(self, filename):
         df = pd.read_csv(filename)
         t = list(df.itertuples(index=False, name=None))
@@ -444,8 +453,41 @@ class Database:
         finally: 
             if self.conn is not None:
                 self.conn.close()
+    
+    #Updates lice-table to includ licelimit
+    def insert_lice_limit(self, filename):
+        
+        df = pd.read_csv(filename)
+        t = list(df.itertuples(index=False, name=None))
+        data = []
+        for tup in t:
+            rec = (tup[0], tup[1], str(tup[2]))
+            data.append(rec)
+            
+        try:
+            self.conn = psycopg2.connect(
+            host="localhost",
+            database="postgres",
+            user=os.environ["database_user"],
+            password=os.environ["database_password"])
+            cur = self.conn.cursor()
+            sql = """UPDATE salmonoid_lice
+            SET lice_limit = %s
+            WHERE EXISTS (SELECT loc_nr from salmonoid_lice where loc_nr = %s AND lice_year = %s);
+            """
+            cur.executemany(sql, data)
+            self.conn.commit()
+            cur.close()
+        
+        except(Exception, psycopg2.DatabaseError) as error:
+            print(error)
+
+        finally: 
+            if self.conn is not None:
+                self.conn.close()
 
     def generate_deadliness_data(self, locnrs, filename, year): 
+        #years = 2017,2018,2019,2020,2021
         dfdead = pd.DataFrame()
         dfas = pd.read_csv(filename, sep = ';')
         dfas['LOK_KAP'] = dfas['LOK_KAP'].str.replace(',','.')

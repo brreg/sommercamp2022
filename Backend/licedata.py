@@ -3,7 +3,7 @@ class Licedata:
     def __init__(self, locnr, lice_binary, lice_data, lice_year, lice_average):
         self.locnr = int(locnr)
         self.lice_binary = bool(lice_binary)
-        self.lice_data = lice_data # json format
+        self.lice_data = lice_data# json format
         self.lice_year = lice_year
         self.lice_average = lice_average
         
