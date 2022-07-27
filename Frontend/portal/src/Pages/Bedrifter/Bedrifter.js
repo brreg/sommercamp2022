@@ -8,13 +8,11 @@ const Bedrifter = () => {
 
     const {id} = useParams();
 
-    return (
-        
+    return (   
         <div>
-        <p className="overskrift-general-bedrifter">{id}</p>
+        <p className="overskrift-generell-bedrifter">{id}</p>
         <div className="btn-floater">
-        <AS_buttons/>
-        <div className="card" style = {{position: "absolute", top: 160}}></div>
+        <AS_buttons className="btn-placement"/>
         </div>
         </div>
     )

@@ -1,18 +1,5 @@
 .forside {
-  background-image: url(./Images/Jordklode_Artwork.png)
-}
-
-.logo{  
-    text-align: center;      
-    color: white;
-    text-shadow: 2px 2px black;
-    font-family: sans-serif;
-    margin: 0;
-    top: 50%;
-    left: 50%;
-    position: absolute;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
+  background-image: url(./Images/Jordklode_Artwork.png);
 }
 
 .bedrift_button{
@@ -32,7 +19,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  font-family: "Nunito", sans-serif;
+  font-family: "inter"
 }
 
 .column_forside {
@@ -81,19 +68,22 @@ h1 {
 }
 
 .liten_overskrift_forside {
-  font-size: 30px;
+  font-size: 24px;
 }
 
 .overskrift_forside {
-  font-size: 40px;
+  font-size: 48px;
   margin-top: -18px;
+  font-weight: bold;
 }
 
 .tekstboks_overskrift_forside {
-  font-size: 25px;
+  font-size: 18px;
 }
 
-
+.searchBar {
+  position: relative;
+}
 
 
 

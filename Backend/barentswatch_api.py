@@ -97,9 +97,7 @@ class API:
         escape_res = r.get('https://www.barentswatch.no/bwapi/v1/geodata/fishhealth/locality/'+str(locnr)+'/escape/'+str(year),
         headers = { 'Authorization' : 'Bearer ' + self.session.access_token})
         
-        
         escape_json = escape_res.json()
-        print(escape_json)
         return escape_json
 
     def get_many_escape_data(self, locnrs, years): 

@@ -10,35 +10,28 @@ class EscapedataContainer:
 
     # should return a pandas dataframe with all the lice data
     # Kolonne navn:
-    # Locnr, Year, Week, EscapeCount, Captured, CaptureStart, EscapeDescription
+    # Locnr, Year, Week, Data, EscapeCountSum
     def getDataFrame(self):
         df_dict = {}
         locnr = []
         year = []
-        week = []
-        escapecount = []
-        captured = []
-        capturestart = []
-        escapedescription = []
+        data = []
+        escape_count_sum = []
+ 
 
-        #self.locnr, self.year, self.week, self.escapecount, self.captured, self.capturestart, self.escapedescription
+        #self.locnr, self.year, self.data, self.escape_count_sum
         for escapedata in self.escapedatalist: 
             edlist = escapedata.getlist()
             locnr.append(edlist[0])
             year.append(edlist[1])
-            week.append(edlist[2])
-            escapecount.append(edlist[3])
-            captured.append(edlist[4])
-            capturestart.append(edlist[5])
-            escapedescription.append(edlist[6])
+            data.append(edlist[2])
+            escape_count_sum.append(edlist[3])
+        
             
         df_dict["locnr"] = locnr
         df_dict["year"] = year
-        df_dict["week"] = week
-        df_dict["escapecount"] = escapecount
-        df_dict["captured"] = captured
-        df_dict["capturestart"] = capturestart
-        df_dict["escapedescription"] = escapedescription
+        df_dict["data"] = data
+        df_dict["escape_count_sum"] = escape_count_sum
 
         return pd.DataFrame(df_dict)
 
