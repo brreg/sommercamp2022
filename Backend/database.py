@@ -224,11 +224,12 @@ class Database:
             """
             CREATE TABLE part_time(
                 ID SERIAL PRIMARY KEY,
-                loc_nr INTEGER,
+                org_nr INTEGER,
                 part_time_percentage FLOAT,
-                CONSTRAINT fk_loc_nr
-                    FOREIGN KEY(loc_nr)
-                        REFERENCES location(loc_nr)
+                year VARCHAR(8),
+                CONSTRAINT fk_org_nr
+                    FOREIGN KEY(org_nr)
+                        REFERENCES smb(org_nr)
             )
             """
             
@@ -383,9 +384,9 @@ class Database:
             user=os.environ["database_user"],
             password=os.environ["database_password"])
             cur = self.conn.cursor()
-            sql = """INSERT INTO part_time (loc_nr, part_time_percentage) 
-            SELECT %s, %s
-            WHERE EXISTS (SELECT loc_nr from location where loc_nr = %s)
+            sql = """INSERT INTO part_time (org_nr, part_time_percentage, year) 
+            SELECT %s, %s, %s
+            WHERE EXISTS (SELECT org_nr from smb where org_nr = %s)
             FOR SHARE;"""
             cur.executemany(sql, t)
             self.conn.commit()
@@ -523,3 +524,10 @@ class Database:
         dictdead = {'LOK_NR':locnrmedas,'Deadlighet':deadlighet, 'Year': year}#, 'Enhet': 'TN'}
         dfdead = pd.DataFrame(dictdead)
         return dfdead
+    
+    
+d = Database()
+d.connect()
+d.config()
+#d.create_tables()
+d.insert_part_time_data('part_time_percentages.csv')
