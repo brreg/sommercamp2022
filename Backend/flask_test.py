@@ -165,18 +165,8 @@ def get__parttime(locnr):
     ]})
 
 
-
-
-#Endpoint to get data for specific endpoint
-@app.route('/brreg/hallo/<orgnr>/')
-def get_brreg(orgnr):
-    return jsonify({'data':[{
-        'loc_nr':loc.loc_nr, 'org_nr':loc.org_nr, 'loc_name':loc.loc_name, 'loc_capacity':loc.loc_capacity} for loc in session.query(Location).filter(Location.org_nr == orgnr)
-    ]})
-
-
-#Endpoint to get specific deadliness data
-@app.route('/brreg/hei/<orgnr>/')
+#Endpoint to get deadliness data on orgnr level
+@app.route('/orgs/<orgnr>/deadliness')
 def get_all_locations_for_orgnr(orgnr):
     return jsonify({'data':[{
         'loc_nr':loc.loc_nr, 'org_nr':loc.org_nr, 'loc_name':loc.loc_name, 'loc_capacity':loc.loc_capacity, 'loc_deadliness': loc.death_nr, 'loc_year': loc.death_year} for loc in session.query(
