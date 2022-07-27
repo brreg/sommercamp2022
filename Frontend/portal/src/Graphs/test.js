@@ -31,22 +31,22 @@ const Test = () => {
 
     useEffect(() => {
 
-        let week = []
-        let lice = []
+        let deadliness = []
+        let year = []
         
-        axios.get("http://127.0.0.1:5000/locations/15196/licedata/")
+        axios.get("http://127.0.0.1:5000/orgs/886813082/deadliness")
         .then( res=> {
             console.log(res)
             for (const dataObj of res.data.data) {
-                week.push(parseInt(dataObj.lice_week))
-                lice.push(parseFloat(dataObj.lice_nr))
+                deadliness.push(parseInt(dataObj.loc_deadliness))
+                year.push(parseFloat(dataObj.loc_year))
             }
             setChartData({
-                labels: week,
+                labels: year,
                 datasets: [
                     {
-                        label: "Licenrs",
-                        data: lice,
+                        label: "Deadliness",
+                        data: deadliness,
                         borderColor: "rgb(53, 162, 235)",
                         backgroundColor: "rgb(53, 162, 235, 0.4)",
                     },

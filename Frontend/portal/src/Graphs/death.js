@@ -21,7 +21,8 @@ ChartJS.register(
 );
 
 
-const Econ = () => {
+const Death = props => {
+
     const [chartData, setChartData] = useState({
         datasets: [],
     })
@@ -31,39 +32,26 @@ const Econ = () => {
 
     useEffect(() => {
 
-        let liquidity_ratio = []
-        let return_on_assets = []
-        let solidity = []
+        let deadliness = []
+        let year = []
         
-        axios.get("http://127.0.0.1:5000/accounts/969159570/")
+        //axios.get("http://127.0.0.1:5000/orgs/886813082/deadliness")
+        axios.get(`http://127.0.0.1:5000/orgs/${props.org_nr}/deadliness`)
         .then( res=> {
             console.log(res)
             for (const dataObj of res.data.data) {
-                liquidity_ratio.push(parseInt(dataObj. liquidity_ratio))
-                return_on_assets.push(parseFloat(dataObj.return_on_assets))
-                solidity.push(parseFloat(dataObj.solidity))
+                deadliness.push(parseInt(dataObj.loc_deadliness))
+                year.push(parseFloat(dataObj.loc_year))
             }
             setChartData({
-                labels: ["liquidity_ratio", "return_on_assets", "solidity"],
+                labels: year,
                 datasets: [
                     {
-                        label: "Liquidity ratio",
-                        data: liquidity_ratio,
+                        label: "Deadliness",
+                        data: deadliness,
                         borderColor: "rgb(53, 162, 235)",
                         backgroundColor: "rgb(53, 162, 235, 0.4)",
                     },
-                    {
-                        label: "Return on assets",
-                        data: return_on_assets,
-                        borderColor: "rgb(53, 162, 235)",
-                        backgroundColor: "rgb(53, 162, 235, 0.4)",
-                    },
-                    {
-                        label: "Solidity",
-                        data: solidity,
-                        borderColor: "rgb(53, 162, 235)",
-                        backgroundColor: "rgb(53, 162, 235, 0.4)",
-                    }
                     
                 ],
             });
@@ -73,7 +61,6 @@ const Econ = () => {
         })
       
         
-        
         setChartOptions({
             responsive: true,
             plugins: {
@@ -82,14 +69,14 @@ const Econ = () => {
                 },
                 title: {
                     display: true,
-                    text: "Lice data"
+                    text: "Deadliness data"
                 }
             }
         })
     }, []);
 
     return (
-        <div className="econ">
+        <div className="death">
             <Bar options={chartOptions} data={chartData} />
         </div>
     )
@@ -98,4 +85,4 @@ const Econ = () => {
 }
 
 
-export default Econ;
+export default Death;

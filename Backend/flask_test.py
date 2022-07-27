@@ -7,6 +7,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
+from sqlalchemy.sql import func
 import os
 
 app = Flask(__name__)
@@ -169,10 +170,9 @@ def get__parttime(locnr):
 @app.route('/orgs/<orgnr>/deadliness')
 def get_all_deadliness_for_orgnr(orgnr):
     return jsonify({'data':[{
-        'loc_nr':loc.loc_nr, 'org_nr':loc.org_nr, 'loc_name':loc.loc_name, 'loc_capacity':loc.loc_capacity, 'loc_deadliness': loc.death_nr, 'loc_year': loc.death_year} for loc in session.query(
+        'loc_nr':loc.loc_nr, 'org_nr':loc.org_nr, 'loc_capacity':loc.loc_capacity, 'loc_deadliness': loc.death_nr, 'loc_year': loc.death_year} for loc in session.query(
         Smb.org_nr,
         Location.loc_nr,
-        Location.loc_name,
         Location.loc_capacity,
         Deadliness.death_nr,
         Deadliness.death_year
@@ -185,34 +185,43 @@ def get_all_deadliness_for_orgnr(orgnr):
     )
     ]})
 
-#Endpoint to get lice data on orgnr level
+
 @app.route('/orgs/<orgnr>/licedata')
 def get_all_licedata_for_orgnr(orgnr):
     return jsonify({'data':[{
-        'loc_nr':loc.loc_nr, 'org_nr':loc.org_nr, 'loc_name':loc.loc_name, 'loc_capacity':loc.loc_capacity, 'loc_licedata': loc.lice_average, 'loc_year': loc.lice_year} for loc in session.query(
-        Smb.org_nr,
-        Location.loc_nr,
-        Location.loc_name,
-        Location.loc_capacity,
-        Licedata.lice_average,
+        'loc_liceaverage': loc.lice_average, 'year': loc.lice_year} for loc in session.query(
+        func.sum(Licedata.lice_average),
         Licedata.lice_year
+    ).select_from(
+        Licedata
+    ).join(
+        Location, Licedata.loc_nr == Location.loc_nr
     ).filter(
-        Smb.org_nr == orgnr
-    ).join(
-        Location, Smb.org_nr == Location.org_nr
-    ).join(
-        Licedata, Location.loc_nr == Licedata.loc_nr
-    )
+        Location.org_nr == orgnr
+    ).group_by(Licedata.lice_year).all()
     ]})
 
+"""
+session.query(
+        #Smb.org_nr,
+        #Licedata.lice_average,
+        func.sum(Licedata.lice_average),
+        Licedata.lice_year
+    ).select_from(
+        Licedata
+    ).join(
+        Location, Licedata.loc_nr == Location.loc_nr
+    ).filter(
+        Location.org_nr == orgnr
+    ).group_by(Licedata.lice_year)
+"""
 #Endpoint to get escape data on orgnr level
 @app.route('/orgs/<orgnr>/escapedata')
 def get_all_escapedata_for_orgnr(orgnr):
     return jsonify({'data':[{
-        'loc_nr':loc.loc_nr, 'org_nr':loc.org_nr, 'loc_name':loc.loc_name, 'loc_capacity':loc.loc_capacity, 'loc_escapedata': loc.escape_count_sum, 'loc_year': loc.escape_year} for loc in session.query(
+        'loc_nr':loc.loc_nr, 'org_nr':loc.org_nr, 'loc_capacity':loc.loc_capacity, 'escape_count_sum': loc.escape_count_sum, 'year': loc.escape_year} for loc in session.query(
         Smb.org_nr,
         Location.loc_nr,
-        Location.loc_name,
         Location.loc_capacity,
         Escape.escape_count_sum,
         Escape.escape_year

@@ -8,6 +8,7 @@ import Navbar from './Components/Navbar/Navbar';
 import Miljo from './Pages/Bedrifter_miljo/Miljo';
 import Sosial from './Pages/Bedrifter_sosial/Sosial';
 import Okonomi from './Pages/Bedrifter_okonomi/Okonomi';
+import Test_Page from './Pages/Test/Test_page'
 
 
 
@@ -25,6 +26,7 @@ export default function App() {
           <Route path="/:id/sosial" id={id} element={<Sosial/>}/>
           <Route path="/:id/okonomi" id={id} element={<Okonomi/>}/>
           <Route path="/:id" id={id} element={<Bedrifter/>}/>
+          <Route path="/test" element={<Test_Page/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
