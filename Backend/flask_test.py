@@ -190,7 +190,8 @@ def get_all_deadliness_for_orgnr(orgnr):
 def get_all_licedata_for_orgnr(orgnr):
     return jsonify({'data':[{
         'loc_liceaverage': loc.lice_average, 'year': loc.lice_year} for loc in session.query(
-        func.sum(Licedata.lice_average),
+        #func.sum(Licedata.lice_average),
+        Licedata.lice_average,
         Licedata.lice_year
     ).select_from(
         Licedata
@@ -198,7 +199,7 @@ def get_all_licedata_for_orgnr(orgnr):
         Location, Licedata.loc_nr == Location.loc_nr
     ).filter(
         Location.org_nr == orgnr
-    ).group_by(Licedata.lice_year).all()
+    )#.group_by(Licedata.lice_year).all()
     ]})
 
 """
