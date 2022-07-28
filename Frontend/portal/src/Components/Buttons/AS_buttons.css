@@ -1,18 +1,26 @@
+.btn-toolbar {
+  margin-top: -2vh;;
+}
+
 .btn-toolbar button {
-    background-color:#CCDFEF; 
+    background-color: white; 
+    width: 220px;;
     border: none;
+    border: 3px solid #004785;
+    color: #004785;
+    font-weight: bold;
     border-radius: 5px;
-    font-size: 30px;
+    font-size: 23px;
     padding: 10px 24px;
     cursor: pointer;
     float: left; 
-    margin-right: 10px;
+    margin-right: 2%;
   }
   
   
   .btn-toolbar button:hover {
     background-color: #004785;    
     color: white; 
-    font-size: 30px;
+
   }
   

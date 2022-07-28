@@ -2,15 +2,27 @@ import React from 'react';
 import './Frame.css'
 
 const Frame = props => {
+/*
+    const [hover, setHover] = useState(false);
+    const onHover = () => {
+        setHover(true);
+    };
+
+    const onHover = () => {
+        setHover(false);
+    } */
+
     return (
         <div className="container-frame">
 
             <div className="overskrift-frame">
-                <p className="p-overskrift overskrift-frame"> {props.overskrift} </p>
+                <p className="p-overskrift-frame"> {props.overskrift} </p>
+                <div className="p-spørsmålstegn-frame">
+                    <p className="p-spørsmålstegn">?</p>
+                </div>
             </div>
 
             <div className="nøkkeltall-frame">
-                {props.nøkkeltall1}
             </div>
             
             <div className="tekst-til-nøkkeltall">
