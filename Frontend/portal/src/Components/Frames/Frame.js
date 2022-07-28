@@ -10,7 +10,9 @@ const Frame = props => {
             </div>
 
             <div className="nøkkeltall-frame">
-                {props.nøkkeltall1}
+                {props.nøkkeltall_en}
+                {props.nøkkeltall_to}
+                {props.nøkkeltall_tre}
             </div>
             
             <div className="tekst-til-nøkkeltall">
