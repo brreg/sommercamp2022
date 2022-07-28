@@ -13,46 +13,25 @@
   width: 35%;
 }
 
-.container_forside {
-  position: flex;
-  width: 100vw;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  font-family: "inter"
-}
 
 .column_forside {
-  float: left;
-  width: 33%;
+  width: 28%;
   padding: 0 2%;
 }
 
 .row_forside {
-  margin: 0 12%;
-  padding-top: 12%;
-}
-
-.row_forside:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-@media screen and (max-width: 600px) {
-  .column_forside {
-    width: 100%;
-    display: block;
-    margin-bottom: 20px;
-  }
+  margin: 0 5%;
+  padding-top: 5%;
+  display: flex;
+  flex-flow: wrap;
 }
 
 .card_forside {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  border: 1px solid #004785;
   padding: 16px;
   text-align: left;
-  background-color: #f1f1f1;
-  width: 600px;
+  background-color: white;
+  border-radius: 25px;
 }
 
 h1 {

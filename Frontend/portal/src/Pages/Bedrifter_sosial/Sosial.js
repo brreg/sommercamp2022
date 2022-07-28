@@ -13,7 +13,7 @@ const Sosial = () => {
         <div>
         <p className="overskrift-sosial-bedrifter">{id}</p>
         <div className="btn-floater">
-        <AS_buttons/>
+            <AS_buttons/>
         </div>
         <div className="frame-floater">
             <FramesSosial />
