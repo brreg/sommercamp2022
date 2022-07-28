@@ -1,6 +1,7 @@
 import React from 'react';
 import {useParams} from 'react-router-dom';
 import Frame from './Frame';
+import Maaltall from '../Maaltall/Maaltall'
 
 function FramesMiljo() {
     const {id} = useParams();
@@ -9,10 +10,7 @@ function FramesMiljo() {
             <div className="container-frames">
             <div className="row-frames">
                 <div className="column-frames">
-                    <Frame 
-                    overskrift="Dødlighet"
-                    nokkeltall1= {"Gjennomsnittlig " + " Tall \n"  + id }
-                    />
+                    <Frame overskrift= "Dødlighet" nøkkeltall1={<Maaltall tekst="gjennomsnittlig_lus_bedrift"/>}/>
                 </div>
                 <div className="column-frames">
                     <Frame overskrift="Rømninger"/>

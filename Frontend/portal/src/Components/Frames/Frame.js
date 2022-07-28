@@ -6,19 +6,11 @@ const Frame = props => {
         <div className="container-frame">
 
             <div className="overskrift-frame">
-                <p className="p-oversrkfit overskrift-frame"> {props.overskrift} </p>
+                <p className="p-overskrift overskrift-frame"> {props.overskrift} </p>
             </div>
 
             <div className="nøkkeltall-frame">
-                <div className="nøkkeltall">
-                    <p className="p-props tekst-nøkkeltall"> {props.nokkeltall1}</p>
-                </div>
-                <div className="nøkkeltall">
-                    <p className="p-props tekst-nøkkeltall">{props.nokkeltall2}</p>
-                </div>
-                <div className="nøkkeltall">
-                    <p className="p-props tekst-nøkkeltall">{props.nokkeltall3}</p>
-                </div>
+                {props.nøkkeltall1}
             </div>
             
             <div className="tekst-til-nøkkeltall">
