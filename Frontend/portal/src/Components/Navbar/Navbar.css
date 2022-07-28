@@ -14,13 +14,19 @@
   text-align: center;
 }
 
-.nav-a:hover {
+.navbar a:hover {
     border-bottom: 2px solid #000;
     text-decoration: none;
+    background-color: white;
 }
 
-.image {
-    object-fit: cover;
+.image-nav {
+  width: 70px;
+  padding-top: 2%;
+}
+
+.navbar-img {
+  
 }
 
 @media screen and (max-width: 500px) {
