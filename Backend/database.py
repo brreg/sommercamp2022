@@ -140,14 +140,6 @@ class Database:
             """,
 
             """
-            CREATE TABLE producers (
-                producer_id INTEGER PRIMARY KEY,
-                producer VARCHAR(255),
-                co2_ekvival FLOAT
-            )
-            """, 
-
-            """
             CREATE TABLE salmon_death (
                 ID SERIAL PRIMARY KEY,
                 loc_nr INTEGER,
@@ -158,6 +150,14 @@ class Database:
                         REFERENCES location(loc_nr)
             )
 
+            """,
+            
+            """
+            CREATE TABLE producers(
+                producer_id SERIAL PRIMARY KEY,
+                producer VARCHAR(255),
+                co2_equivalent FLOAT
+            )
             """,
 
             """
@@ -218,9 +218,7 @@ class Database:
                         REFERENCES location(loc_nr)
             )
             """,
-            
-
-           
+        
             """
             CREATE TABLE part_time(
                 ID SERIAL PRIMARY KEY,
@@ -233,7 +231,7 @@ class Database:
             )
             """
             
-            
+
         )
 
         try:
@@ -280,8 +278,6 @@ class Database:
                                 SELECT %s, %s, %s, %s, %s
                                 WHERE EXISTS (SELECT loc_nr from location where loc_nr = %s
                                 FOR SHARE);"""
-                    
-
 
                 elif (tablename == "escapes"): 
                     newtup = (lst[0], lst[1], extras.Json(lst[2]), lst[3], lst[0])
@@ -399,7 +395,8 @@ class Database:
             if self.conn is not None:
                 self.conn.close()
                 
-    
+
+        
     # Inserts address, smb and locnr data from the filename.csv and inserts it into our database
     def insert_address_smb_locnr_csv(self, filename): 
         df = pd.read_csv(filename, sep = ';')
@@ -525,9 +522,24 @@ class Database:
         dfdead = pd.DataFrame(dictdead)
         return dfdead
     
-    
-d = Database()
-d.connect()
-d.config()
-#d.create_tables()
-d.insert_part_time_data('part_time_percentages.csv')
+    def add_producers(self):
+        prods = [('Polarfeed', 2.75), ('Nutreco', 2.46), ('Ewos', 2.67), ('Biomar', 2.2)]
+        try:
+            self.conn = psycopg2.connect(
+            host="localhost",
+            database="postgres",
+            user=os.environ["database_user"],
+            password=os.environ["database_password"])
+            cur = self.conn.cursor()
+            sql = """INSERT INTO producers (producer, co2_equivalent) VALUES (%s, %s);"""
+            cur.executemany(sql, prods)
+            self.conn.commit()
+            cur.close()
+        
+        except(Exception, psycopg2.DatabaseError) as error:
+            print(error)
+
+        finally: 
+            if self.conn is not None:
+                self.conn.close()
+
