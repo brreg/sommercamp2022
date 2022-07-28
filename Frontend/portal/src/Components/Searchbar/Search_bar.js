@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Search_bar.css";
+import axios from "axios";
+
 
 function SearchBar({ placeholder}) {
 

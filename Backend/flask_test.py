@@ -182,7 +182,7 @@ def get_all_deadliness_for_orgnr(orgnr):
     ).all()
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[0], 'deadliness': tup[1]})
+        ret_list.append({'year': tup[1], 'deadliness': tup[0]})
     return jsonify({'data': ret_list})
 
 
@@ -202,14 +202,14 @@ def get_all_licedata_for_orgnr(orgnr):
     ).all()
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[0], 'year_avg_lice': tup[1]})
+        ret_list.append({'year': tup[1], 'year_avg_lice': tup[0]})
     return jsonify({'data': ret_list})
  
 #Endpoint to get escape data on orgnr level
 @app.route('/orgs/<orgnr>/escapedata')
 def get_all_escapedata_for_orgnr(orgnr):
     result = session.query(
-        func.avg(Escape.escape_count_sum),
+        func.sum(Escape.escape_count_sum),
         Escape.escape_year
     ).select_from(
         Escape
@@ -222,5 +222,5 @@ def get_all_escapedata_for_orgnr(orgnr):
     ).all()
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[0], 'escape_count_sum': tup[1]})
+        ret_list.append({'year': tup[1], 'escape_count_sum': tup[0]})
     return jsonify({'data': ret_list})

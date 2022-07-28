@@ -15,12 +15,12 @@ const Test_Page = () => {
         <div className="btn-floater">
             <AS_buttons/>
         </div>
+        <div></div>
         <div className="frame-floater">
             <Death org_nr="886813082"/>
         </div>
         </div>
     )  
-
     }
 
 export default Test_Page;

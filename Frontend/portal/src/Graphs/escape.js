@@ -21,7 +21,7 @@ ChartJS.register(
 );
 
 
-const Death = props => {
+const Escape = props => {
 
     const [chartData, setChartData] = useState({
         datasets: [],
@@ -32,23 +32,23 @@ const Death = props => {
 
     useEffect(() => {
 
-        let deadliness = []
+        let escapes = []
         let year = []
         
-        //axios.get("http://127.0.0.1:5000/orgs/886813082/deadliness")
-        axios.get(`http://127.0.0.1:5000/orgs/${props.org_nr}/deadliness`)
+        //axios.get("http://127.0.0.1:5000/orgs/886813082/escapedata")
+        axios.get(`http://127.0.0.1:5000/orgs/${props.org_nr}/escapedata`)
         .then( res=> {
             console.log(res)
             for (const dataObj of res.data.data) {
-                deadliness.push(parseInt(dataObj.deadliness))
+                escapes.push(parseInt(dataObj.escape_count_sum))
                 year.push(parseFloat(dataObj.year))
             }
             setChartData({
                 labels: year,
                 datasets: [
                     {
-                        label: "Deadliness",
-                        data: deadliness,
+                        label: "Escapes",
+                        data: escapes,
                         borderColor: "rgb(53, 162, 235)",
                         backgroundColor: "rgb(53, 162, 235, 0.4)",
                     },
@@ -69,16 +69,16 @@ const Death = props => {
                 },
                 title: {
                     display: true,
-                    text: "Deadliness data"
+                    text: "Escape data"
                 }
             }
         })
     }, []);
 
     return (
-        <div className="death">
+        <div className="escape">
             <Bar options={chartOptions} data={chartData} />
         </div>
     )
 }
-export default Death;
+export default Escape;

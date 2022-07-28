@@ -21,7 +21,7 @@ ChartJS.register(
 );
 
 
-const Death = props => {
+const Lice = props => {
 
     const [chartData, setChartData] = useState({
         datasets: [],
@@ -32,23 +32,23 @@ const Death = props => {
 
     useEffect(() => {
 
-        let deadliness = []
+        let licedata = []
         let year = []
         
         //axios.get("http://127.0.0.1:5000/orgs/886813082/deadliness")
-        axios.get(`http://127.0.0.1:5000/orgs/${props.org_nr}/deadliness`)
+        axios.get(`http://127.0.0.1:5000/orgs/${props.org_nr}/licedata`)
         .then( res=> {
             console.log(res)
             for (const dataObj of res.data.data) {
-                deadliness.push(parseInt(dataObj.deadliness))
-                year.push(parseFloat(dataObj.year))
+                licedata.push(parseFloat(dataObj.year_avg_lice))
+                year.push(parseInt(dataObj.year))
             }
             setChartData({
                 labels: year,
                 datasets: [
                     {
-                        label: "Deadliness",
-                        data: deadliness,
+                        label: "Licedata",
+                        data: licedata,
                         borderColor: "rgb(53, 162, 235)",
                         backgroundColor: "rgb(53, 162, 235, 0.4)",
                     },
@@ -69,16 +69,16 @@ const Death = props => {
                 },
                 title: {
                     display: true,
-                    text: "Deadliness data"
+                    text: "Lice data"
                 }
             }
         })
     }, []);
 
     return (
-        <div className="death">
+        <div className="lice">
             <Bar options={chartOptions} data={chartData} />
         </div>
     )
 }
-export default Death;
+export default Lice;
