@@ -2,7 +2,6 @@ import json
 from flask import Flask, jsonify
 from flask_cors import CORS
 from sqlalchemy.ext.automap import automap_base
-from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
@@ -43,7 +42,7 @@ class Areal(Base):
 class PartTime(Base):
     __tablename__='part_time'
 
-engine = create_engine('postgresql://'+os.environ["database_user"]+':'+os.environ["database_password"]+'@localhost:5432/postgres')
+engine = create_engine('postgresql+psycopg2://'+os.environ["database_user"]+':'+os.environ["database_password"]+'@localhost:5432/postgres')
 Base.prepare(autoload_with=engine)
 session = Session(engine)
 
@@ -137,6 +136,7 @@ def get_one_orgdata(orgnr):
         'org_nr':org.org_nr, 'org_name': org.org_name, 'org_address_id':org.org_address_id} for org in session.query(Smb).filter(Smb.org_nr==orgnr)
     ]})
 
+
 #Endpoint to get all areal data
 @app.route('/locations/areal/')
 def get_all_areals():
@@ -165,33 +165,31 @@ def get__parttime(locnr):
         'id': loc.id, 'loc_nr': loc.loc_nr, 'part_time_percentage':loc.part_time_percentage} for loc in session.query(PartTime).filter(PartTime.loc_nr==locnr)
     ]})
 
-
 #Endpoint to get deadliness data on orgnr level
 @app.route('/orgs/<orgnr>/deadliness')
 def get_all_deadliness_for_orgnr(orgnr):
-    return jsonify({'data':[{
-        'loc_nr':loc.loc_nr, 'org_nr':loc.org_nr, 'loc_capacity':loc.loc_capacity, 'loc_deadliness': loc.death_nr, 'loc_year': loc.death_year} for loc in session.query(
-        Smb.org_nr,
-        Location.loc_nr,
-        Location.loc_capacity,
-        Deadliness.death_nr,
+    result = session.query(
+        func.avg(Deadliness.death_nr),
         Deadliness.death_year
+    ).select_from(
+        Deadliness
+    ).join(
+        Location, Deadliness.loc_nr == Location.loc_nr
     ).filter(
-        Smb.org_nr == orgnr
-    ).join(
-        Location, Smb.org_nr == Location.org_nr
-    ).join(
-        Deadliness, Location.loc_nr == Deadliness.loc_nr
-    )
-    ]})
+        Location.org_nr == orgnr
+    ).group_by(
+        Deadliness.death_year
+    ).all()
+    ret_list = []
+    for tup in result:
+        ret_list.append({'year': tup[0], 'deadliness': tup[1]})
+    return jsonify({'data': ret_list})
 
 
 @app.route('/orgs/<orgnr>/licedata')
 def get_all_licedata_for_orgnr(orgnr):
-    return jsonify({'data':[{
-        'loc_liceaverage': loc.lice_average, 'year': loc.lice_year} for loc in session.query(
-        #func.sum(Licedata.lice_average),
-        Licedata.lice_average,
+    result = session.query(
+        func.avg(Licedata.lice_average),
         Licedata.lice_year
     ).select_from(
         Licedata
@@ -199,41 +197,30 @@ def get_all_licedata_for_orgnr(orgnr):
         Location, Licedata.loc_nr == Location.loc_nr
     ).filter(
         Location.org_nr == orgnr
-    )#.group_by(Licedata.lice_year).all()
-    ]})
-
-"""
-session.query(
-        #Smb.org_nr,
-        #Licedata.lice_average,
-        func.sum(Licedata.lice_average),
+    ).group_by(
         Licedata.lice_year
-    ).select_from(
-        Licedata
-    ).join(
-        Location, Licedata.loc_nr == Location.loc_nr
-    ).filter(
-        Location.org_nr == orgnr
-    ).group_by(Licedata.lice_year)
-"""
+    ).all()
+    ret_list = []
+    for tup in result:
+        ret_list.append({'year': tup[0], 'year_avg_lice': tup[1]})
+    return jsonify({'data': ret_list})
+ 
 #Endpoint to get escape data on orgnr level
 @app.route('/orgs/<orgnr>/escapedata')
 def get_all_escapedata_for_orgnr(orgnr):
-    return jsonify({'data':[{
-        'loc_nr':loc.loc_nr, 'org_nr':loc.org_nr, 'loc_capacity':loc.loc_capacity, 'escape_count_sum': loc.escape_count_sum, 'year': loc.escape_year} for loc in session.query(
-        Smb.org_nr,
-        Location.loc_nr,
-        Location.loc_capacity,
-        Escape.escape_count_sum,
+    result = session.query(
+        func.avg(Escape.escape_count_sum),
         Escape.escape_year
+    ).select_from(
+        Escape
+    ).join(
+        Location, Escape.loc_nr == Location.loc_nr
     ).filter(
-        Smb.org_nr == orgnr
-    ).join(
-        Location, Smb.org_nr == Location.org_nr
-    ).join(
-        Escape, Location.loc_nr == Escape.loc_nr
-    )
-    ]})
-
-
-    
+        Location.org_nr == orgnr
+    ).group_by(
+        Escape.escape_year
+    ).all()
+    ret_list = []
+    for tup in result:
+        ret_list.append({'year': tup[0], 'escape_count_sum': tup[1]})
+    return jsonify({'data': ret_list})
