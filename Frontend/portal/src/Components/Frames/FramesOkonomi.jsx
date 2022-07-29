@@ -10,13 +10,13 @@ function FramesOkonomi() {
             <div className="container-frames">
             <div className="row-frames">
                 <div className="column-frames">
-                    <Frame overskrift= "Soliditet" nøkkeltall_en={<Nokkeltall/>} nøkkeltall_to={<Nokkeltall/>}/>
+                    <Frame overskrift= "Soliditet"/>
                 </div>
                 <div className="column-frames">
-                    <Frame overskrift="Likviditet" nøkkeltall_en={<Nokkeltall/>} nøkkeltall_to={<Nokkeltall/>}/>
+                    <Frame overskrift="Likviditet"/>
                 </div>
                 <div className="column-frames">
-                    <Frame overskrift="Lønnsomhet" nøkkeltall_en={<Nokkeltall/>} nøkkeltall_to={<Nokkeltall/>}/>
+                    <Frame overskrift="Lønnsomhet"/>
                 </div>
             </div>
         </div>

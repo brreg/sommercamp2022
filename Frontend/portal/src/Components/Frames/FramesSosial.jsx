@@ -10,10 +10,10 @@ function FramesSosial() {
             <div className="container-frames">
             <div className="row-frames">
                 <div className="column-frames">
-                    <Frame overskrift= "Kjønnsfordeling" nøkkeltall_en={<Nokkeltall/>} nøkkeltall_to={<Nokkeltall/>} />
+                    <Frame overskrift= "Kjønnsfordeling"/>
                 </div>
                 <div className="column-frames">
-                    <Frame overskrift="Arealbruk" nøkkeltall_en={<Nokkeltall/>} nøkkeltall_to={<Nokkeltall/>}/>
+                    <Frame overskrift="Arealbruk"/>
                 </div>
                 <div className="column-frames">
                     <Frame overskrift="Deltidsprosent" nøkkeltall_en={<Nokkeltall/>} nøkkeltall_to={<Nokkeltall/>}/>

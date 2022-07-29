@@ -26,7 +26,6 @@ const Frame = props => {
            
                 {props.nøkkeltall_en}
                 {props.nøkkeltall_to}
-                {props.nøkkeltall_tre}
             </div>
             
             <div className="tekst-til-nøkkeltall">
@@ -35,7 +34,7 @@ const Frame = props => {
 
             <div>
                 <div className="graf-frame">
-                    <p className="p-graf">{props.graph}</p>
+                    {props.graph}
                 </div>
                 <div className="tekstboks-frame">
                     <p className="p-tekst">
