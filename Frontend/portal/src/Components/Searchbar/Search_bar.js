@@ -48,11 +48,11 @@ function SearchBar({ placeholder}) {
   
   const navigate = useNavigate();
   
-  function fillName(event) {
-    const fillSearch = event.target.textContent; 
-    console.log(fillSearch)
-    setWordEntered(fillSearch);
-    navigate(fillSearch);
+  function fillName(org_nr) {
+    //const fillSearch = target.value; 
+    console.log(org_nr)
+    setWordEntered(org_nr);
+    navigate(`/${org_nr}`);
   }
 
   useEffect(() => {
@@ -81,7 +81,7 @@ function SearchBar({ placeholder}) {
         <div className="dataResult">
           {filteredData.slice(0, 15).map((value, key) => {
             return (
-              <a className="dataItem" onClick={fillName}>
+              <a className="dataItem" key={key} onClick={() => fillName(value.org_nr)}>
                 <p> {value.org_name} </p>
               </a>
             );
