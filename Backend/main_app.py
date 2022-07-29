@@ -25,14 +25,16 @@ def main():
     db = Database()
     db.connect()
     db.config()
-    db.create_tables()
-    db.insert_address_smb_locnr_csv(filename)
+    #db.create_tables()
+    #db.insert_address_smb_locnr_csv(filename)
 
-    bapi = API()
+    #bapi = API()
     #locnrs = bapi.get_locnrs()[0:50]
     locnrs = [29276, 20776, 18015, 20595, 25835, 29336, 11611, 32877, 24735, 28976, 11651, 
     13563, 26595, 13641, 13653, 11758, 11687, 11690, 11649, 13209, 13823, 12131]
     years = [2017, 2018, 2019, 2020, 2021]#[0:1]
+    
+
 
     #### Inserting all lice data into database, for each year and each location number
     #licedata_container = bapi.get_many_lice_data(locnrs, years)
@@ -58,6 +60,15 @@ def main():
     #rdcontainer = rapi.get_many_nokkeltall(orgnrs, years)
     #df_regnskap = rdcontainer.get_dataframe()
     #db.insert_data(df_regnskap, "key_financial_figures")
+    
+    ###Generating and inserting co2 data. Needs to use dfas and dfdead
+    #db.add_producers()
+    dfas = db.getasdata('as.csv') 
+    #print(dfas)
+    dfdead = db.generate_deadliness_data(locnrs, 'as.csv', 2017)
+    #print(dfdead)
+    co2df = db.generate_co2_data(locnrs, years, dfas, dfdead)
+    db.insert_data(co2df, 'greenhouse_gas_emissions')
 
     db.insert_areal_data("arealbruk3.csv")
 
