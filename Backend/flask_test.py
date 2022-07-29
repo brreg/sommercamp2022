@@ -42,6 +42,9 @@ class Areal(Base):
 class PartTime(Base):
     __tablename__='part_time'
 
+class Co2Emissions(Base):
+    __tablename__='greenhouse_gas_emissions'
+
 engine = create_engine('postgresql+psycopg2://'+os.environ["database_user"]+':'+os.environ["database_password"]+'@localhost:5432/postgres')
 Base.prepare(autoload_with=engine)
 session = Session(engine)
@@ -164,6 +167,29 @@ def get__parttime(locnr):
     return jsonify({'data':[{
         'id': loc.id, 'loc_nr': loc.loc_nr, 'part_time_percentage':loc.part_time_percentage} for loc in session.query(PartTime).filter(PartTime.loc_nr==locnr)
     ]})
+
+#Endpoint to get co2emission data on orgnr
+@app.route('/orgs/<orgnr>/co2emissions/')
+def get__co2emissions(orgnr):
+    result=session.query(
+        Co2Emissions.year,
+        func.sum(Co2Emissions.co2e_feed),
+        func.sum(Co2Emissions.co2e_transport)
+    ).select_from(
+        Co2Emissions
+    ).join(
+        Location, Co2Emissions.loc_nr == Location.loc_nr
+    ).filter(
+        Location.org_nr==orgnr
+    ).group_by(
+        Co2Emissions.year
+    ).all()
+    ret_list=[]
+    for tup in result:
+        ret_list.append({'year': tup[0], 'co2emissions_feed_sum': tup[1], 'co2emissions_transport_sum': tup[2]}) 
+    return jsonify({'data': ret_list})
+    
+
 
 #Endpoint to get deadliness data on orgnr level
 @app.route('/orgs/<orgnr>/deadliness')

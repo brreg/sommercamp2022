@@ -1,8 +1,9 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import "./Sosial.css";
 import { useNavigate, useParams } from "react-router-dom";
 import AS_buttons from "../../Components/Buttons/AS_buttons";
 import FramesSosial from "../../Components/Frames/FramesSosial";
+import Header from "../../Components/Header/Header";
 
 
 const Sosial = () => {
@@ -11,7 +12,9 @@ const Sosial = () => {
 
     return (
         <div>
-        <p className="overskrift-sosial-bedrifter">{id}</p>
+            <div>
+                <Header id={id}/>
+            </div>
         <div className="btn-floater">
             <AS_buttons/>
         </div>

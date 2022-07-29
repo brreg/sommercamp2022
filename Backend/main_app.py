@@ -25,8 +25,8 @@ def main():
     db = Database()
     db.connect()
     db.config()
-    #db.create_tables()
-    #db.insert_address_smb_locnr_csv(filename)
+    db.create_tables()
+    db.insert_address_smb_locnr_csv(filename)
 
     #bapi = API()
     #locnrs = bapi.get_locnrs()[0:50]
@@ -54,13 +54,16 @@ def main():
     #     print(dfdead)
     #     db.insert_data(dfdead, "salmon_death")
     
+
     #rapi = RegnskapsAPI()
     #orgnrs = rapi.get_orgnrs()[0:50]
+    #orgnrs = [886813082]
     #rdcontainer = rapi.get_many_nokkeltall(orgnrs, years)
     #df_regnskap = rdcontainer.get_dataframe()
     #db.insert_data(df_regnskap, "key_financial_figures")
     
     ###Generating and inserting co2 data. Needs to use dfas and dfdead
+
     #db.add_producers()
     dfas = db.getasdata('as.csv') 
     #print(dfas)
@@ -72,5 +75,5 @@ def main():
     ###Generate and insert gender data:
     df_gender = db.generate_social_figures(years)
     db.insert_data(df_gender, 'social_figures')
-    
+
 main()
