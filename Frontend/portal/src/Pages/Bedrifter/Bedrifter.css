@@ -1,7 +1,12 @@
 .overskrift-generell-bedrifter {
-  font-size: 40px;
+  font-size: 32px;
+  font-weight: 700;
+  font-family: sans-serif;
   padding: 3%;
   margin: -1%;
+}
+
+.header-container {
 }
 
 .btn-floater {
