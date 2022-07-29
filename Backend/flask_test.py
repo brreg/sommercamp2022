@@ -182,7 +182,7 @@ def get_all_deadlinesspercent_for_orgnr(orgnr):
     ).all() #
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[0], 'death percentage': tup[1]}) 
+        ret_list.append({'year': tup[0], 'death_percentage': tup[1]}) 
     return jsonify({'data': ret_list})
 
 @app.route('/orgs/<orgnr>/licedata')

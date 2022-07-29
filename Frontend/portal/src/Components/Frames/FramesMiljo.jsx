@@ -22,7 +22,7 @@ function FramesMiljo() {
             <div>{value}</div>
             <div className="row-frames">
                 <div className="column-frames">
-                    <Frame overskrift= "Dødlighet" nøkkeltall_en={<Nokkeltall id={id}/>} nøkkeltall_to={<Nokkeltall kpi="gjennomsnittlig dødlighet" id={id}/>}/>
+                    <Frame overskrift= "Dødlighet" nøkkeltall_en={<Nokkeltall id={id}/>} nøkkeltall_to={<Nokkeltall kpi="gjennomsnittlig dødlighet" id={id}/>} graph={<Death org_nr="886813082"/>}/>
                 </div>
                 <div className="column-frames">
                     <Frame overskrift="Rømninger" nøkkeltall_en={<Nokkeltall id={id}/>} nøkkeltall_to={<Nokkeltall id={id}/>} graph={<Escape org_nr="886813082"/>}/>
