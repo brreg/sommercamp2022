@@ -6,7 +6,7 @@
     box-shadow: 0px 0px 8px 3px rgba(0, 0, 0, 0.25);
     border-radius: 25px;
     width: 100%;
-    height: 800px;
+    height: flex;
 }
 
 .row-frames {
@@ -23,22 +23,13 @@
 .nøkkeltall-frame {
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-between;
     padding-left: 5%;
-    padding-right: 5%;
 }
 
-.nøkkeltall {
-    border-radius: 10px;
-    background-color: #ccdfef;
-    width: 170px;
-    height: 170px;;
-
-}
 
 .graf-frame {
     width: 90%;
-    height: 400px;
+    height: flex;
     border: 1px solid black;
     margin-left: 5%;
     text-align: center;
@@ -64,16 +55,11 @@
     margin-top: 2.3%;
 }
 
-.p-spørsmålstegn-frame:hover {
-    
-}
-
 .p-spørsmålstegn {
     border: 2px solid black;
     border-radius: 100%;
     padding: 0.3vh 0.6vh;
 }
-
 
 .p-tekst {
     font-size: 16px;;
@@ -81,6 +67,7 @@
 
 .tekstboks-frame {
     margin-left: 5%;
+    height: 150px;
 }
 
 .tekst-til-nøkkeltall {
