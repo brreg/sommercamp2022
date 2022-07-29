@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Search_bar.css";
+import axios from "axios";
+
 
 function SearchBar({ placeholder}) {
 
@@ -61,7 +63,7 @@ function SearchBar({ placeholder}) {
   return (
     <div className="search">
       <div className="searchInputs">
-        <input
+        <input className= "input"
           type="text"
           placeholder={placeholder}
           value={wordEntered}

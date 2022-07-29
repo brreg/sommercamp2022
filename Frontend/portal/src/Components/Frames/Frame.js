@@ -35,7 +35,7 @@ const Frame = props => {
 
             <div>
                 <div className="graf-frame">
-                    <p className="p-graf">Props Testgraf</p>
+                    <p className="p-graf">{props.graph}</p>
                 </div>
                 <div className="tekstboks-frame">
                     <p className="p-tekst">

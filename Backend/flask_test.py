@@ -167,10 +167,10 @@ def get__parttime(locnr):
 
 #Endpoint to get deadliness data on orgnr level
 @app.route('/orgs/<orgnr>/deadliness')
-def get_all_deadliness_for_orgnr(orgnr):
+def get_all_deadlinesspercent_for_orgnr(orgnr):
     result = session.query(
-        func.avg(Deadliness.death_nr),
-        Deadliness.death_year
+        Deadliness.death_year,
+        func.sum(Deadliness.death_nr)/func.sum(Location.loc_capacity)
     ).select_from(
         Deadliness
     ).join(
@@ -179,12 +179,11 @@ def get_all_deadliness_for_orgnr(orgnr):
         Location.org_nr == orgnr
     ).group_by(
         Deadliness.death_year
-    ).all()
+    ).all() #
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[0], 'deadliness': tup[1]})
+        ret_list.append({'year': tup[0], 'death_percentage': tup[1]}) 
     return jsonify({'data': ret_list})
-
 
 @app.route('/orgs/<orgnr>/licedata')
 def get_all_licedata_for_orgnr(orgnr):
@@ -202,14 +201,14 @@ def get_all_licedata_for_orgnr(orgnr):
     ).all()
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[0], 'year_avg_lice': tup[1]})
+        ret_list.append({'year': tup[1], 'year_avg_lice': tup[0]})
     return jsonify({'data': ret_list})
  
 #Endpoint to get escape data on orgnr level
 @app.route('/orgs/<orgnr>/escapedata')
 def get_all_escapedata_for_orgnr(orgnr):
     result = session.query(
-        func.avg(Escape.escape_count_sum),
+        func.sum(Escape.escape_count_sum),
         Escape.escape_year
     ).select_from(
         Escape
@@ -222,5 +221,5 @@ def get_all_escapedata_for_orgnr(orgnr):
     ).all()
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[0], 'escape_count_sum': tup[1]})
+        ret_list.append({'year': tup[1], 'escape_count_sum': tup[0]})
     return jsonify({'data': ret_list})

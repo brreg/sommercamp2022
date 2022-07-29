@@ -38,6 +38,7 @@ def main():
     #licedata_container = bapi.get_many_lice_data(locnrs, years)
     #df = licedata_container.getDataFrame()
     #db.insert_data(df, "salmonoid_lice") 
+    #db.insert_lice_limit("hello")
 
     #### Inserting all escape data into database
     #edcontainer = bapi.get_many_escape_data(locnrs, years)
@@ -46,9 +47,10 @@ def main():
     #db.insert_data(eddf, "escapes")
     
     ### Generating all deadliness data and inserting into database
-    #dfdead = db.generate_deadliness_data(locnrs, filename, 2017)
-    #print(dfdead)
-    #db.insert_data(dfdead, "salmon_death")
+    for year in years:
+        dfdead = db.generate_deadliness_data(locnrs, "smb.csv", year)
+        print(dfdead)
+        db.insert_data(dfdead, "salmon_death")
     
     #rapi = RegnskapsAPI()
     #orgnrs = rapi.get_orgnrs()[0:50]

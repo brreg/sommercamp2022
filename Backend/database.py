@@ -453,7 +453,7 @@ class Database:
     #Updates lice-table to includ licelimit
     def insert_lice_limit(self, filename):
         
-        df = pd.read_csv(filename)
+        df = pd.read_csv("lice_limit.csv")#(filename)
         t = list(df.itertuples(index=False, name=None))
         data = []
         for tup in t:

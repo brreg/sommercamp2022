@@ -34,14 +34,15 @@ class Escapedata:
         for week in data:
             for escape in week['escapes']:
                 ## add to total escapes and total captures
-                escape_count_total += escape['count']
-                captured_total += escape['recapturesCompleted']
+                if (escape['count'] is not None):
+                    escape_count_total += escape['count']
+                    captured_total += escape['recapturesCompleted']
 
-                ## add an escape event with only the data we want to keep to our list
-                modified_escape_event = {'week': escape['week'], 'loc_capacity': escape['localityCapacity'],
+                    ## add an escape event with only the data we want to keep to our list
+                    modified_escape_event = {'week': escape['week'], 'loc_capacity': escape['localityCapacity'],
                                         'count': escape['count'], 'recaptures_completed': escape['recapturesCompleted'],
                                         'escape_description': escape['description']}
-                escape_events.append(modified_escape_event)
+                    escape_events.append(modified_escape_event)
 
         ## returning a total count of escapes and a list of escape events with descriptions
         ## will usually only be one element in escape_events list. 
