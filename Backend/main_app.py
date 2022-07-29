@@ -49,10 +49,10 @@ def main():
     #db.insert_data(eddf, "escapes")
     
     ### Generating all deadliness data and inserting into database
-    for year in years:
-        dfdead = db.generate_deadliness_data(locnrs, "smb.csv", year)
-        print(dfdead)
-        db.insert_data(dfdead, "salmon_death")
+    # for year in years:
+    #     dfdead = db.generate_deadliness_data(locnrs, "smb.csv", year)
+    #     print(dfdead)
+    #     db.insert_data(dfdead, "salmon_death")
     
     #rapi = RegnskapsAPI()
     #orgnrs = rapi.get_orgnrs()[0:50]
@@ -64,11 +64,13 @@ def main():
     #db.add_producers()
     dfas = db.getasdata('as.csv') 
     #print(dfas)
-    dfdead = db.generate_deadliness_data(locnrs, 'as.csv', 2017)
+    #dfdead = db.generate_deadliness_data(locnrs, 'as.csv', 2017)
     #print(dfdead)
-    co2df = db.generate_co2_data(locnrs, years, dfas, dfdead)
-    db.insert_data(co2df, 'greenhouse_gas_emissions')
+    #co2df = db.generate_co2_data(locnrs, years, dfas, dfdead)
+    #db.insert_data(co2df, 'greenhouse_gas_emissions')
 
-    #print(co2df)
+    ###Generate and insert gender data:
+    df_gender = db.generate_social_figures(years)
+    db.insert_data(df_gender, 'social_figures')
     
 main()
