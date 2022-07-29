@@ -167,10 +167,10 @@ def get__parttime(locnr):
 
 #Endpoint to get deadliness data on orgnr level
 @app.route('/orgs/<orgnr>/deadliness')
-def get_all_deadliness_for_orgnr(orgnr):
+def get_all_deadlinesspercent_for_orgnr(orgnr):
     result = session.query(
-        func.avg(Deadliness.death_nr),
-        Deadliness.death_year
+        Deadliness.death_year,
+        func.sum(Deadliness.death_nr)/func.sum(Location.loc_capacity)
     ).select_from(
         Deadliness
     ).join(
@@ -179,12 +179,11 @@ def get_all_deadliness_for_orgnr(orgnr):
         Location.org_nr == orgnr
     ).group_by(
         Deadliness.death_year
-    ).all()
+    ).all() #
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[1], 'deadliness': tup[0]})
+        ret_list.append({'year': tup[0], 'death percentage': tup[1]}) 
     return jsonify({'data': ret_list})
-
 
 @app.route('/orgs/<orgnr>/licedata')
 def get_all_licedata_for_orgnr(orgnr):
