@@ -47,16 +47,18 @@ def main():
     #db.insert_data(eddf, "escapes")
     
     ### Generating all deadliness data and inserting into database
-    for year in years:
+    """for year in years:
         dfdead = db.generate_deadliness_data(locnrs, "smb.csv", year)
         print(dfdead)
         db.insert_data(dfdead, "salmon_death")
-    
+    """
     #rapi = RegnskapsAPI()
     #orgnrs = rapi.get_orgnrs()[0:50]
+    #orgnrs = [886813082]
     #rdcontainer = rapi.get_many_nokkeltall(orgnrs, years)
     #df_regnskap = rdcontainer.get_dataframe()
     #db.insert_data(df_regnskap, "key_financial_figures")
 
+    db.insert_areal_data("arealbruk3.csv")
 
 main()
