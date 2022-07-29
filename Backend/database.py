@@ -12,7 +12,7 @@ import math
 import time
 import random
 
-filename = '/Users/ingunn/Documents/GitHub/sommercamp2022/Dataanalyse/smb.csv'
+#filename = '/Users/ingunn/Documents/GitHub/sommercamp2022/Dataanalyse/smb.csv'
 
 class Database:
 
@@ -46,7 +46,6 @@ class Database:
             
                 print("connect",error)
             
-
         finally:
             if self.conn is not None:
                 self.conn.close()
@@ -162,21 +161,13 @@ class Database:
 
             """
             CREATE TABLE greenhouse_gas_emissions (
-                ID SERIAL PRIMARY KEY,
+                producer_id INTEGER,
                 loc_nr INTEGER,
                 year VARCHAR(8),
-                producer_id INTEGER,
-                eFcr FLOAT,
-                production FLOAT,
+                producer VARCHAR(255),
                 co2e_feed FLOAT,
                 co2e_transport FLOAT,
-                CONSTRAINT fk_loc_nr
-                    FOREIGN KEY(loc_nr)
-                        REFERENCES location(loc_nr),
-                CONSTRAINT fk_producer_id
-                    FOREIGN KEY(producer_id)
-                        REFERENCES producers(producer_id)
-              
+                PRIMARY KEY (loc_nr, year)
             )
             """, 
 
@@ -299,9 +290,15 @@ class Database:
                                 SELECT %s, %s, %s, %s, %s
                                 WHERE EXISTS (SELECT org_nr from smb where org_nr = %s
                                 FOR SHARE);"""
+                elif (tablename == 'greenhouse_gas_emissions'):
+                    newtup =(lst[0], lst[1], lst[2], lst[3], lst[4], lst[5], lst[1])
+                    stmt = """INSERT INTO greenhouse_gas_emissions(producer_id, loc_nr, year, producer, co2e_feed, co2e_transport)
+                    SELECT %s, %s, %s, %s, %s, %s
+                    WHERE EXISTS (SELECT loc_nr from location where loc_nr = %s
+                    FOR SHARE);"""
                 
                 else: 
-                    print("Tablename should be salmonoid_lice, salmon_death, key_financial_figures or escape")
+                    print("Tablename should be salmonoid_lice, salmon_death, key_financial_figures, greenhouse_gas_emmisions or escape")
                     break
 
                 cursor = self.conn.cursor()
@@ -368,7 +365,7 @@ class Database:
                 
                     
                 
-    #Insert data describing part time from CSV-file with data 
+    #Insert data describing part time from CSV-file with data
     def insert_part_time_data(self, filename):
         df = pd.read_csv(filename)
         t = list(df.itertuples(index=False, name=None))
@@ -395,6 +392,32 @@ class Database:
             if self.conn is not None:
                 self.conn.close()
                 
+    def getasdata(self, filename):
+        dfas = pd.read_csv(filename, sep = ';')
+        dfas['LOK_KAP'] = dfas['LOK_KAP'].str.replace(',','.')
+        return dfas
+    
+    
+    def add_producers(self):
+        prods = [('Polarfeed', 2.75), ('Nutreco', 2.46), ('Ewos', 2.67), ('Biomar', 2.2)]
+        try:
+            self.conn = psycopg2.connect(
+            host="localhost",
+            database="postgres",
+            user=os.environ["database_user"],
+            password=os.environ["database_password"])
+            cur = self.conn.cursor()
+            sql = """INSERT INTO producers (producer, co2_equivalent) VALUES (%s, %s);"""
+            cur.executemany(sql, prods)
+            self.conn.commit()
+            cur.close()
+        
+        except(Exception, psycopg2.DatabaseError) as error:
+            print(error)
+
+        finally: 
+            if self.conn is not None:
+                self.conn.close()                
 
         
     # Inserts address, smb and locnr data from the filename.csv and inserts it into our database
@@ -450,7 +473,7 @@ class Database:
             if self.conn is not None:
                 self.conn.close()
     
-    #Updates lice-table to includ licelimit
+    #Updates lice-table to include licelimit
     def insert_lice_limit(self, filename):
         
         df = pd.read_csv("lice_limit.csv")#(filename)
@@ -481,6 +504,72 @@ class Database:
         finally: 
             if self.conn is not None:
                 self.conn.close()
+    
+    #Returns dataframe with co2 data
+    def generate_co2_data(self, locnrs, years, dfas, dfdead):
+        feedProducerskgco2 = {'Polarfeed': 2.75, 'Nutreco': 2.46, 'Ewos': 2.67, 'Biomar': 2.2}
+        
+        dfas = pd.read_csv('as.csv', sep = ';')
+        dfas['LOK_KAP'] = dfas['LOK_KAP'].str.replace(',','.')
+
+        totalgood = 0
+        totalfail = 0
+        locnrmedas = []
+        for i in locnrs:
+            if len(dfas.loc[dfas['LOK_NR'] == i]) == 1:
+                totalgood += 1
+                locnrmedas.append(i)
+            else:
+                totalfail +=1
+        
+        
+        for i in locnrmedas:
+            enhet = dfas.loc[dfas['LOK_NR'] == i]['LOK_ENHET'].values[0]        
+        
+            if enhet == 'STK':
+                konvertert = int(int(dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0])*5)/1000
+                dfas['LOK_KAP'][dfas.loc[dfas['LOK_NR']==i].index[0]] = konvertert
+                dfas['LOK_ENHET'][dfas.loc[dfas['LOK_NR']==i].index[0]] = 'TN'
+            elif enhet == 'KG':
+                konvertert = int(int(dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0])/1000)
+                dfas['LOK_KAP'][dfas.loc[dfas['LOK_NR']==i].index[0]] = konvertert
+                dfas['LOK_ENHET'][dfas.loc[dfas['LOK_NR']==i].index[0]] = 'TN'
+            elif enhet == 'M3':
+                konvertert = int(int(dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0])*0.005)
+                dfas['LOK_KAP'][dfas.loc[dfas['LOK_NR']==i].index[0]] = konvertert
+                dfas['LOK_ENHET'][dfas.loc[dfas['LOK_NR']==i].index[0]] = 'TN'
+    
+        
+        res = []
+        
+        for year in years:
+            for loc in locnrs:
+        
+                producer, co2e = random.choice(list(feedProducerskgco2.items()))
+                
+                if producer == 'Polarfeed':
+                    producer_id = 1
+                elif producer == 'Nutreco':
+                    producer_id = 2
+                elif producer == 'Ewos':
+                    producer_id = 3
+                else:
+                    producer_id = 4
+
+                efcrR = round(random.triangular(0.86, 1.57, 1.32),2)
+        
+                kapasitet = dfas.loc[dfas['LOK_NR'] == loc]['LOK_KAP'].values[0]
+                deadlighet = dfdead.loc[dfdead['LOK_NR'] == loc]['Deadlighet'].values[0]
+
+                produksjon = 1000*(round((float(kapasitet)-float(deadlighet))*0.67))
+        
+                forco2e = round(((produksjon * efcrR)*co2e)/1000)
+                produksjonco2e = round((0.135*((produksjon*random.triangular(0.75,1,1.25))*2.66))/1000)
+                dictsosial = {'producer_id':producer_id, 'loc_nr':loc,'year': year,'producer':producer, 'co2e_feed': forco2e, 'co2e_production': produksjonco2e}
+                res.append(dictsosial)
+        dfmiljo = pd.DataFrame(res)
+        print(dfmiljo.shape)
+        return dfmiljo      
 
     def generate_deadliness_data(self, locnrs, filename, year): 
         #years = 2017,2018,2019,2020,2021
@@ -504,7 +593,7 @@ class Database:
             #kapasitet = dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0]
             
             if enhet == 'STK':
-                konvertert = int(int(dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0])/5)
+                konvertert = int(int(dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0])*5)/1000
                 dfas['LOK_KAP'][dfas.loc[dfas['LOK_NR']==i].index[0]] = konvertert
                 dfas['LOK_ENHET'][dfas.loc[dfas['LOK_NR']==i].index[0]] = 'TN'
             elif enhet == 'KG':
@@ -522,24 +611,3 @@ class Database:
         dfdead = pd.DataFrame(dictdead)
         return dfdead
     
-    def add_producers(self):
-        prods = [('Polarfeed', 2.75), ('Nutreco', 2.46), ('Ewos', 2.67), ('Biomar', 2.2)]
-        try:
-            self.conn = psycopg2.connect(
-            host="localhost",
-            database="postgres",
-            user=os.environ["database_user"],
-            password=os.environ["database_password"])
-            cur = self.conn.cursor()
-            sql = """INSERT INTO producers (producer, co2_equivalent) VALUES (%s, %s);"""
-            cur.executemany(sql, prods)
-            self.conn.commit()
-            cur.close()
-        
-        except(Exception, psycopg2.DatabaseError) as error:
-            print(error)
-
-        finally: 
-            if self.conn is not None:
-                self.conn.close()
-
