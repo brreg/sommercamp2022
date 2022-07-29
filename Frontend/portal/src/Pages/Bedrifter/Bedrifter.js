@@ -7,8 +7,6 @@ import AS_buttons from "../../Components/Buttons/AS_buttons";
 const Bedrifter = () => {
     const {id} = useParams();
 
-    // new 
-
     const [orgname, setOrgname] = useState("")
     const axios = require('axios')
 
