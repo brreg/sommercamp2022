@@ -10,13 +10,13 @@ function FramesOkonomi() {
             <div className="container-frames">
             <div className="row-frames">
                 <div className="column-frames">
-                    <Frame overskrift= "Soliditet"/>
+                    <Frame overskrift= "Soliditet" tekst={"Dette diagrammet viser bedriftens økonomiske soliditet for 2021"}/>
                 </div>
                 <div className="column-frames">
-                    <Frame overskrift="Likviditet"/>
+                    <Frame overskrift="Likviditet" tekst={"Dette diagrammet viser bedriftens økonomiske likviditet for 2021"}/>
                 </div>
                 <div className="column-frames">
-                    <Frame overskrift="Lønnsomhet"/>
+                    <Frame overskrift="Lønnsomhet" tekst={"Dette diagrammet viser bedriftens økonomiske lønnsomhet for 2021"}/>
                 </div>
             </div>
         </div>
