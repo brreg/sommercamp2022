@@ -35,8 +35,7 @@ const Transport = props => {
         let co2emissions_transport = []
         let year = []
         
-        //axios.get("http://127.0.0.1:5000/orgs/886813082/co2emissions/")
-        axios.get(`http://127.0.0.1:5000/orgs/${props.org_nr}/co2emissions/`)
+        axios.get(`http://127.0.0.1:5000/orgs/${props.org_nr}/co2transport/`)
         .then( res=> {
             console.log(res)
             for (const dataObj of res.data.data) {
