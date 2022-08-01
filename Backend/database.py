@@ -12,7 +12,6 @@ import math
 import time
 import random
 
-#filename = '/Users/ingunn/Documents/GitHub/sommercamp2022/Dataanalyse/smb.csv'
 
 class Database:
 
@@ -166,7 +165,7 @@ class Database:
                 year VARCHAR(8),
                 producer VARCHAR(255),
                 co2e_feed FLOAT,
-                co2e_transport FLOAT,
+                co2e_production FLOAT,
                 PRIMARY KEY (loc_nr, year)
             )
             """, 
@@ -292,13 +291,20 @@ class Database:
                                 FOR SHARE);"""
                 elif (tablename == 'greenhouse_gas_emissions'):
                     newtup =(lst[0], lst[1], lst[2], lst[3], lst[4], lst[5], lst[1])
-                    stmt = """INSERT INTO greenhouse_gas_emissions(producer_id, loc_nr, year, producer, co2e_feed, co2e_transport)
+                    stmt = """INSERT INTO greenhouse_gas_emissions(producer_id, loc_nr, year, producer, co2e_feed,  co2e_production)
                     SELECT %s, %s, %s, %s, %s, %s
                     WHERE EXISTS (SELECT loc_nr from location where loc_nr = %s
                     FOR SHARE);"""
+                    
+                elif (tablename == 'social_figures'):
+                    newtup = (lst[0], int(lst[1]), lst[2], lst[3], lst[0])
+                    stmt = """INSERT INTO social_figures(org_nr, year, female_percent, male_percent) 
+                                SELECT %s, %s, %s, %s
+                                WHERE EXISTS (SELECT org_nr from smb where org_nr = %s
+                                FOR SHARE);"""
                 
                 else: 
-                    print("Tablename should be salmonoid_lice, salmon_death, key_financial_figures, greenhouse_gas_emmisions or escape")
+                    print("Tablename should be salmonoid_lice, salmon_death, key_financial_figures, social_figures, greenhouse_gas_emmisions or escape")
                     break
 
                 cursor = self.conn.cursor()
@@ -569,7 +575,29 @@ class Database:
                 res.append(dictsosial)
         dfmiljo = pd.DataFrame(res)
         print(dfmiljo.shape)
-        return dfmiljo      
+        return dfmiljo
+    
+    def generate_social_figures(self, years):
+        res = []
+        df = pd.read_csv('as.csv', sep = ';')
+        orgnrs = df.iloc[:, 0].tolist()
+        orgnrs = list(dict.fromkeys(orgnrs))
+        andel_kvinner = 0
+        andel_menn = 0
+        
+        for year in years:
+            for nr in orgnrs:
+                kjonnfordelingPercent = round(random.triangular(5, 40, 18.6),1)
+                andel_kvinner = (kjonnfordelingPercent)
+                andel_menn = (100-kjonnfordelingPercent)
+                dict_gender_balance = {'org_nr' : nr, 'year' : year, 'female_percent': andel_kvinner, 'male_percent': andel_menn}
+                res.append(dict_gender_balance)
+        
+        dfsocial = pd.DataFrame(res)
+        print(dfsocial)
+        return dfsocial
+
+        
 
     def generate_deadliness_data(self, locnrs, filename, year): 
         #years = 2017,2018,2019,2020,2021
@@ -610,4 +638,6 @@ class Database:
         dictdead = {'LOK_NR':locnrmedas,'Deadlighet':deadlighet, 'Year': year}#, 'Enhet': 'TN'}
         dfdead = pd.DataFrame(dictdead)
         return dfdead
-    
+
+db = Database()
+db.generate_social_figures([2020, 2021])

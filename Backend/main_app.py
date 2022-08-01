@@ -25,8 +25,8 @@ def main():
     db = Database()
     db.connect()
     db.config()
-    #db.create_tables()
-    #db.insert_address_smb_locnr_csv(filename)
+    db.create_tables()
+    db.insert_address_smb_locnr_csv(filename)
 
     #bapi = API()
     #locnrs = bapi.get_locnrs()[0:50]
@@ -49,11 +49,12 @@ def main():
     #db.insert_data(eddf, "escapes")
     
     ### Generating all deadliness data and inserting into database
-    """for year in years:
-        dfdead = db.generate_deadliness_data(locnrs, "smb.csv", year)
-        print(dfdead)
-        db.insert_data(dfdead, "salmon_death")
-    """
+    # for year in years:
+    #     dfdead = db.generate_deadliness_data(locnrs, "smb.csv", year)
+    #     print(dfdead)
+    #     db.insert_data(dfdead, "salmon_death")
+    
+
     #rapi = RegnskapsAPI()
     #orgnrs = rapi.get_orgnrs()[0:50]
     #orgnrs = [886813082]
@@ -62,14 +63,17 @@ def main():
     #db.insert_data(df_regnskap, "key_financial_figures")
     
     ###Generating and inserting co2 data. Needs to use dfas and dfdead
+
     #db.add_producers()
     dfas = db.getasdata('as.csv') 
     #print(dfas)
-    dfdead = db.generate_deadliness_data(locnrs, 'as.csv', 2017)
+    #dfdead = db.generate_deadliness_data(locnrs, 'as.csv', 2017)
     #print(dfdead)
-    co2df = db.generate_co2_data(locnrs, years, dfas, dfdead)
-    db.insert_data(co2df, 'greenhouse_gas_emissions')
+    #co2df = db.generate_co2_data(locnrs, years, dfas, dfdead)
+    #db.insert_data(co2df, 'greenhouse_gas_emissions')
 
-    db.insert_areal_data("arealbruk3.csv")
+    ###Generate and insert gender data:
+    df_gender = db.generate_social_figures(years)
+    db.insert_data(df_gender, 'social_figures')
 
 main()

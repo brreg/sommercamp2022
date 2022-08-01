@@ -5,7 +5,7 @@ import "./Search_bar.css";
 import axios from "axios";
 
 
-function SearchBar({ placeholder}) {
+function SearchBar({placeholder}) {
 
   const [searchResults, setSearchResults] = useState([]);
   const [filteredData, setFilteredData] = useState([]);

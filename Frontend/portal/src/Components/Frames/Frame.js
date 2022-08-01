@@ -17,9 +17,6 @@ const Frame = props => {
 
             <div className="overskrift-frame">
                 <p className="p-overskrift-frame"> {props.overskrift} </p>
-                <div className="p-spørsmålstegn-frame">
-                    <p className="p-spørsmålstegn">?</p>
-                </div>
             </div>
 
             <div className="nøkkeltall-frame">
