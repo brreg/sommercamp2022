@@ -219,6 +219,26 @@ class Database:
                     FOREIGN KEY(org_nr)
                         REFERENCES smb(org_nr)
             )
+            """,
+
+            """
+            CREATE TABLE aquaculture_industry_averages(
+                ID SERIAL PRIMARY KEY,
+                lice_peryear_avg FLOAT,
+                escape_count_sum_avg INTEGER,
+                death_percentperyear_avg FLOAT,
+                co2_feed_average FLOAT,
+                co2_transport_average FLOAT,
+                liquidity_ratio_average FLOAT,
+                return_on_assets_average FLOAT,
+                solidity_average FLOAT,
+                female_percent_avg FLOAT,
+                male_percent_avg FLOAT,
+                areal_use_avg FLOAT,
+                part_time_avg FLOAT
+            )
+            
+            
             """
             
 
@@ -246,8 +266,113 @@ class Database:
         finally:
             if self.conn is not None:
                 self.conn.close()
-                
     
+    ## this method should recalculate all the averages in the industry averages table. 
+    def update_db_averages(self):
+        print("Updating DB averages")
+        
+        commands = (
+        """
+        UPDATE aquaculture_industry_averages
+        set lice_peryear_avg = (SELECT avg(salmonoid_lice.lice_average) FROM salmonoid_lice)
+        where id=0
+        """,
+
+        """
+        UPDATE aquaculture_industry_averages
+        set escape_count_sum_avg = (SELECT avg(escape_count_sum) FROM escapes)
+        where id=0
+        """,
+
+        """
+        UPDATE aquaculture_industry_averages
+        set death_percentperyear_avg = (
+            SELECT sum(salmon_death.death_nr)/sum(location.loc_capacity)
+            FROM salmon_death
+            JOIN location
+            ON salmon_death.loc_nr = location.loc_nr
+        )
+        where id=0
+        """,
+
+        """
+        UPDATE aquaculture_industry_averages
+        set co2_feed_average = (SELECT avg(co2e_feed) FROM greenhouse_gas_emissions)
+        where id=0
+        """,
+
+        """
+        UPDATE aquaculture_industry_averages
+        set co2_transport_average = (SELECT avg(co2e_transport) FROM greenhouse_gas_emissions)
+        where id=0
+        """,
+
+        """
+        UPDATE aquaculture_industry_averages
+        set liquidity_ratio_average = (SELECT avg(liquidity_ratio) FROM key_financial_figures)
+        where id=0
+        """,
+
+        """
+        UPDATE aquaculture_industry_averages
+        set return_on_assets_average = (SELECT avg(return_on_assets) FROM key_financial_figures)
+        where id=0
+        """,
+
+        """
+        UPDATE aquaculture_industry_averages
+        set solidity_average = (SELECT avg(solidity) FROM key_financial_figures)
+        where id=0
+        """,
+
+        """
+        UPDATE aquaculture_industry_averages
+        set female_percent_avg = (SELECT avg(female_percent) FROM social_figures)
+        where id=0
+        """,
+
+        """
+        UPDATE aquaculture_industry_averages
+        set male_percent_avg = (SELECT avg(male_percent) FROM social_figures)
+        where id=0
+        """,
+
+        """
+        UPDATE aquaculture_industry_averages
+        set areal_use_avg = (SELECT avg(areal_use) FROM areal_figures)
+        where id=0
+        """,
+
+        """
+        UPDATE aquaculture_industry_averages
+        set part_time_avg = (SELECT avg(part_time_percentage) FROM part_time)
+        where id=0
+        """
+        )
+
+        try:
+
+            self.conn = psycopg2.connect(
+                host="localhost",
+                database="postgres",
+                user=os.environ["database_user"],
+                password=os.environ["database_password"]
+            )
+            cur = self.conn.cursor()
+
+            for command in commands:
+                cur.execute(command)
+
+            cur.close()
+            self.conn.commit()
+
+        except (Exception, psycopg2.DatabaseError) as error:
+            print("create", error)
+            
+        finally:
+            if self.conn is not None:
+                self.conn.close()
+
     
     ### Inserts data in df into either salmonoid_lice ELLER escapes tables in our database
     def insert_data(self, df, tablename):
@@ -303,8 +428,17 @@ class Database:
                                 WHERE EXISTS (SELECT org_nr from smb where org_nr = %s
                                 FOR SHARE);"""
                 
+                elif (tablename == 'social_figures'):
+                    newtup = (lst[0], int(lst[1]), lst[2], lst[3], lst[0])
+                    stmt = """INSERT INTO social_figures(org_nr, year, female_percent, male_percent) 
+                                SELECT %s, %s, %s, %s
+                                WHERE EXISTS (SELECT org_nr from smb where org_nr = %s
+                                FOR SHARE);"""
+                
                 else: 
-                    print("Tablename should be salmonoid_lice, salmon_death, key_financial_figures, social_figures, greenhouse_gas_emmisions or escape")
+
+                    print("Tablename should be salmonoid_lice, salmon_death, key_financial_figures, greenhouse_gas_emmisions, social_figures or escape")
+
                     break
 
                 cursor = self.conn.cursor()
@@ -423,6 +557,7 @@ class Database:
 
         finally: 
             if self.conn is not None:
+                print('hei')
                 self.conn.close()                
 
         
@@ -512,7 +647,7 @@ class Database:
                 self.conn.close()
     
     #Returns dataframe with co2 data
-    def generate_co2_data(self, locnrs, years, dfas, dfdead):
+    def generate_co2_data(self, locnrs, year, dfas, dfdead):
         feedProducerskgco2 = {'Polarfeed': 2.75, 'Nutreco': 2.46, 'Ewos': 2.67, 'Biomar': 2.2}
         
         dfas = pd.read_csv('as.csv', sep = ';')
@@ -548,31 +683,31 @@ class Database:
         
         res = []
         
-        for year in years:
-            for loc in locnrs:
         
-                producer, co2e = random.choice(list(feedProducerskgco2.items()))
-                
-                if producer == 'Polarfeed':
-                    producer_id = 1
-                elif producer == 'Nutreco':
-                    producer_id = 2
-                elif producer == 'Ewos':
-                    producer_id = 3
-                else:
-                    producer_id = 4
+        for loc in locnrs:
+    
+            producer, co2e = random.choice(list(feedProducerskgco2.items()))
+            
+            if producer == 'Polarfeed':
+                producer_id = 1
+            elif producer == 'Nutreco':
+                producer_id = 2
+            elif producer == 'Ewos':
+                producer_id = 3
+            else:
+                producer_id = 4
 
-                efcrR = round(random.triangular(0.86, 1.57, 1.32),2)
-        
-                kapasitet = dfas.loc[dfas['LOK_NR'] == loc]['LOK_KAP'].values[0]
-                deadlighet = dfdead.loc[dfdead['LOK_NR'] == loc]['Deadlighet'].values[0]
+            efcrR = round(random.triangular(0.86, 1.57, 1.32),2)
+    
+            kapasitet = dfas.loc[dfas['LOK_NR'] == loc]['LOK_KAP'].values[0]
+            deadlighet = dfdead.loc[dfdead['LOK_NR'] == loc]['Deadlighet'].values[0]
 
-                produksjon = 1000*(round((float(kapasitet)-float(deadlighet))*0.67))
-        
-                forco2e = round(((produksjon * efcrR)*co2e)/1000)
-                produksjonco2e = round((0.135*((produksjon*random.triangular(0.75,1,1.25))*2.66))/1000)
-                dictsosial = {'producer_id':producer_id, 'loc_nr':loc,'year': year,'producer':producer, 'co2e_feed': forco2e, 'co2e_production': produksjonco2e}
-                res.append(dictsosial)
+            produksjon = 1000*(round((float(kapasitet)-float(deadlighet))*0.67))
+    
+            forco2e = round(((produksjon * efcrR)*co2e)/1000)
+            produksjonco2e = round((0.135*((produksjon*random.triangular(0.75,1,1.25))*2.66))/1000)
+            dictsosial = {'producer_id':producer_id, 'loc_nr':loc,'year': year,'producer':producer, 'co2e_feed': forco2e, 'co2e_production': produksjonco2e}
+            res.append(dictsosial)
         dfmiljo = pd.DataFrame(res)
         print(dfmiljo.shape)
         return dfmiljo
@@ -638,6 +773,25 @@ class Database:
         dictdead = {'LOK_NR':locnrmedas,'Deadlighet':deadlighet, 'Year': year}#, 'Enhet': 'TN'}
         dfdead = pd.DataFrame(dictdead)
         return dfdead
+    
 
-db = Database()
-db.generate_social_figures([2020, 2021])
+    def generate_social_figures(self, years):
+        res = []
+        df = pd.read_csv('as.csv', sep = ';')
+        orgnrs = df.iloc[:, 0].tolist()
+        orgnrs = list(dict.fromkeys(orgnrs))
+        andel_kvinner = 0
+        andel_menn = 0
+        
+        for year in years:
+            for nr in orgnrs:
+                kjonnfordelingPercent = round(random.triangular(5, 40, 18.6),1)
+                andel_kvinner = (kjonnfordelingPercent)
+                andel_menn = (100-kjonnfordelingPercent)
+                dict_gender_balance = {'org_nr' : nr, 'year' : year, 'female_percent': andel_kvinner, 'male_percent': andel_menn}
+                res.append(dict_gender_balance)
+        
+        dfsocial = pd.DataFrame(res)
+        print(dfsocial)
+        return dfsocial
+

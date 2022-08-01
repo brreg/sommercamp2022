@@ -1,3 +1,8 @@
 set-password.sh
 .DS_Store
 node_modules
+as.csv
+smb.csv
+arealbruk3.csv
+lice_limit.csv
+part_time_percentages.csv
