@@ -1,37 +1,42 @@
-import React, { useEffect } from 'react';
-import transform_kpi from '../Transform_KPI';
+import React, {useEffect, useState} from 'react';
+import {useParams} from 'react-router-dom';
 import './Nokkeltall.css'
 
 function Nokkeltall (props) {
 
+    const {id} = useParams();
+
+    const [orgname, setOrgname] = useState("")
+    const axios = require('axios')
+
+    useEffect(() => {
+        
+        axios.get(`http://127.0.0.1:5000/orgs/${props.id}`)
+        .then( res=> {
+            console.log(res.data.data[0].org_name)
+            setOrgname(res.data.data[0].org_name)
+        })
+        .catch( err=> {
+            console.log(err)
+        })
+      
+    }, []);
+
     const transform_kpi = (kpi) => {
 
         switch(kpi) {
-            //Dødlighet
             case "Dødlighet_bedrift": 
-                return "Bedriften hadde gjennomsnittlig";
+                return `${orgname} hadde gjennomsnittlig`;
             case "Dødlighet_bransje": 
                 return "Bransjen hadde i gjennomsnitt";
-            //Lakselus
             case "Lakselus_bedrift": 
-                return "Bedriften hadde totalt";
+                return `${orgname} hadde gjennomsnittlig`;
             case "Lakselus_bransje": 
                 return "Bransjen hadde totalt";
-            //Rømninger
             case "Rømninger_bedrift": 
-                return "Bedriften hadde totalt";
+                return `${orgname} hadde gjennomsnittlig`;
             case "Rømninger_bransje": 
                 return "Bransjen hadde totalt";
-            //Forproduksjon
-            case "Forproduksjon_bedrift": 
-                return "Bedriften slapp i gjennomsnitt ut";
-            case "Forproduksjon_bransje": 
-                return "Bransjen slapp i gjennomsnitt ut";
-            //CO2
-            case "CO2_bedrift": 
-                return "Bedriften slapp i gjennomsnitt ut";
-            case "CO2_bransje": 
-                return "Bransjen slapp i gjennomsnitt ut";
             default:
                 return "kunne ikke finne";
             }
@@ -39,9 +44,34 @@ function Nokkeltall (props) {
     
     const transformed_kpi = transform_kpi(props.kpi)
 
+
+    const transform_kpi2 = (kpi2) => {
+
+        switch(kpi2) {
+            case "Dødlighet_bedrift": 
+                return "dødlighet i 2022";
+            case "Dødlighet_bransje": 
+                return "dødlight i 2022";
+            case "Lakselus_bedrift": 
+                return "lakselus i 2022";
+            case "Lakselus_bransje": 
+                return "lakselus 2022";
+            case "Rømninger_bedrift": 
+                return "rømninger i 2022";
+            case "Rømninger_bransje": 
+                return "rømninger i 2022";
+            default:
+                return "kunne ikke finne";
+            }
+        };
+    
+    const transformed_kpi2 = transform_kpi2(props.kpi2)
+    
     return (
         <div className="nøkkeltall"> 
-        <p className="p-props tekst-nøkkeltall"> {transformed_kpi} </p>
+        <div className="overtekst-nøkkeltall"> {transformed_kpi} </div>
+        <div className="tall-overskrift"> 300 </div>
+        <div className="undertekst-nøkkeltall"> {transformed_kpi2} </div>
     </div>
     )
 }
