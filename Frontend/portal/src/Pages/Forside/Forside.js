@@ -1,6 +1,7 @@
 import React from 'react';
 import "./Forside.css";
 import SearchBar from '../../Components/Searchbar/Search_bar';
+import CardForside from '../../Components/Cards/Cards-forside'
 
 function Forside() {
     return (
@@ -12,26 +13,8 @@ function Forside() {
                     uten å ødelegge for mulighetene til fremtidige genrasjoner.» På denne nettsiden kan du lese om hvor bærekraftige ulike bedrifter er.</p>
                 <SearchBar placeholder="Søk etter organisasjon..." />
             </div>
-        
-            <div className="row_forside">
-                <div className="column_forside">
-                    <div className="card_forside">
-                        <p className="overskrift_card_forside">Virksomheter</p>
-                        <p className="p_card_forside">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation .</p>
-                    </div>
-                </div>
-                <div className="column_forside">
-                    <div className="card_forside">
-                        <p className="overskrift_card_forside">Bærekraft</p>
-                        <p className="p_card_forside">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
-                    </div>
-                </div>
-                <div className="column_forside">
-                    <div className="card_forside">
-                        <p className="overskrift_card_forside">Regler</p>
-                        <p className="p_card_forside">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
-                    </div>
-                </div>                       
+            <div>
+                <CardForside />
             </div>
         </div>
     );

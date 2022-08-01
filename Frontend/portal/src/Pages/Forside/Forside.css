@@ -3,39 +3,6 @@
   height: 70vh;
 }
 
-.bedrift_button{
-    background-color: white;
-    width: 65%;
-}
-
-.tekstboks_forside {
-  margin-top: 3%;
-  margin-left: 7%;
-  width: 35%;
-}
-
-.column_forside {
-  width: 28%;
-  padding: 0 2%;
-}
-
-.row_forside {
-  margin: 0 5%;
-  padding-top: 5%;
-  display: flex;
-  flex-flow: wrap;
-}
-
-.card_forside {
-  border: 1px solid #004785;
-  padding: 16px;
-  text-align: left;
-  background-color: white;
-  border-radius: 25px;
-  width: 300px;
-  height: 220px;
-}
-
 h1 {
   font-family: sans-serif;
 }
@@ -43,10 +10,6 @@ h1 {
 .p_card_forside {
   font-size: 16px;
   line-height: 19px;
-}
-
-.overskrift_card_forside {
-  font-size: 18px;
 }
 
 .liten_overskrift_forside {
@@ -67,6 +30,24 @@ h1 {
 .searchBar {
   position: relative;
 }
+
+.bedrift_button{
+    background-color: white;
+    width: 65%;
+}
+
+.tekstboks_forside {
+  margin-top: 3%;
+  margin-left: 7%;
+  width: 35%;
+}
+
+
+
+
+
+
+
 
 
 

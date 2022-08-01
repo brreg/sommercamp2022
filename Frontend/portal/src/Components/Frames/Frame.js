@@ -2,15 +2,6 @@ import React from 'react';
 import './Frame.css'
 
 const Frame = props => {
-/*
-    const [hover, setHover] = useState(false);
-    const onHover = () => {
-        setHover(true);
-    };
-
-    const onHover = () => {
-        setHover(false);
-    } */
 
     return (
         <div className="container-frame">
