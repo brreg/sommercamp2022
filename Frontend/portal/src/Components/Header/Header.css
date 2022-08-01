@@ -1,0 +1,30 @@
+.header-container {
+    display: inline-flex;
+    flex-flow: row wrap;
+}
+
+.generell-info {
+    width: 100vw;
+    margin-left: 2%;
+    margin-top: 2%;
+}
+
+.overskrift-generell-bedrifter {
+    font-size: 32px;
+    width: flex;
+    font-weight: 700;
+    font-family: sans-serif;
+    float: left;
+}
+
+.info {
+    margin-left: 4%;
+    width: 8%;
+    float: left;
+    line-height: 3px;
+}
+
+.info-title {
+    text-decoration: underline;
+}
+

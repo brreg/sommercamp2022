@@ -45,6 +45,9 @@ class PartTime(Base):
 class Co2Emissions(Base):
     __tablename__='greenhouse_gas_emissions'
 
+class Averages(Base):
+    __tablename__='aquaculture_industry_averages'
+
 engine = create_engine('postgresql+psycopg2://'+os.environ["database_user"]+':'+os.environ["database_password"]+'@localhost:5432/postgres')
 Base.prepare(autoload_with=engine)
 session = Session(engine)
@@ -168,12 +171,31 @@ def get__parttime(locnr):
         'id': loc.id, 'loc_nr': loc.loc_nr, 'part_time_percentage':loc.part_time_percentage} for loc in session.query(PartTime).filter(PartTime.loc_nr==locnr)
     ]})
 
-#Endpoint to get co2emission data on orgnr
-@app.route('/orgs/<orgnr>/co2emissions/')
-def get__co2emissions(orgnr):
+#Endpoint to get co2 emission from feed on orgnr
+@app.route('/orgs/<orgnr>/co2feed/')
+def get__co2emissions_feed(orgnr):
     result=session.query(
         Co2Emissions.year,
         func.sum(Co2Emissions.co2e_feed),
+    ).select_from(
+        Co2Emissions
+    ).join(
+        Location, Co2Emissions.loc_nr == Location.loc_nr
+    ).filter(
+        Location.org_nr==orgnr
+    ).group_by(
+        Co2Emissions.year
+    ).all()
+    ret_list=[]
+    for tup in result:
+        ret_list.append({'year': tup[0], 'co2emissions_feed_sum': tup[1]})#, 'co2emissions_transport_sum': tup[2]}) 
+    return jsonify({'data': ret_list})
+    
+#Endpoint to get co2 emission from transport on orgnr
+@app.route('/orgs/<orgnr>/co2transport/')
+def get__co2emissions_transport(orgnr):
+    result=session.query(
+        Co2Emissions.year,
         func.sum(Co2Emissions.co2e_transport)
     ).select_from(
         Co2Emissions
@@ -186,10 +208,8 @@ def get__co2emissions(orgnr):
     ).all()
     ret_list=[]
     for tup in result:
-        ret_list.append({'year': tup[0], 'co2emissions_feed_sum': tup[1], 'co2emissions_transport_sum': tup[2]}) 
+        ret_list.append({'year': tup[0], 'co2emissions_transport_sum': tup[1]})
     return jsonify({'data': ret_list})
-    
-
 
 #Endpoint to get deadliness data on orgnr level
 @app.route('/orgs/<orgnr>/deadliness')
@@ -249,3 +269,32 @@ def get_all_escapedata_for_orgnr(orgnr):
     for tup in result:
         ret_list.append({'year': tup[1], 'escape_count_sum': tup[0]})
     return jsonify({'data': ret_list})
+
+
+#Endpoint to get all areal data from orgnr
+@app.route('/orgs/<orgnr>/areal/')
+def get_all_areal_org(orgnr):
+    result = session.query(
+        func.sum(Areal.areal_use),
+    ).select_from(
+        Areal
+    ).join(
+        Location, Areal.loc_nr == Location.loc_nr
+    ).filter(
+        Location.org_nr == orgnr
+    ).all()
+    ret_list = []
+    for tup in result:
+        ret_list.append({'areal_use_org': tup[0]})
+    return jsonify({'data': ret_list})
+
+#Endpoint to get averages from the aquaculture industry
+@app.route('/orgs/averages/')
+def get_all_averages():
+    return jsonify({'data':[{
+        'lice_average': data.lice_peryear_avg, 'escape_average': data.escape_count_sum_avg, 'death_average':data.death_percentperyear_avg, 
+        'liquidity_ratio_avg':data.liquidity_ratio_average, 'return_on_assets':data.return_on_assets_average, 
+        'solidity':data.solidity_average, 'co2_feed_avg': data.co2_feed_average, 'co2_transport_avg': data.co2_transport_average,
+        'female_average': data.female_percent_avg, 'male_average': data.male_percent.avg, 'areal_use_avg': data.areal_use_avg, 
+        'part_time_avg': data.part_time_avg} for data in session.query(Averages).all()
+    ]})    
