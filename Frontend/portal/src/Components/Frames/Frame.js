@@ -2,15 +2,6 @@ import React from 'react';
 import './Frame.css'
 
 const Frame = props => {
-/*
-    const [hover, setHover] = useState(false);
-    const onHover = () => {
-        setHover(true);
-    };
-
-    const onHover = () => {
-        setHover(false);
-    } */
 
     return (
         <div className="container-frame">
@@ -24,10 +15,6 @@ const Frame = props => {
                 {props.nøkkeltall_en}
                 {props.nøkkeltall_to}
             </div>
-            
-            <div className="tekst-til-nøkkeltall">
-                <p className="p-tekst"> Beskrivende tekst til nøkkeltall:</p>
-            </div>
 
             <div>
                 <div className="graf-frame">
@@ -35,7 +22,7 @@ const Frame = props => {
                 </div>
                 <div className="tekstboks-frame">
                     <p className="p-tekst">
-                        Beskrivende tekst til grafen:
+                        {props.tekst}
                     <br></br> 
                     <br></br> 
                         Kilde: 
