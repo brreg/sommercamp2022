@@ -10,8 +10,6 @@ import Sosial from './Pages/Bedrifter_sosial/Sosial';
 import Okonomi from './Pages/Bedrifter_okonomi/Okonomi';
 import Test_Page from './Pages/Test/Test_page'
 
-
-
 export default function App() {
 
   const {id} = useParams();
