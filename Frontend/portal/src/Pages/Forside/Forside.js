@@ -1,9 +1,11 @@
 import React from 'react';
 import "./Forside.css";
 import SearchBar from '../../Components/Searchbar/Search_bar';
-import CardForside from '../../Components/Cards/Cards-forside'
+import CardForside from '../../Components/Cards/Cards-forside';
+
 
 function Forside() {
+
     return (
         <div className = "forside">
             <div className="tekstboks_forside">

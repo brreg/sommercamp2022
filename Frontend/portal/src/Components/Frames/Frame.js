@@ -1,13 +1,26 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './Frame.css'
 
 const Frame = props => {
+
+    const [show, setShow] = useState(false);
+
+    function toggleHidden() {
+        setShow(!show)
+    }
 
     return (
         <div className="container-frame">
 
             <div className="overskrift-frame">
                 <p className="p-overskrift-frame"> {props.overskrift} </p>
+            </div>
+
+            <div>
+                <button onClick={toggleHidden}>{props.dropDown}</button>
+                <div>
+                    {show &&  <p>{props.show}</p>}
+                </div>
             </div>
 
             <div className="nøkkeltall-frame">
