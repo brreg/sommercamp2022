@@ -25,6 +25,7 @@ function FramesMiljo() {
             <div>{value}</div>
             <div className="row-frames">
                 <div className="column-frames">
+                
                     <Frame overskrift= {"Dødlighet"} 
                         nøkkeltall_en={<Nokkeltall id={id} kpi="Dødlighet_bedrift" kpi2="Dødlighet_bedrift"/>} 
                         nøkkeltall_to={<Nokkeltall kpi="Dødlighet_bransje" id={id} kpi2="Dødlighet_bedrift"/>} 
@@ -70,6 +71,7 @@ function FramesMiljo() {
                         graph={<Transport org_nr="886813082"/>}
                         dropDown={"CO2 utslippet fra produksjon er beregnet etter"}
                         show={"drivstofforbruk under utvalgte aktiviteter i produksjonsprosessen. Disse aktivitetene er bruk av brønnbåter, produksjonsfarmer og servicebedriftbruk. Det benyttes en fast sats for utslipp  per liter brukt på 2.66 CO2 ekvivalenter."}/>
+
                 </div>
             </div>
         </div>

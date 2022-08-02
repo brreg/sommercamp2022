@@ -8,9 +8,9 @@ const NavBar = () => {
                 <div className="navbar-img">
                         <a href="/"><img src={require('./images/BR_logo-bokmaal_hvit.png')} className="image-nav" alt="logo"></img></a>
                 </div>
-                        <a className="nav-a" href="/Bedrifter" >Virksomheter</a>
-                        <a className="nav-a" href="/Bærekraft">Bærekraft</a>
-                        <a className="nav-a" href="/about">Regelverk</a>
+                        <a className="nav-a" href="/Bedrifter/Miljo" >Virksomheter</a>
+                        <a className="nav-a" href="">Bærekraft</a>
+                        <a className="nav-a" href="">Regelverk</a>
                         <a className="nav-a">Meny</a>
             </nav>
        </div>

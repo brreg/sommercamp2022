@@ -28,11 +28,15 @@ function NokkeltallFly (props) {
             case "Fôrproduksjon_bedrift": 
                 return `${orgname} slapp ut`;
             case "Fôrproduksjon_bransje": 
-                return `${orgname} slapp ut`;
+                return `Bransjen slapp ut`;
             case "CO2_bedrift": 
                 return `${orgname} hadde totalt`;
             case "CO2_bransje": 
-                return `${orgname} slapp ut`;
+                return `Bransjen slapp ut`;
+            case "Arealbruk_bedrift": 
+                return `${orgname} brukte totalt`;
+            case "Arealbruk_bransje": 
+                return `Bransjen brukte totalt`;
             default:
                 return "kunne ikke finne";
             }
@@ -51,6 +55,10 @@ function NokkeltallFly (props) {
                 return "tonn CO2e i 2022";
             case "CO2_bransje": 
                 return "tonn CO2e i 2022";
+            case "Arealbruk_bedrift": 
+                return "areal i 2022";
+            case "Arealbruk_bransje": 
+                return "areal i 2022";
             default:
                 return "kunne ikke finne";
             }
