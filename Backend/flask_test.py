@@ -212,11 +212,12 @@ def get__co2emissions_feed(orgnr):
     return jsonify({'data': ret_list})
     
 #Endpoint to get co2 emission from transport on orgnr
-@app.route('/orgs/<orgnr>/co2transport/')
-def get__co2emissions_transport(orgnr):
+
+@app.route('/orgs/<orgnr>/co2production/')
+def get__co2emissions_production(orgnr):
     result=session.query(
         Co2Emissions.year,
-        func.sum(Co2Emissions.co2e_transport)
+        func.sum(Co2Emissions.co2e_production)
     ).select_from(
         Co2Emissions
     ).join(
@@ -228,7 +229,7 @@ def get__co2emissions_transport(orgnr):
     ).all()
     ret_list=[]
     for tup in result:
-        ret_list.append({'year': tup[0], 'co2emissions_transport_sum': tup[1]})
+        ret_list.append({'year': tup[0], 'co2emissions_production_sum': tup[1]})
     return jsonify({'data': ret_list})
 
 #Endpoint to get deadliness data on orgnr level
@@ -318,6 +319,64 @@ def get_all_averages():
         'female_average': data.female_percent_avg, 'male_average': data.male_percent_avg, 'areal_use_avg': data.areal_use_avg, 
         'part_time_avg': data.part_time_avg} for data in session.query(Averages).all()
     ]})
+
+
+#Endpoint to get averages from the aquaculture industry
+@app.route('/orgs/averages/deadliness')
+def get_all_averages_deadliness():
+    result = session.query(
+        Deadliness.death_year,
+        func.sum(Deadliness.death_nr)/func.sum(Location.loc_capacity)
+    ).select_from(
+        Deadliness
+    ).join(
+        Location, Deadliness.loc_nr == Location.loc_nr
+    ).group_by(
+        Deadliness.death_year
+    ).all() #
+    ret_list = []
+    for tup in result:
+        ret_list.append({'year': tup[0], 'death_percentage_all': tup[1]}) 
+    return jsonify({'data': ret_list})
+
+#Endpoint to get averages from the aquaculture industry
+@app.route('/orgs/averages/licedata')
+def get_all_averages_licedata():
+    result = session.query(
+        func.avg(Licedata.lice_average),
+        Licedata.lice_year
+    ).select_from(
+        Licedata
+    ).join(
+        Location, Licedata.loc_nr == Location.loc_nr
+    ).group_by(
+        Licedata.lice_year
+    ).all()
+    ret_list = []
+    for tup in result:
+        ret_list.append({'year': tup[1], 'year_avg_lice_all': tup[0]})
+    return jsonify({'data': ret_list})
+
+#Endpoint to get averages from the aquaculture industry
+@app.route('/orgs/averages/escapes')
+def get_all_averages_escapes():
+    result = session.query(
+        func.sum(Escape.escape_count_sum),
+        Escape.escape_year
+    ).select_from(
+        Escape
+    ).join(
+        Location, Escape.loc_nr == Location.loc_nr
+    ).group_by(
+        Escape.escape_year
+    ).all()
+    ret_list = []
+    for tup in result:
+        ret_list.append({'year': tup[1], 'escape_count_sum_all': tup[0]})
+    return jsonify({'data': ret_list})
+    
     
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=105)
+
+

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import useFetchData from '../Components/DataFetcher/fetchdata';
 // import "./App.css";
 import {
     Chart as ChartJS,
@@ -30,6 +31,9 @@ const Death = props => {
     const [chartOptions, setChartOptions] = useState({})
     const axios = require('axios')
 
+    const {averagesData, loading} = useFetchData();
+    console.log(averagesData)
+
     useEffect(() => {
 
         let deadliness_percentages = []
@@ -38,7 +42,7 @@ const Death = props => {
         //axios.get("http://127.0.0.1:5000/orgs/886813082/deadliness")
         axios.get(`http://127.0.0.1:5000/orgs/${props.org_nr}/deadliness`)
         .then( res=> {
-            console.log(res)
+            //console.log(res)
             for (const dataObj of res.data.data) {
                 deadliness_percentages.push(parseFloat(dataObj.death_percentage))
                 year.push(parseInt(dataObj.year))
@@ -47,11 +51,17 @@ const Death = props => {
                 labels: year,
                 datasets: [
                     {
-                        label: "Deadliness",
+                        label: "This company",
                         data: deadliness_percentages,
                         borderColor: "rgb(53, 162, 235)",
-                        backgroundColor: "rgb(53, 162, 235, 0.4)",
+                        backgroundColor: "blue",
                     },
+                    {
+                        label: "Industry Average",
+                        data: averagesData,
+                        borderColor: "rgb(53, 162, 235)",
+                        backgroundColor: "green",
+                    }
                     
                 ],
             });
@@ -76,8 +86,14 @@ const Death = props => {
     }, []);
 
     return (
+        
         <div className="death">
+        {loading && <div>Loading</div>}
+        {!loading && (
+        <div>
             <Bar options={chartOptions} data={chartData} />
+        </div>
+        )}
         </div>
     )
 }

@@ -11,7 +11,7 @@ function NokkeltallFly (props) {
 
     useEffect(() => {
         
-        axios.get(`http://127.0.0.1:5000/orgs/${props.id}`)
+        axios.get(`http://10.172.205.152:105/orgs/${props.id}`)
         .then( res=> {
             console.log(res.data.data[0].org_name)
             setOrgname(res.data.data[0].org_name)
@@ -22,9 +22,9 @@ function NokkeltallFly (props) {
       
     }, []);
 
-    const transform_kpi3 = (kpi3) => {
+    const transform_fly_over = (fly_over) => {
 
-        switch(kpi3) {
+        switch(fly_over) {
             case "Fôrproduksjon_bedrift": 
                 return `${orgname} slapp ut`;
             case "Fôrproduksjon_bransje": 
@@ -42,11 +42,11 @@ function NokkeltallFly (props) {
             }
         };
     
-    const transformed_kpi3 = transform_kpi3(props.kpi3)
+    const transformed_fly_over = transform_fly_over(props.fly_over)
 
-    const transform_kpi4 = (kpi4) => {
+    const transform_fly_under = (fly_under) => {
 
-        switch(kpi4) {
+        switch(fly_under) {
             case "Fôrproduksjon_bedrift": 
                 return "tonn CO2e i 2022";
             case "Fôrproduksjon_bransje": 
@@ -64,13 +64,13 @@ function NokkeltallFly (props) {
             }
         };
     
-    const transformed_kpi4 = transform_kpi4(props.kpi4)
+    const transformed_fly_under = transform_fly_under(props.fly_undeer)
 
     return (
         <div className="nøkkeltallFly"> 
-            <div className="overtekst-nøkkeltallFly"> {transformed_kpi3} </div>
+            <div className="overtekst-nøkkeltallFly"> {transformed_fly_over} </div>
             <div className="tall-overskriftFly"> 300 </div>
-            <div className="undertekst-nøkkeltallFly"> {transformed_kpi4} </div>
+            <div className="undertekst-nøkkeltallFly"> {transformed_fly_under} </div>
             <div className="strek"/>
             <div className="under_strek">
             <div><img className="fly_bilde" src={require('./plane2.png')}></img></div>
