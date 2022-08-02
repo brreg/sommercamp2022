@@ -294,7 +294,7 @@ def get_all_averages():
     return jsonify({'data':[{
         'lice_average': data.lice_peryear_avg, 'escape_average': data.escape_count_sum_avg, 'death_average':data.death_percentperyear_avg, 
         'liquidity_ratio_avg':data.liquidity_ratio_average, 'return_on_assets':data.return_on_assets_average, 
-        'solidity':data.solidity_average, 'co2_feed_avg': data.co2_feed_average, 'co2_transport_avg': data.co2_transport_average,
-        'female_average': data.female_percent_avg, 'male_average': data.male_percent.avg, 'areal_use_avg': data.areal_use_avg, 
+        'solidity':data.solidity_average, 'co2_feed_avg': data.co2_feed_average, 'co2_production_avg': data.co2_production_average,
+        'female_average': data.female_percent_avg, 'male_average': data.male_percent_avg, 'areal_use_avg': data.areal_use_avg, 
         'part_time_avg': data.part_time_avg} for data in session.query(Averages).all()
-    ]})    
+    ]})

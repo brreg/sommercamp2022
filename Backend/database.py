@@ -228,7 +228,7 @@ class Database:
                 escape_count_sum_avg INTEGER,
                 death_percentperyear_avg FLOAT,
                 co2_feed_average FLOAT,
-                co2_transport_average FLOAT,
+                co2_production_average FLOAT,
                 liquidity_ratio_average FLOAT,
                 return_on_assets_average FLOAT,
                 solidity_average FLOAT,
@@ -239,6 +239,11 @@ class Database:
             )
             
             
+            """,
+
+            """
+            insert into aquaculture_industry_averages
+            values (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
             """
             
 
@@ -303,7 +308,7 @@ class Database:
 
         """
         UPDATE aquaculture_industry_averages
-        set co2_transport_average = (SELECT avg(co2e_transport) FROM greenhouse_gas_emissions)
+        set co2_production_average = (SELECT avg(co2e_production) FROM greenhouse_gas_emissions)
         where id=0
         """,
 
