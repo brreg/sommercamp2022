@@ -11,7 +11,7 @@ const Header = (props) => {
 
     useEffect(() => {
         
-        axios.get(`http://127.0.0.1:5000/orgs/${props.id}`)
+        axios.get(`http://10.172.205.152:105/orgs/${props.id}`)
         .then( res=> {
             console.log(res.data.data[0].org_name)
             setOrgname(res.data.data[0].org_name)
