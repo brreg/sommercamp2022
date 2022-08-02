@@ -7,7 +7,7 @@ import Death from '../../Graphs/death'
 import Escape from '../../Graphs/escape'
 import Lice from '../../Graphs/lice'
 import Feed from '../../Graphs/feed'
-import Transport from '../../Graphs/transport'
+import Production from '../../Graphs/production'
 
 function FramesMiljo() {
     const {id} = useParams();
@@ -37,7 +37,7 @@ function FramesMiljo() {
                     <Frame overskrift="Fôrproduksjon" nøkkeltall_en={<NokkeltallFly id={id} kpi3="Fôrproduksjon_bedrift" kpi4="Fôrproduksjon_bedrift"/>} nøkkeltall_to={<NokkeltallFly id={id} kpi3="Fôrproduksjon_bransje" kpi4="Fôrproduksjon_bransje"/>} tekst={"Tallene er basert på beregnet CO2-ekvivalent fra fôrforbruket i 2022"} graph={<Feed org_nr={id}/>}/>
                 </div>
                 <div className="column-frames">
-                    <Frame overskrift="CO2" nøkkeltall_en={<NokkeltallFly id={id} kpi3="CO2_bedrift" kpi4="CO2_bedrift"/>} nøkkeltall_to={<NokkeltallFly id={id} kpi3="CO2_bransje" kpi4="CO2_bransje"/>} tekst={"Tallene er basert på beregnet CO2-ekvivalent fra produksjonen i 2022"} graph={<Transport org_nr={id}/>}/>
+                    <Frame overskrift="CO2" nøkkeltall_en={<NokkeltallFly id={id} kpi3="CO2_bedrift" kpi4="CO2_bedrift"/>} nøkkeltall_to={<NokkeltallFly id={id} kpi3="CO2_bransje" kpi4="CO2_bransje"/>} tekst={"Tallene er basert på beregnet CO2-ekvivalent fra produksjonen i 2022"} graph={<Production org_nr={id}/>}/>
                 </div>
             </div>
         </div>
