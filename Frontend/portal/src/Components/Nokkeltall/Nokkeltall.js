@@ -11,7 +11,7 @@ function Nokkeltall (props) {
 
     useEffect(() => {
         
-        axios.get(`http://127.0.0.1:5000/orgs/${props.id}`)
+        axios.get(`http://10.172.205.152:105/orgs/${props.id}`)
         .then( res=> {
             console.log(res.data.data[0].org_name)
             setOrgname(res.data.data[0].org_name)
@@ -22,9 +22,9 @@ function Nokkeltall (props) {
       
     }, []);
 
-    const transform_kpi = (kpi) => {
+    const transform_miljo_over = (miljo_over) => {
 
-        switch(kpi) {
+        switch(miljo_over) {
             case "Dødlighet_bedrift": 
                 return `${orgname} hadde gjennomsnittlig`;
             case "Dødlighet_bransje": 
@@ -42,12 +42,12 @@ function Nokkeltall (props) {
             }
         };
     
-    const transformed_kpi = transform_kpi(props.kpi)
+    const transformed_miljo_over = transform_miljo_over(props.miljo_over)
 
 
-    const transform_kpi2 = (kpi2) => {
+    const transform_miljo_under = (miljo_under) => {
 
-        switch(kpi2) {
+        switch(miljo_under) {
             case "Dødlighet_bedrift": 
                 return "dødlighet i 2022";
             case "Dødlighet_bransje": 
@@ -65,13 +65,13 @@ function Nokkeltall (props) {
             }
         };
     
-    const transformed_kpi2 = transform_kpi2(props.kpi2)
+    const transformed_miljo_under = transform_miljo_under(props.miljo_under)
     
     return (
         <div className="nøkkeltall"> 
-            <div className="overtekst-nøkkeltall"> {transformed_kpi} </div>
+            <div className="overtekst-nøkkeltall"> {transformed_miljo_over} </div>
             <div className="tall-overskrift"> 300 </div>
-            <div className="undertekst-nøkkeltall"> {transformed_kpi2} </div>
+            <div className="undertekst-nøkkeltall"> {transformed_miljo_under} </div>
         </div>
     )
 }
