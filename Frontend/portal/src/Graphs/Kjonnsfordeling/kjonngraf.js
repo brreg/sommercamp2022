@@ -10,7 +10,7 @@ const Kjonngraf = (props) => {
 
   const fullThreshold = 100
   const halfThreshold = 50
-  let antallGutter = 60
+  let antallGutter = 70
   let antallJenter = 100-antallGutter
 
   return (
