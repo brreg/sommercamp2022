@@ -12,7 +12,7 @@ function SearchBar({ placeholder}) {
   const [wordEntered, setWordEntered] = useState("");
 
   const fetchPost = () => {
-    fetch('http://127.0.0.1:5000/orgs/')
+    fetch('http://10.172.205.152:105/orgs/')
       .then((res) => res.json())
       .then((res) => {
         console.log(res)
@@ -52,7 +52,7 @@ function SearchBar({ placeholder}) {
     //const fillSearch = target.value; 
     console.log(org_nr)
     setWordEntered(org_nr);
-    navigate(`/${org_nr}`);
+    navigate(`/${org_nr}/Miljo`);
   }
 
   useEffect(() => {
