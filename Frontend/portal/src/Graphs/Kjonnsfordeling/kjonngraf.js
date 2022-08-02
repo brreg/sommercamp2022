@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import './kjonngraf.css';
 import Guttergraf from "./guttergraf";
-import Bedrifter_sosial from "../Pages/Bedrifter_sosial/Bedrifter_sosial.css"; 
 import Jentergraf from "./jentergraf";
  
 
@@ -14,7 +14,7 @@ const Kjonngraf = (props) => {
   let antallJenter = 100-antallGutter
 
   return (
-<div>
+<div className="kjonnsgraf">
 
   <div className="guttene">
     {[...Array(10)].map((x, i) => {
@@ -22,18 +22,20 @@ const Kjonngraf = (props) => {
       antallGutter = antallGutter-10
       return graf
     }
-    )}
-</div>
+    )}  <p className="prosent"> 60% menn </p>
+  </div>
 
 
-<div className="jentene">
-    {[...Array(10)].map((x, i) => {
-      const graf = <Jentergraf offset2={antallJenter-10>=0 ? 100 : antallJenter>=5 ? 50 : 0} key={i} />
-      antallJenter = antallJenter-10
-      return graf
-    }
-    )}
-</div>
+
+  <div className="jentene">
+      {[...Array(10)].map((x, i) => {
+        const graf = <Jentergraf offset2={antallJenter-10>=0 ? 100 : antallJenter>=5 ? 50 : 0} key={i} />
+        antallJenter = antallJenter-10
+        return graf
+      }
+      )}  <p className="prosent"> 40% kvinner </p>
+  </div>
+
 
 
 </div>

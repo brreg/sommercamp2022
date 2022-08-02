@@ -1,0 +1,29 @@
+.kjonnsgraf {
+    padding: 3%;
+}
+
+.guttene {
+    display: flex;
+    flex-direction: row;
+    padding: 1.5%;
+}
+
+.jentene {
+    display: flex;
+    flex-direction: row;
+    padding: 1.5%;
+}
+
+.jenteIkon {
+    margin: -5px;
+}
+
+.guttIkon {
+    margin: -5px;
+}
+
+.prosent {
+    padding-left: 1%;
+    font-size: 16px;
+    font-weight: 600;
+}
