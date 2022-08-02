@@ -7,7 +7,7 @@ import Death from '../../Graphs/death'
 import Escape from '../../Graphs/escape'
 import Lice from '../../Graphs/lice'
 import Feed from '../../Graphs/feed'
-import Transport from '../../Graphs/transport'
+import Production from '../../Graphs/production'
 
 function FramesMiljo() {
     const {id} = useParams();

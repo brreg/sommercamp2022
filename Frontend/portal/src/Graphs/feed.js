@@ -37,7 +37,7 @@ const Feed = props => {
         
         axios.get(`http://127.0.0.1:5000/orgs/${props.org_nr}/co2feed//`)
         .then( res=> {
-            console.log(res)
+            //console.log(res)
             for (const dataObj of res.data.data) {
                 co2emissions_feed.push(parseFloat(dataObj.co2emissions_feed_sum))
                 year.push(parseInt(dataObj.year))
