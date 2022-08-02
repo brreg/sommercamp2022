@@ -68,7 +68,7 @@ function FramesMiljo() {
                         nøkkeltall_en={<NokkeltallFly id={id} fly_over="CO2_bedrift" fly_under="CO2_bedrift"/>} 
                         nøkkeltall_to={<NokkeltallFly id={id} flyo_over="CO2_bransje" fly_under="CO2_bransje"/>} 
                         tekst={"Tallene er basert på beregnet CO2-ekvivalent fra produksjonen i 2022"} 
-                        graph={<Transport org_nr={id}/>}
+                        graph={<Production org_nr={id}/>}
                         dropDown={"CO2 utslippet fra produksjon er beregnet etter"}
                         show={"drivstofforbruk under utvalgte aktiviteter i produksjonsprosessen. Disse aktivitetene er bruk av brønnbåter, produksjonsfarmer og servicebedriftbruk. Det benyttes en fast sats for utslipp  per liter brukt på 2.66 CO2 ekvivalenter."}/>
 
