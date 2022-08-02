@@ -51,6 +51,9 @@ class Averages(Base):
 class Social(Base):
     __tablename__='social_figures'
 
+class Address(Base):
+    __tablename__='address'
+
 engine = create_engine('postgresql+psycopg2://'+os.environ["database_user"]+':'+os.environ["database_password"]+'@localhost:5432/postgres')
 Base.prepare(autoload_with=engine)
 session = Session(engine)
@@ -307,6 +310,30 @@ def get_all_areal_org(orgnr):
     ret_list = []
     for tup in result:
         ret_list.append({'areal_use_org': tup[0]})
+    return jsonify({'data': ret_list})
+
+@app.route('/orgs/<orgnr>/address')
+def get_address_for_orgnr(orgnr):
+
+    result = session.query(
+        Smb.org_nr,
+        Address.org_address,
+        Address.org_city,
+        Address.id,
+        Smb.org_address_id
+    ).select_from(
+        Address
+    ).join(
+        Smb, Address.id == Smb.org_address_id
+    ).filter(
+        Smb.org_nr == orgnr
+    ).all()
+    
+    ret_list = []
+    for tup in result:
+
+        ret_list.append({'org_nr': tup[0], 'address': tup[1], 'city':tup[2]})
+
     return jsonify({'data': ret_list})
 
 #Endpoint to get averages from the aquaculture industry
