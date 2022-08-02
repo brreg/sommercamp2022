@@ -320,6 +320,7 @@ def get_all_averages():
         'part_time_avg': data.part_time_avg} for data in session.query(Averages).all()
     ]})
 
+
 #Endpoint to get averages from the aquaculture industry
 @app.route('/orgs/averages/deadliness')
 def get_all_averages_deadliness():
@@ -373,3 +374,9 @@ def get_all_averages_escapes():
     for tup in result:
         ret_list.append({'year': tup[1], 'escape_count_sum_all': tup[0]})
     return jsonify({'data': ret_list})
+    
+    
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=105)
+
+
