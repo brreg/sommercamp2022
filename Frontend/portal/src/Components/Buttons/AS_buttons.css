@@ -7,7 +7,6 @@
     width: 220px;;
     border: none;
     border: 3px solid #004785;
-    color: #004785;
     font-weight: bold;
     border-radius: 5px;
     font-size: 23px;
@@ -23,4 +22,9 @@
     color: white; 
 
   }
-  
+      
+  #selected {
+    background-color: #004785;    
+    color: white; 
+
+  }

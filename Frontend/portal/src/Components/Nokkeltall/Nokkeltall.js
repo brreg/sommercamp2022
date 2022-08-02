@@ -69,10 +69,10 @@ function Nokkeltall (props) {
     
     return (
         <div className="nøkkeltall"> 
-        <div className="overtekst-nøkkeltall"> {transformed_kpi} </div>
-        <div className="tall-overskrift"> 300 </div>
-        <div className="undertekst-nøkkeltall"> {transformed_kpi2} </div>
-    </div>
+            <div className="overtekst-nøkkeltall"> {transformed_kpi} </div>
+            <div className="tall-overskrift"> 300 </div>
+            <div className="undertekst-nøkkeltall"> {transformed_kpi2} </div>
+        </div>
     )
 }
 

@@ -6,7 +6,7 @@ import {v4 as uuidv4} from 'uuid'
 const Jentergraf = (props) => {
   const uuid = uuidv4();
   return (
-    <div className="females">
+    <div className="jenteIkon">
 
 <svg fill={`url(#gradJente-${uuid})`} width="55px" height="55px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="4" r="2"/>
 
