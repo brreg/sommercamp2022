@@ -318,3 +318,6 @@ def get_all_averages():
         'female_average': data.female_percent_avg, 'male_average': data.male_percent_avg, 'areal_use_avg': data.areal_use_avg, 
         'part_time_avg': data.part_time_avg} for data in session.query(Averages).all()
     ]})
+    
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=105)
