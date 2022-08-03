@@ -4,7 +4,7 @@ import "./okonomi.css"
 
 IgrLinearGaugeModule.register();
 
-const Soliditet = (props) => {
+const SoliditetGraf = (props) => {
 
     return (
             <IgrLinearGauge className="graph"
@@ -58,4 +58,4 @@ const Soliditet = (props) => {
 
 
 // rendering above class to the React DOM
-export default Soliditet;
+export default SoliditetGraf;
