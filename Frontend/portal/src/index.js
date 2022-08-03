@@ -11,6 +11,7 @@ import Okonomi from './Pages/Bedrifter_okonomi/Okonomi';
 import Test_Page from './Pages/Test/Test_page'
 import Footer from './Components/Footer/Footer'
 
+
 export default function App() {
 
   const {id} = useParams();
