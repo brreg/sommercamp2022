@@ -36,6 +36,7 @@ const MiljoGraph = props => {
 
     const getData = async () =>{
         // 10.172.205.152:105
+        // 127.0.0.1:5000
         let url = `http://127.0.0.1:5000/averages/${props.apiurl_end}`
         await axios.get(url) 
         .then( res => {
