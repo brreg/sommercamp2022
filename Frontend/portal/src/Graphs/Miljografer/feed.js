@@ -21,7 +21,7 @@ ChartJS.register(
 );
 
 
-const Death = props => {
+const Feed = props => {
 
     const [chartData, setChartData] = useState({
         datasets: [],
@@ -32,23 +32,22 @@ const Death = props => {
 
     useEffect(() => {
 
-        let deadliness_percentages = []
+        let co2emissions_feed = []
         let year = []
         
-        //axios.get("http://127.0.0.1:5000/orgs/886813082/deadliness")
-        axios.get(`http://127.0.0.1:5000/orgs/${props.org_nr}/deadliness`)
+        axios.get(`http://127.0.0.1:5000/orgs/${props.org_nr}/co2feed//`)
         .then( res=> {
-            console.log(res)
+            //console.log(res)
             for (const dataObj of res.data.data) {
-                deadliness_percentages.push(parseFloat(dataObj.death_percentage))
+                co2emissions_feed.push(parseFloat(dataObj.co2emissions_feed_sum))
                 year.push(parseInt(dataObj.year))
             }
             setChartData({
                 labels: year,
                 datasets: [
                     {
-                        label: "Deadliness",
-                        data: deadliness_percentages,
+                        label: "Feed co2 emission data",
+                        data: co2emissions_feed,
                         borderColor: "rgb(53, 162, 235)",
                         backgroundColor: "rgb(53, 162, 235, 0.4)",
                     },
@@ -69,16 +68,16 @@ const Death = props => {
                 },
                 title: {
                     display: true,
-                    text: "Deadliness data"
+                    text: "Feed data"
                 }
             }
         })
     }, []);
 
     return (
-        <div className="death">
+        <div className="feed">
             <Bar options={chartOptions} data={chartData} />
         </div>
     )
 }
-export default Death;
+export default Feed;

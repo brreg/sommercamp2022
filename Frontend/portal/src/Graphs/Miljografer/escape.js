@@ -21,7 +21,7 @@ ChartJS.register(
 );
 
 
-const Feed = props => {
+const Escape = props => {
 
     const [chartData, setChartData] = useState({
         datasets: [],
@@ -32,22 +32,23 @@ const Feed = props => {
 
     useEffect(() => {
 
-        let co2emissions_feed = []
+        let escapes = []
         let year = []
         
-        axios.get(`http://127.0.0.1:5000/orgs/${props.org_nr}/co2feed//`)
+        //axios.get("http://127.0.0.1:5000/orgs/886813082/escapedata")
+        axios.get(`http://127.0.0.1:5000/orgs/${props.org_nr}/escapedata`)
         .then( res=> {
-            console.log(res)
+            //console.log(res)
             for (const dataObj of res.data.data) {
-                co2emissions_feed.push(parseFloat(dataObj.co2emissions_feed_sum))
-                year.push(parseInt(dataObj.year))
+                escapes.push(parseInt(dataObj.escape_count_sum))
+                year.push(parseFloat(dataObj.year))
             }
             setChartData({
                 labels: year,
                 datasets: [
                     {
-                        label: "Feed co2 emission data",
-                        data: co2emissions_feed,
+                        label: "Escapes",
+                        data: escapes,
                         borderColor: "rgb(53, 162, 235)",
                         backgroundColor: "rgb(53, 162, 235, 0.4)",
                     },
@@ -68,16 +69,16 @@ const Feed = props => {
                 },
                 title: {
                     display: true,
-                    text: "Feed data"
+                    text: "Escape data"
                 }
             }
         })
     }, []);
 
     return (
-        <div className="feed">
+        <div className="escape">
             <Bar options={chartOptions} data={chartData} />
         </div>
     )
 }
-export default Feed;
+export default Escape;

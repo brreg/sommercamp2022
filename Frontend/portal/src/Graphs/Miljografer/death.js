@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import useFetchData from '../../Components/DataFetcher/fetchdata';
 // import "./App.css";
 import {
     Chart as ChartJS,
@@ -21,7 +22,7 @@ ChartJS.register(
 );
 
 
-const Lice = props => {
+const Death = props => {
 
     const [chartData, setChartData] = useState({
         datasets: [],
@@ -30,28 +31,37 @@ const Lice = props => {
     const [chartOptions, setChartOptions] = useState({})
     const axios = require('axios')
 
+    const {averagesData, loading} = useFetchData();
+    console.log(averagesData)
+
     useEffect(() => {
 
-        let licedata = []
+        let deadliness_percentages = []
         let year = []
         
         //axios.get("http://127.0.0.1:5000/orgs/886813082/deadliness")
-        axios.get(`http://127.0.0.1:5000/orgs/${props.org_nr}/licedata`)
+        axios.get(`http://127.0.0.1:5000/orgs/${props.org_nr}/deadliness`)
         .then( res=> {
-            console.log(res)
+            //console.log(res)
             for (const dataObj of res.data.data) {
-                licedata.push(parseFloat(dataObj.year_avg_lice))
+                deadliness_percentages.push(parseFloat(dataObj.death_percentage))
                 year.push(parseInt(dataObj.year))
             }
             setChartData({
                 labels: year,
                 datasets: [
                     {
-                        label: "Licedata",
-                        data: licedata,
+                        label: "This company",
+                        data: deadliness_percentages,
                         borderColor: "rgb(53, 162, 235)",
-                        backgroundColor: "rgb(53, 162, 235, 0.4)",
+                        backgroundColor: "blue",
                     },
+                    {
+                        label: "Industry Average",
+                        data: averagesData,
+                        borderColor: "rgb(53, 162, 235)",
+                        backgroundColor: "green",
+                    }
                     
                 ],
             });
@@ -69,16 +79,22 @@ const Lice = props => {
                 },
                 title: {
                     display: true,
-                    text: "Lice data"
+                    text: "Deadliness data"
                 }
             }
         })
     }, []);
 
     return (
-        <div className="lice">
+        
+        <div className="death">
+        {loading && <div>Loading</div>}
+        {!loading && (
+        <div>
             <Bar options={chartOptions} data={chartData} />
+        </div>
+        )}
         </div>
     )
 }
-export default Lice;
+export default Death;

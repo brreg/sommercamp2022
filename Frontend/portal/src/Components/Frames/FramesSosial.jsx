@@ -1,9 +1,8 @@
 import React from 'react';
 import {useParams} from 'react-router-dom';
 import Frame from './Frame';
-import Nokkeltall from '../Nokkeltall/Nokkeltall'
-import NokkeltallFly from '../Nokkeltall/NokkeltallFly';
-import Kjonngraf from '../../Graphs/Kjonnsfordeling/kjonngraf';
+import NokkeltallAreal from '../Nokkeltall/NokkeltallAreal';
+import Kjonngraf from '../../Graphs/Sosialgrafer/Kjonnsfordeling/kjonngraf';
 
 function FramesSosial() {
     const {id} = useParams();
@@ -18,8 +17,8 @@ function FramesSosial() {
                 </div>
                 <div className="column-frames">
                     <Frame overskrift="Arealbruk" 
-                            nøkkeltall_en={<NokkeltallFly id={id} kpi3="Arealbruk_bedrift" kpi4="Arealbruk_bedrift"/>}
-                            nøkkeltall_to={<NokkeltallFly id={id} kpi3="Arealbruk_bransje" kpi4="Arealbruk_bransje"/>}
+                            nøkkeltall_en={<NokkeltallAreal id={id} areal_over="Arealbruk_bedrift" areal_under="Arealbruk_bedrift"/>}
+                            nøkkeltall_to={<NokkeltallAreal id={id} areal_over="Arealbruk_bransje" areal_under="Arealbruk_bransje"/>}
                             tekst={"Disse tallene viser hvor stort areal hvert selskap benytter målt i m2"}/>
                 </div>
                 <div className="column-frames">

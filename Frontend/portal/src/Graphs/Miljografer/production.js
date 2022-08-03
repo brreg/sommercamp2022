@@ -21,7 +21,7 @@ ChartJS.register(
 );
 
 
-const Escape = props => {
+const Production = props => {
 
     const [chartData, setChartData] = useState({
         datasets: [],
@@ -32,23 +32,22 @@ const Escape = props => {
 
     useEffect(() => {
 
-        let escapes = []
+        let co2emissions_production = []
         let year = []
         
-        //axios.get("http://127.0.0.1:5000/orgs/886813082/escapedata")
-        axios.get(`http://127.0.0.1:5000/orgs/${props.org_nr}/escapedata`)
+        axios.get(`http://127.0.0.1:5000/orgs/${props.org_nr}/co2production/`)
         .then( res=> {
-            console.log(res)
+            //console.log(res)
             for (const dataObj of res.data.data) {
-                escapes.push(parseInt(dataObj.escape_count_sum))
-                year.push(parseFloat(dataObj.year))
+                co2emissions_production.push(parseFloat(dataObj.co2emissions_production_sum))
+                year.push(parseInt(dataObj.year))
             }
             setChartData({
                 labels: year,
                 datasets: [
                     {
-                        label: "Escapes",
-                        data: escapes,
+                        label: "Production co2 emission data",
+                        data: co2emissions_production,
                         borderColor: "rgb(53, 162, 235)",
                         backgroundColor: "rgb(53, 162, 235, 0.4)",
                     },
@@ -69,16 +68,16 @@ const Escape = props => {
                 },
                 title: {
                     display: true,
-                    text: "Escape data"
+                    text: "Production data"
                 }
             }
         })
     }, []);
 
     return (
-        <div className="escape">
+        <div className="production">
             <Bar options={chartOptions} data={chartData} />
         </div>
     )
 }
-export default Escape;
+export default Production;

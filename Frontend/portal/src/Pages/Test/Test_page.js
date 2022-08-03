@@ -2,7 +2,7 @@ import React from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
 import "./Test_page.css";
 import AS_buttons from "../../Components/Buttons/AS_buttons";
-import Death from "../../Graphs/death";
+import Death from "../../Graphs/Miljografer/death";
 
 
 const Test_Page = () => {

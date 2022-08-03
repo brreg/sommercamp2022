@@ -1,0 +1,50 @@
+.nøkkeltallAreal {
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0px 8px 16px 6px #00478514;
+    margin-right: 5%;
+    height: flex;
+    width: 236px;
+    border-radius: 10px;
+    padding-top: 1%;
+    padding-left: 1%;
+    padding-right: 1%;
+    padding-bottom: 1%;
+
+}
+
+.overtekst-overskriftAreal {
+    font-size: 14px;
+}
+
+.tall-overskriftAreal {
+    font-size: 32px;
+    line-height: 40px;
+    margin-top: 4%;
+    margin-bottom: 5%;
+    font-weight: 700;
+    color: #004785;
+}
+
+.undertekst-overskriftAreal {
+    font-size: 14px;
+
+}
+
+.strek {
+    margin-top: 7%;
+    border: 1px solid #D9D9D9;
+    width: 85%;
+    margin-bottom: 6%;
+}
+
+.areal_bilde {
+    margin: 3%;
+    width: 15%;
+    float:left;
+}
+
+.areal_tekst {
+    float: right;
+    width: 75%;
+}
