@@ -16,10 +16,10 @@ const Frame = props => {
                 <p className="p-overskrift-frame"> {props.overskrift} </p>
             </div>
 
-            <div>
-                <button onClick={toggleHidden} className="btn-dropDown">{props.dropDown}</button>
+            <div className="container_btn">
+                <button onClick={toggleHidden} className="btn-dropDown">{props.dropDown} {show ? <img className="Pil" src={require('./PilOpp.png')}/> : <img className="Pil" src={require('./PilNed.png')}/>} </button>
                 <div>
-                    {show &&  <p className="p-hidden">{props.show}</p>}
+                    {show && <p className="p-hidden">{props.show}</p>}
                 </div>
             </div>
 
@@ -37,9 +37,8 @@ const Frame = props => {
                     <p className="p-tekst">
                         {props.tekst}
                     <br></br> 
-                    <br></br> 
-                        Kilde: 
-
+                    <br></br>
+                        {props.kilde}
                     </p>
                 </div>
             </div>
