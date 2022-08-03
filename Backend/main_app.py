@@ -63,7 +63,7 @@ def fill_db():
     
     #Get account data from API and insert to database
     rapi = RegnskapsAPI()
-    orgnrs = rapi.get_orgnrs()[0:5]
+    orgnrs = rapi.get_orgnrs()[0:20]
     rdcontainer = rapi.get_many_nokkeltall(orgnrs, years)
     df_regnskap = rdcontainer.get_dataframe()
     db.insert_data(df_regnskap, "key_financial_figures")
