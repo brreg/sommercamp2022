@@ -59,7 +59,7 @@ function FramesMiljo() {
                         nøkkeltall_en={<NokkeltallFly id={id} fly_over="Fôrproduksjon_bedrift" fly_under="Fôrproduksjon_bedrift"/>} 
                         nøkkeltall_to={<NokkeltallFly id={id} fly_over="Fôrproduksjon_bransje" fly_under="Fôrproduksjon_bransje"/>} 
                         tekst={"Tallene er basert på beregnet CO2-ekvivalent fra fôrforbruket i 2022"} 
-                        graph={<MiljoGraph org_nr={id} apiurl_end="" chart_title="CO2 forproduksjon"/>}
+                        graph={<MiljoGraph org_nr={id} apiurl_end="co2feed" chart_title="CO2 forproduksjon"/>}
                         dropDown={"CO2-utslippet er regnet ut ved å gange et fast"}
                         show={"klimaavtrykk per kilo fôr, med fôrforbruket per kilo laks (eFcr) og selskapets totale produksjon av laks. Det tas forbehold om at tallet er et estimat basert på et fast utslipp per kilo for, og at selskapet benytter samme fôrprodusent for hele produksjonen."}/>
                 </div>

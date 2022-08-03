@@ -35,8 +35,13 @@ const MiljoGraph = props => {
     const axios = require('axios')
 
     const getData = async () =>{
-        await axios.get(`http://10.172.205.152:105/orgs/averages/${props.apiurl_end}`) // replace deadliness with prop name
+        // 10.172.205.152:105
+        console.log("hello look here")
+        console.log(`http://127.0.0.1:5000/averages/${props.apiurl_end}`)
+        let url = `http://127.0.0.1:5000/averages/${props.apiurl_end}`
+        await axios.get(url) // replace deadliness with prop name
         .then( res => {
+            console.log(res.data.data)
             let tempAveragesData = []
             for (const dataObj of res.data.data) {
                 tempAveragesData.push(parseFloat(dataObj.average_all)) // prop name here too
@@ -47,7 +52,7 @@ const MiljoGraph = props => {
             console.error(err)
         })
 
-        await  axios.get(`http://10.172.205.152:105/orgs/${props.org_nr}/${props.apiurl_end}`) 
+        await  axios.get(`http://127.0.0.1:5000/orgs/${props.org_nr}/${props.apiurl_end}`) 
         .then( res=> {
             let tempThisCompData = []
             let tempYear = []

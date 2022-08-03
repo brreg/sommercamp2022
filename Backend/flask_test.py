@@ -1,5 +1,5 @@
 import json
-from flask import Flask, jsonify, abort
+from flask import Flask, jsonify
 from flask_cors import CORS
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy import create_engine
@@ -7,11 +7,7 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 from sqlalchemy.sql import func
-from sqlalchemy import exc
 import os
-import werkzeug
-from werkzeug.exceptions import HTTPException, NotFound
-
 
 app = Flask(__name__)
 CORS(app)
@@ -62,9 +58,6 @@ engine = create_engine('postgresql+psycopg2://'+os.environ["database_user"]+':'+
 Base.prepare(autoload_with=engine)
 session = Session(engine)
 
-@app.errorhandler(404)
-def resource_not_found(e):
-    return jsonify(error=str(e)), 404
 
 #Endpoint to get all accounts in database
 @app.route('/accounts/')
@@ -148,22 +141,14 @@ def get_all_orgdata():
         'org_nr':org.org_nr, 'org_name': org.org_name, 'org_address_id':org.org_address_id} for org in session.query(Smb).all()
     ]})
 
-
 #Endpoint to get specific org data from orgnr
 @app.route('/orgs/<orgnr>/')
 def get_one_orgdata(orgnr):
-    
-    if orgnr.isdigit() == False:
-        return 'Bad request'
-    else:
-        res = ({'data':[{
-            'org_nr':org.org_nr, 'org_name': org.org_name, 'org_address_id':org.org_address_id} for org in session.query(Smb).filter(Smb.org_nr==int(orgnr))
-        ]})
-        return res
+    return jsonify({'data':[{
+        'org_nr':org.org_nr, 'org_name': org.org_name, 'org_address_id':org.org_address_id} for org in session.query(Smb).filter(Smb.org_nr==orgnr)
+    ]})
 
-    
 
-    
 #Endpoint to get all areal data
 @app.route('/locations/areal/')
 def get_all_areals():
@@ -206,6 +191,8 @@ def get_one_socialdata(orgnr):
         'org_nr':org.org_nr, 'year': org.year, 'female_percent':org.female_percent, 'male_percent':org.male_percent} for org in session.query(Social).filter(Social.org_nr==orgnr)
     ]})
     
+
+
 
 #Endpoint to get co2 emission from feed on orgnr
 @app.route('/orgs/<orgnr>/co2feed/')
@@ -350,7 +337,7 @@ def get_address_for_orgnr(orgnr):
     return jsonify({'data': ret_list})
 """
 #Endpoint to get averages from the aquaculture industry
-@app.route('/orgs/averages/')
+@app.route('/averages/')
 def get_all_averages():
     return jsonify({'data':[{
         'lice_average': data.lice_peryear_avg, 'escape_average': data.escape_count_sum_avg, 'death_average':data.death_percentperyear_avg, 
@@ -362,7 +349,7 @@ def get_all_averages():
 """
 
 #Endpoint to get averages from the aquaculture industry
-@app.route('/orgs/averages/deadliness')
+@app.route('/averages/deadliness')
 def get_all_averages_deadliness():
     result = session.query(
         Deadliness.death_year,
@@ -380,7 +367,7 @@ def get_all_averages_deadliness():
     return jsonify({'data': ret_list})
 
 #Endpoint to get averages from the aquaculture industry
-@app.route('/orgs/averages/licedata')
+@app.route('/averages/licedata')
 def get_all_averages_licedata():
     result = session.query(
         func.avg(Licedata.lice_average),
@@ -398,7 +385,7 @@ def get_all_averages_licedata():
     return jsonify({'data': ret_list})
 
 #Endpoint to get averages from the aquaculture industry
-@app.route('/orgs/averages/escapes')
+@app.route('/averages/escapes')
 def get_all_averages_escapes():
     result = session.query(
         func.sum(Escape.escape_count_sum),
@@ -416,7 +403,7 @@ def get_all_averages_escapes():
     return jsonify({'data': ret_list})
 
 #Endpoint to get averages from the aquaculture industry
-@app.route('/orgs/averages/co2feed')
+@app.route('/averages/co2feed')
 def get_all_averages_co2feed():
     result=session.query(
         Co2Emissions.year,
@@ -430,11 +417,11 @@ def get_all_averages_co2feed():
     ).all()
     ret_list=[]
     for tup in result:
-        ret_list.append({'year': tup[0], 'thiscomp': tup[1]})
+        ret_list.append({'year': tup[0], 'average_all': tup[1]})
     return jsonify({'data': ret_list})
 
 #Endpoint to get averages from the aquaculture industry
-@app.route('/orgs/averages/co2production')
+@app.route('/averages/co2production')
 def get_all_averages_co2production():
     result=session.query(
         Co2Emissions.year,
@@ -448,7 +435,7 @@ def get_all_averages_co2production():
     ).all()
     ret_list=[]
     for tup in result:
-        ret_list.append({'year': tup[0], 'thiscomp': tup[1]})
+        ret_list.append({'year': tup[0], 'average_all': tup[1]})
     return jsonify({'data': ret_list})
     
     
