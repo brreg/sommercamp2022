@@ -1,13 +1,12 @@
 .row_forside {
-    margin: 0 5%;
-    padding-top: 5%;
+    margin: 0 10%;
+    padding-top: 10%;
     display: flex;
     flex-flow: wrap;
 }
 
 .column_forside {
     width: 28%;
-    padding: 0 2%;
 }
     
 .card_forside {
