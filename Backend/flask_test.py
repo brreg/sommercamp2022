@@ -75,64 +75,6 @@ def get_bedrift(orgnr):
         'return_on_assets':regnskap.return_on_assets, 'solidity':regnskap.solidity} for regnskap in session.query(Regnskap).filter(Regnskap.org_nr == orgnr)
     ]})
 
-#Endpoint to get all location data
-@app.route('/locations/')
-def get_all_locations():
-    return jsonify({'data':[{
-        'loc_nr':loc.loc_nr, 'org_nr':loc.org_nr, 'loc_name':loc.loc_name, 'loc_capacity':loc.loc_capacity} for loc in session.query(Location).all()
-    ]})
-
-#Endpoint to get data for specific endpoint
-@app.route('/locations/<locnr>/')
-def get_location(locnr):
-    return jsonify({'data':[{
-        'loc_nr':loc.loc_nr, 'org_nr':loc.org_nr, 'loc_name':loc.loc_name, 'loc_capacity':loc.loc_capacity} for loc in session.query(Location).filter(Location.loc_nr == locnr)
-    ]})
-
-#Endpoint to get all lice data
-@app.route('/locations/licedata/')
-def get_all_licedata():
-    return jsonify({'data':[{
-        'id':loc.id, 'loc_nr':loc.loc_nr, 'lice':loc.lice, 'lice_nr':loc.lice_nr, 'lice_week':loc.lice_week, 'lice_year':loc.lice_year} for loc in session.query(Licedata).all()
-    ]})
-
-#Endpoint to get specific licedata from locnr
-@app.route('/locations/<locnr>/licedata/')
-def get_one_licedata(locnr):
-    return jsonify({'data':[{
-        'id':loc.id, 'loc_nr':loc.loc_nr, 'lice':loc.lice, 'lice_nr':loc.lice_nr, 'lice_week':loc.lice_week, 'lice_year':loc.lice_year} for loc in session.query(Licedata).filter(Licedata.loc_nr==locnr)
-    ]})
-
-#Endpoint to get all escapedata
-@app.route('/locations/escapes/')
-def get_all_escapedata():
-    return jsonify({'data':[{
-        'id':loc.id, 'loc_nr':loc.loc_nr, 'escape_year':loc.escape_year, 'escape_week':loc.escape_week, 'escape_count':loc.escape_count, 
-        'escape_captures':loc.escape_captured, 'escape_capturestart':loc.escape_capturestart, 'escape_desctription':loc.escape_description} for loc in session.query(Escape).all()
-    ]})
-
-#Endpoint to get specific escapedata from locnr
-@app.route('/locations/<locnr>/escapes/')
-def get_one_escapedata(locnr):
-    return jsonify({'data':[{
-        'id':loc.id, 'loc_nr':loc.loc_nr, 'escape_year':loc.escape_year, 'escape_week':loc.escape_week, 'escape_count':loc.escape_count, 
-        'escape_captures':loc.escape_captured, 'escape_capturestart':loc.escape_capturestart, 'escape_desctription':loc.escape_description} for loc in session.query(Escape).filter(Escape.loc_nr==locnr)
-    ]})
-
-#Endpoint to get all deadliness data
-@app.route('/locations/deadliness/')
-def get_all_deadlinessdata():
-    return jsonify({'data':[{
-        'id':loc.id, 'loc_nr':loc.loc_nr, 'death_nr':loc.death_nr, 'death_year': loc.death_year} for loc in session.query(Deadliness).all()
-    ]})
-    
-
-#Endpoint to get specific deadliness data
-@app.route('/locations/<locnr>/deadliness/')
-def get_one_deadlinessdata(locnr):
-    return jsonify({'data':[{
-        'id':loc.id, 'loc_nr':loc.loc_nr, 'death_nr':loc.death_nr, 'death_year': loc.death_year} for loc in session.query(Deadliness).filter(Deadliness.loc_nr==locnr)
-    ]})
 
 #Endpoint to get data about orgs (name, address etc.)
 @app.route('/orgs/')
@@ -148,34 +90,6 @@ def get_one_orgdata(orgnr):
         'org_nr':org.org_nr, 'org_name': org.org_name, 'org_address_id':org.org_address_id} for org in session.query(Smb).filter(Smb.org_nr==orgnr)
     ]})
 
-
-#Endpoint to get all areal data
-@app.route('/locations/areal/')
-def get_all_areals():
-    return jsonify({'data':[{
-        'id:': loc.id, 'loc_nr': loc.loc_nr, 'areal_use': loc.areal_use} for loc in session.query(Areal).all()
-    ]})
-    
-#Endpoint to get specific areal data from locnr
-@app.route('/locations/<locnr>/areal/')
-def get_one_areals(locnr):
-    return jsonify({'data':[{
-        'id:': loc.id, 'loc_nr': loc.loc_nr, 'areal_use': loc.areal_use} for loc in session.query(Areal).filter(Areal.loc_nr == locnr)
-    ]})
-
-#Endpoint to get all part time data
-@app.route('/locations/parttime/')
-def get_all_parttime():
-    return jsonify({'data':[{
-        'id': loc.id, 'loc_nr': loc.loc_nr, 'part_time_percentage':loc.part_time_percentage} for loc in session.query(PartTime).all()
-    ]})
-
-#Endpoint to get specific part time data
-@app.route('/locations/<orgnr>/parttime/')
-def get__parttime(orgnr):
-    return jsonify({'data':[{
-        'id': loc.id, 'org_nr': loc.org_nr, 'part_time_percentage':loc.part_time_percentage} for loc in session.query(PartTime).filter(PartTime.loc_nr==orgnr)
-    ]})
 
 #Endpoint to get all social data
 @app.route('/orgs/social/')
@@ -438,6 +352,44 @@ def get_all_averages_co2production():
         ret_list.append({'year': tup[0], 'average_all': tup[1]})
     return jsonify({'data': ret_list})
     
+
+#Endpoint to get averages from the aquaculture industry
+@app.route('/nokkeltall/<orgnr>/areal')
+def get_nokkeltall_areal(orgnr):
+    ret_list = []
+
+    result = session.query(
+        func.avg(Areal.areal_use),
+        func.avg(Areal.areal_use)/7140
+
+    ).select_from(
+        Areal
+    ).join(
+        Location, Areal.loc_nr == Location.loc_nr
+    ).filter(
+        Location.org_nr == orgnr
+    ).all()
+    
+    for tup in result:
+        ret_list.append({'this_org_areal': tup[0]})
+        ret_list.append({'this_org_areal_football': int(tup[1])})
+
+    result = session.query(
+        func.avg(Areal.areal_use),
+        func.avg(Areal.areal_use)/7140
+    ).select_from(
+        Areal
+    ).join(
+        Location, Areal.loc_nr == Location.loc_nr
+    ).all()
+
+    for tup in result:
+        ret_list.append({'all_org_areal': tup[0]})
+        ret_list.append({'all_org_areal_football': int(tup[1])})
+
+    return jsonify({'data': ret_list})
+
+
     
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=105)
