@@ -50,7 +50,7 @@
     margin-left: 2.5%;
     padding-top: 1%;
     font-size: 24px;
-    color: #004785;
+    color: #000;
     text-decoration: underline;
 }
 
@@ -58,26 +58,22 @@
     width: 90%;
     height: 42px;
     margin-left: 5%;
-    margin-bottom: 3%;
     background-color: #fff;
-    border: 1px solid #005FAE;
+    border: 2px solid #1A36D9;
     text-align: left;
-    padding-left: 15px;;
+    padding-left: 15px;
+    border-radius: 10px;
 }
 
-.p-spørsmålstegn-frame {
-    margin-left: 2.5%;
-    margin-top: 2.3%;
-}
-
-.p-spørsmålstegn {
-    border: 2px solid black;
-    border-radius: 100%;
-    padding: 0.3vh 0.6vh;
+.p-hidden {
+    width: 90%;
+    margin-left: 5%;
+    padding-left: 15px;
 }
 
 .p-tekst {
     font-size: 16px;;
+    width: 95%;
 }
 
 .tekstboks-frame {
