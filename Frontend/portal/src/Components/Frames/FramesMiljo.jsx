@@ -50,7 +50,7 @@ function FramesMiljo() {
                         nøkkeltall_en={<Nokkeltall id={id} miljo_over="Lakselus_bedrift" miljo_under="Lakselus_bedrift"/>} 
                         nøkkeltall_to={<Nokkeltall id={id} miljo_over="Lakselus_bransje" miljo_under="Lakselus_bedrift"/>} 
                         tekst={"Grafen viser gjennomsnittlig lakselus per fisk fra 2017-2021"} 
-                        graph={<Lice org_nr={id}/>}
+                        graph={<MiljoGraph org_nr={id} apiurl_end="licedata" chart_title="Lice data"/>}
                         dropDown={"Lusetallene er gjennomsnittlig hunnlus per fisk."}
                         show={"Lusetall er gjennomsnittlig hunnlus per fisk. Tallene er basert på data per uke for hver lokalitet og har blitt aggregert på årsnivå. Diagrammet viser bedriften sitt lusetall, gjennomsnittlig lusetall for bransjen, og tillatt grense for lakselus."}/>
                 </div>
@@ -59,7 +59,7 @@ function FramesMiljo() {
                         nøkkeltall_en={<NokkeltallFly id={id} fly_over="Fôrproduksjon_bedrift" fly_under="Fôrproduksjon_bedrift"/>} 
                         nøkkeltall_to={<NokkeltallFly id={id} fly_over="Fôrproduksjon_bransje" fly_under="Fôrproduksjon_bransje"/>} 
                         tekst={"Tallene er basert på beregnet CO2-ekvivalent fra fôrforbruket i 2022"} 
-                        graph={<Feed org_nr={id}/>}
+                        graph={<MiljoGraph org_nr={id} apiurl_end="" chart_title="CO2 forproduksjon"/>}
                         dropDown={"CO2-utslippet er regnet ut ved å gange et fast"}
                         show={"klimaavtrykk per kilo fôr, med fôrforbruket per kilo laks (eFcr) og selskapets totale produksjon av laks. Det tas forbehold om at tallet er et estimat basert på et fast utslipp per kilo for, og at selskapet benytter samme fôrprodusent for hele produksjonen."}/>
                 </div>
@@ -68,7 +68,7 @@ function FramesMiljo() {
                         nøkkeltall_en={<NokkeltallFly id={id} fly_over="CO2_bedrift" fly_under="CO2_bedrift"/>} 
                         nøkkeltall_to={<NokkeltallFly id={id} flyo_over="CO2_bransje" fly_under="CO2_bransje"/>} 
                         tekst={"Tallene er basert på beregnet CO2-ekvivalent fra produksjonen i 2022"} 
-                        graph={<Production org_nr={id}/>}
+                        graph={<MiljoGraph org_nr={id} apiurl_end="co2production" chart_title="CO2 utslipp i produksjon"/>}
                         dropDown={"CO2 utslippet fra produksjon er beregnet etter"}
                         show={"drivstofforbruk under utvalgte aktiviteter i produksjonsprosessen. Disse aktivitetene er bruk av brønnbåter, produksjonsfarmer og servicebedriftbruk. Det benyttes en fast sats for utslipp  per liter brukt på 2.66 CO2 ekvivalenter."}/>
 
