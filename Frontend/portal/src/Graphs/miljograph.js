@@ -36,15 +36,12 @@ const MiljoGraph = props => {
 
     const getData = async () =>{
         // 10.172.205.152:105
-        console.log("hello look here")
-        console.log(`http://127.0.0.1:5000/averages/${props.apiurl_end}`)
         let url = `http://127.0.0.1:5000/averages/${props.apiurl_end}`
-        await axios.get(url) // replace deadliness with prop name
+        await axios.get(url) 
         .then( res => {
-            console.log(res.data.data)
             let tempAveragesData = []
             for (const dataObj of res.data.data) {
-                tempAveragesData.push(parseFloat(dataObj.average_all)) // prop name here too
+                tempAveragesData.push(parseFloat(dataObj.average_all)) 
             }
             setAveragesData(tempAveragesData)
         })
@@ -78,13 +75,13 @@ const MiljoGraph = props => {
             labels: year,
             datasets: [
                 {
-                    label: "This company", // prop name
+                    label: "This company", // replace w prop name?
                     data: thisCompData,
                     borderColor: "rgb(53, 162, 235)",
                     backgroundColor: "blue",
                 },
                 {
-                    label: "Industry Average", // props name
+                    label: "Industry Average", // replace w props name?
                     data: averagesData,
                     borderColor: "rgb(53, 162, 235)",
                     backgroundColor: "green",
@@ -107,7 +104,6 @@ const MiljoGraph = props => {
     }, [averagesData, thisCompData, year])
 
 
-    // maybe change to more general name
     return (
         <div className="miljograph"> 
         <div>
@@ -116,4 +112,4 @@ const MiljoGraph = props => {
         </div>
     )
 }
-export default MiljoGraph; // maybe more general name? 
+export default MiljoGraph; 
