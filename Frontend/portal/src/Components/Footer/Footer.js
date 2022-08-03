@@ -24,8 +24,12 @@ const Footer = () => {
 
                 <div className="footers footer-3">
                     <p className="p-footer p-footer-bold">Følg oss</p>
+                    <div className="some">
+                        <img src={require('./images/Facebook-icon.png')} className="img-some"></img>
+                        <img src={require('./images/Linked-in.png')} className="img-some"></img>
+                        <img src={require('./images/Insta-ikon.png')} className="img-some"></img>
+                    </div>
                 </div>
-
             </div>
         </div>
     )

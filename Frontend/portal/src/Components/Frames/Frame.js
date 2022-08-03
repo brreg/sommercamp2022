@@ -34,12 +34,10 @@ const Frame = props => {
                     {props.graph}
                 </div>
                 <div className="tekstboks-frame">
-                    <p className="p-tekst">
+                    <p className="p-tekst-frame">
                         {props.tekst}
-                    <br></br> 
-                    <br></br>
-                        {props.kilde}
                     </p>
+                    <p className="p-kilde">{props.kilde}</p>
                 </div>
             </div>
 
