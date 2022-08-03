@@ -440,27 +440,31 @@ def get_all_averages_co2production():
 
 @app.route('/orgs/<orgnr>/address')
 def get_address_for_orgnr(orgnr):
-
-    result = session.query(
-        Smb.org_nr,
-        Address.org_address,
-        Address.org_city,
-        Address.id,
-        Smb.org_address_id
-    ).select_from(
-        Address
-    ).join(
-        Smb, Address.id == Smb.org_address_id
-    ).filter(
-        Smb.org_nr == orgnr
-    ).all()
     
-    ret_list = []
-    for tup in result:
+    if bad_request(orgnr):
+        return 'Bad request'
+    
+    else:
+        result = session.query(
+            Smb.org_nr,
+            Address.org_address,
+            Address.org_city,
+            Address.id,
+            Smb.org_address_id
+        ).select_from(
+            Address
+        ).join(
+            Smb, Address.id == Smb.org_address_id
+        ).filter(
+            Smb.org_nr == orgnr
+        ).all()
+        
+        ret_list = []
+        for tup in result:
 
-        ret_list.append({'org_nr': tup[0], 'address': tup[1], 'city':tup[2]})
+            ret_list.append({'org_nr': tup[0], 'address': tup[1], 'city':tup[2]})
 
-    return jsonify({'data': ret_list})
+        return jsonify({'data': ret_list})
 
 
 @app.route('/orgs/<orgnr>/flights/')
