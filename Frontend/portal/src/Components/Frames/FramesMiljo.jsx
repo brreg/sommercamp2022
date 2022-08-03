@@ -4,10 +4,7 @@ import Frame from './Frame';
 import Nokkeltall from '../Nokkeltall/Nokkeltall'
 import NokkeltallFly from '../Nokkeltall/NokkeltallFly'
 import MiljoGraph from '../../Graphs/miljograph'
-import Escape from '../../Graphs/Miljografer/escape'
-import Lice from '../../Graphs/Miljografer/lice'
-import Feed from '../../Graphs/Miljografer/feed'
-import Production from '../../Graphs/Miljografer/production'
+
 
 function FramesMiljo() {
     const {id} = useParams();
