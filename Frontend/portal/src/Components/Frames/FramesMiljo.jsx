@@ -3,7 +3,6 @@ import {useParams } from 'react-router-dom';
 import Frame from './Frame';
 import Nokkeltall from '../Nokkeltall/Nokkeltall'
 import NokkeltallFly from '../Nokkeltall/NokkeltallFly'
-//import Death from '../../Graphs/death'
 import MiljoGraph from '../../Graphs/miljograph'
 import Escape from '../../Graphs/escape'
 import Lice from '../../Graphs/lice'

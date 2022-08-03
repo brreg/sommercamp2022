@@ -2,7 +2,7 @@ import React from 'react';
 import {useParams} from 'react-router-dom';
 import Frame from './Frame';
 import NokkeltallAreal from '../Nokkeltall/NokkeltallAreal';
-import Kjonngraf from '../../Graphs/Kjonnsfordeling/kjonngraf';
+import Kjonngraf from '../../Graphs/Sosialgrafer/Kjonnsfordeling/kjonngraf';
 
 function FramesSosial() {
     const {id} = useParams();

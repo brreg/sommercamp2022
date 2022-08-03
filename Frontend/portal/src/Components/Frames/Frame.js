@@ -17,9 +17,9 @@ const Frame = props => {
             </div>
 
             <div>
-                <button onClick={toggleHidden}>{props.dropDown}</button>
+                <button onClick={toggleHidden} className="btn-dropDown">{props.dropDown}</button>
                 <div>
-                    {show &&  <p>{props.show}</p>}
+                    {show &&  <p className="p-hidden">{props.show}</p>}
                 </div>
             </div>
 

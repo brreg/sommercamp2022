@@ -19,12 +19,13 @@
 
 .info {
     margin-left: 4%;
-    width: 8%;
+    width: flex;
     float: left;
     line-height: 3px;
 }
 
 .info-title {
     text-decoration: underline;
+    width: 100%;
 }
 

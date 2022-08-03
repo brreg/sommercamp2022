@@ -57,7 +57,7 @@ function NokkeltallFly (props) {
             <div className="undertekst-nøkkeltallAreal"> {transformed_areal_under} </div>
             <div className="strek"/>
             <div className="under_strek">
-            <div><img className="areal_bilde" src={require('./plane2.png')}></img></div>
+            <div><img className="areal_bilde" src={require('./Fotball.png')}></img></div>
             <div className="areal_tekst"> Dette tilsvarer 50 fotballbaner </div>
             </div> 
         </div>

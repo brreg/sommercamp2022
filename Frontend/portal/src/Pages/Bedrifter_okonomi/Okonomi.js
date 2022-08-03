@@ -11,11 +11,11 @@ const Okonomi = () => {
 
     return (
         <div>
-            <div>
-                <Header id={id}/>
-            </div>
+        <div>
+            <Header id={id}/>
+        </div>
         <div className="btn-floater">
-        <AS_buttons/>
+            <AS_buttons/>
         </div>
         <div className="frame-floater">
             <FramesOkonomi/>

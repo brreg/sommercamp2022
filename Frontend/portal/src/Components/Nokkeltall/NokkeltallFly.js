@@ -73,7 +73,7 @@ function NokkeltallFly (props) {
             <div className="undertekst-nøkkeltallFly"> {transformed_fly_under} </div>
             <div className="strek"/>
             <div className="under_strek">
-            <div><img className="fly_bilde" src={require('./plane2.png')}></img></div>
+            <div><img className="fly_bilde" src={require('./Fly.png')}></img></div>
             <div className="fly_tekst"> Dette tilsvarer 50 flyreiser Oslo - New York </div>
             </div> 
         </div>
