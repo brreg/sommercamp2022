@@ -17,7 +17,6 @@ const Test_Page = () => {
         </div>
         <div></div>
         <div className="frame-floater">
-            <MiljoGraph org_nr="886813082"/>
         </div>
         </div>
     )  
