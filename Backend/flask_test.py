@@ -449,6 +449,34 @@ def get_nokkeltall_kjonn(orgnr):
         ret_list.append({'male_percent_avg':round(tup[1])})
     return jsonify({'data': ret_list})
 
+@app.route('/nokkeltall/<orgnr>/ufrivilligdeltid/')
+def get_nokkeltall_udeltid(orgnr):
+    ret_list=[]
+
+    result=session.query(
+        PartTime.part_time_percentage,
+    ).select_from(
+        PartTime
+    ).filter(
+        PartTime.org_nr == orgnr,
+        PartTime.year == '2021'
+    ).all()
+    
+    for tup in result:
+        ret_list.append({'part_time_percentage':round(tup[0])})
+
+    result=session.query(
+        func.avg(PartTime.part_time_percentage),
+    ).select_from(
+        PartTime
+    ).filter(
+        PartTime.year == '2022'
+    ).all()
+
+    for tup in result:
+        ret_list.append({'part_time_percentage_avg':round(tup[0])})
+    return jsonify({'data': ret_list})
+
 
 if __name__ == '__main__':
     app.debug = True
