@@ -16,8 +16,10 @@
 
 .column-frames {
     width: 47%;
+    padding-top: 1%;
+    padding-bottom: 0.5%;
     padding-left: 1.5%;
-    padding-right: 1.5%;
+    padding-right: 1%;
 }
 
 .nøkkeltall-frame {
@@ -46,7 +48,10 @@
 
 .p-overskrift-frame {
     margin-left: 2.5%;
-    padding-top: 3%;
+    padding-top: 1%;
+    font-size: 24px;
+    color: #004785;
+    text-decoration: underline;
 }
 
 .btn-dropDown {

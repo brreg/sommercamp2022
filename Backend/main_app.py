@@ -94,6 +94,7 @@ def fill_db():
     db.insert_part_time_data('part_time_percentages.csv')
     time.sleep(1)
     
+    db.update_db_averages()
 
 fill_db()
 

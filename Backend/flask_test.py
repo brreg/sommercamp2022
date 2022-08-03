@@ -48,6 +48,9 @@ class Co2Emissions(Base):
 class Averages(Base):
     __tablename__='aquaculture_industry_averages'
 
+class Social(Base):
+    __tablename__='social_figures'
+
 engine = create_engine('postgresql+psycopg2://'+os.environ["database_user"]+':'+os.environ["database_password"]+'@localhost:5432/postgres')
 Base.prepare(autoload_with=engine)
 session = Session(engine)
@@ -165,11 +168,28 @@ def get_all_parttime():
     ]})
 
 #Endpoint to get specific part time data
-@app.route('/locations/<locnr>/parttime/')
-def get__parttime(locnr):
+@app.route('/locations/<orgnr>/parttime/')
+def get__parttime(orgnr):
     return jsonify({'data':[{
-        'id': loc.id, 'loc_nr': loc.loc_nr, 'part_time_percentage':loc.part_time_percentage} for loc in session.query(PartTime).filter(PartTime.loc_nr==locnr)
+        'id': loc.id, 'org_nr': loc.org_nr, 'part_time_percentage':loc.part_time_percentage} for loc in session.query(PartTime).filter(PartTime.loc_nr==orgnr)
     ]})
+
+#Endpoint to get all social data
+@app.route('/orgs/social/')
+def get_socialdata():
+    return jsonify({'data':[{
+        'org_nr':org.org_nr, 'year': org.year, 'female_percent':org.female_percent, 'male_percent':org.male_percent} for org in session.query(Social).all()
+    ]})
+    
+#Endpoint to get specific social data
+@app.route('/orgs/<orgnr>/social/')
+def get_one_socialdata(orgnr):
+    return jsonify({'data':[{
+        'org_nr':org.org_nr, 'year': org.year, 'female_percent':org.female_percent, 'male_percent':org.male_percent} for org in session.query(Social).filter(Social.org_nr==orgnr)
+    ]})
+    
+
+
 
 #Endpoint to get co2 emission from feed on orgnr
 @app.route('/orgs/<orgnr>/co2feed/')
@@ -294,7 +314,7 @@ def get_all_averages():
     return jsonify({'data':[{
         'lice_average': data.lice_peryear_avg, 'escape_average': data.escape_count_sum_avg, 'death_average':data.death_percentperyear_avg, 
         'liquidity_ratio_avg':data.liquidity_ratio_average, 'return_on_assets':data.return_on_assets_average, 
-        'solidity':data.solidity_average, 'co2_feed_avg': data.co2_feed_average, 'co2_transport_avg': data.co2_transport_average,
-        'female_average': data.female_percent_avg, 'male_average': data.male_percent.avg, 'areal_use_avg': data.areal_use_avg, 
+        'solidity':data.solidity_average, 'co2_feed_avg': data.co2_feed_average, 'co2_production_avg': data.co2_production_average,
+        'female_average': data.female_percent_avg, 'male_average': data.male_percent_avg, 'areal_use_avg': data.areal_use_avg, 
         'part_time_avg': data.part_time_avg} for data in session.query(Averages).all()
-    ]})    
+    ]})
