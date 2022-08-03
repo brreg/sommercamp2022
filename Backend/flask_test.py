@@ -104,7 +104,7 @@ def get_one_licedata(locnr):
     ]})
 
 #Endpoint to get all escapedata
-@app.route('/locations/escapedata/')
+@app.route('/locations/escapes/')
 def get_all_escapedata():
     return jsonify({'data':[{
         'id':loc.id, 'loc_nr':loc.loc_nr, 'escape_year':loc.escape_year, 'escape_week':loc.escape_week, 'escape_count':loc.escape_count, 
@@ -112,7 +112,7 @@ def get_all_escapedata():
     ]})
 
 #Endpoint to get specific escapedata from locnr
-@app.route('/locations/<locnr>/escapedata/')
+@app.route('/locations/<locnr>/escapes/')
 def get_one_escapedata(locnr):
     return jsonify({'data':[{
         'id':loc.id, 'loc_nr':loc.loc_nr, 'escape_year':loc.escape_year, 'escape_week':loc.escape_week, 'escape_count':loc.escape_count, 
@@ -275,7 +275,7 @@ def get_all_licedata_for_orgnr(orgnr):
     return jsonify({'data': ret_list})
  
 #Endpoint to get escape data on orgnr level
-@app.route('/orgs/<orgnr>/escapedata')
+@app.route('/orgs/<orgnr>/escapes')
 def get_all_escapedata_for_orgnr(orgnr):
     result = session.query(
         func.sum(Escape.escape_count_sum),

@@ -4,10 +4,10 @@ import Frame from './Frame';
 import Nokkeltall from '../Nokkeltall/Nokkeltall'
 import NokkeltallFly from '../Nokkeltall/NokkeltallFly'
 import MiljoGraph from '../../Graphs/miljograph'
-import Escape from '../../Graphs/escape'
-import Lice from '../../Graphs/lice'
-import Feed from '../../Graphs/feed'
-import Production from '../../Graphs/production'
+import Escape from '../../Graphs/Miljografer/escape'
+import Lice from '../../Graphs/Miljografer/lice'
+import Feed from '../../Graphs/Miljografer/feed'
+import Production from '../../Graphs/Miljografer/production'
 
 function FramesMiljo() {
     const {id} = useParams();
@@ -40,7 +40,7 @@ function FramesMiljo() {
                         nøkkeltall_en={<Nokkeltall id={id} miljo_over="Rømninger_bedrift" miljo_under="Rømninger_bedrift"/>} 
                         nøkkeltall_to={<Nokkeltall id={id} miljo_over="Rømninger_bransje" miljo_under="Rømninger_bedrift"/>} 
                         tekst={"Grafen viser antall rømninger per år fra 2017-2021"} 
-                        graph={<Escape org_nr={id}/>}
+                        graph={<MiljoGraph org_nr={id} apiurl_end="escapes" chart_title="Escape data"/>}
                         dropDown={"Rømningstallet viser antall røminger selskapet"}
                         show={"Rømninger innebærer at fisken har kommet ut av merden. Eventuelle redningsaksjoner er ikke tatt hensyn til i dette diagrammet."}/>
                         
