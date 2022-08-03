@@ -4,7 +4,7 @@
   width: 100%;
 }
 
-.nav-a {
+.nav-a-left {
   float: left;
   padding-top: 1.2%;
   padding-bottom: 1.2%;
@@ -15,7 +15,24 @@
   text-align: center;
 }
 
-.nav-a:hover {
+.nav-a-left:hover {
+  text-decoration: none;
+  background-color: #1A36D9;
+}
+
+.nav-a-right {
+  float: right;
+  padding-top: 1.2%;
+  padding-bottom: 1.2%;
+  padding-right: 1.2%;
+  color: #fff;
+  text-decoration: none;
+  font-size: 17px;
+  width: 7%; 
+  text-align: center;
+}
+
+.nav-a-right:hover {
   text-decoration: none;
   background-color: #1A36D9;
 }

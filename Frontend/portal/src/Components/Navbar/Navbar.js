@@ -1,4 +1,5 @@
 import './Navbar.css'
+import React from 'react';
 
 const NavBar = () => {
     return (
@@ -8,10 +9,14 @@ const NavBar = () => {
                 <div className="navbar-img">
                         <a href="/"><img src={require('./images/BR_logo-bokmaal_hvit.png')} className="image-nav" alt="logo"></img></a>
                 </div>
-                        <a className="nav-a" href="/Bedrifter/Miljo" >Virksomheter</a>
-                        <a className="nav-a" href="">Bærekraft</a>
-                        <a className="nav-a" href="">Regelverk</a>
-                        <a className="nav-a">Meny</a>
+                        <a className="nav-a-left" href="/Bedrifter/Miljo" >Virksomheter</a>
+                        <a className="nav-a-left" href="">Bærekraft</a>
+                        <a className="nav-a-left" href="">Regelverk</a>
+                        <a className="nav-a-right" href="">Meny</a>
+                        <a className="nav-a-right" href="">Språk</a>
+                        
+                        
+
             </nav>
        </div>
     )
