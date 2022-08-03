@@ -5,7 +5,7 @@ import { IgrLinearGraphRange } from 'igniteui-react-gauges';
 
 IgrLinearGaugeModule.register();
 
-const Okonomi = () => {
+const OkonomiGraph = () => {
 
     return (
         <div className="container sample">
@@ -61,4 +61,4 @@ const Okonomi = () => {
 
 
 // rendering above class to the React DOM
-export default Okonomi;
+export default OkonomiGraph;

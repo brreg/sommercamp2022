@@ -1,7 +1,7 @@
 import React from 'react';
 import {useParams} from 'react-router-dom';
 import Frame from './Frame';
-import Nokkeltall from '../Nokkeltall/Nokkeltall'
+import OkonomiGraph from "../../Graphs/okonomi"
 
 function FramesOkonomi() {
     const {id} = useParams();
@@ -10,7 +10,7 @@ function FramesOkonomi() {
             <div className="container-frames">
             <div className="row-frames">
                 <div className="column-frames">
-                    <Frame overskrift= "Soliditet" tekst={"Dette diagrammet viser bedriftens økonomiske soliditet for 2021"}/>
+                    <Frame overskrift= "Soliditet" tekst={"Dette diagrammet viser bedriftens økonomiske soliditet for 2021"} graph={<OkonomiGraph/>}/>
                 </div>
                 <div className="column-frames">
                     <Frame overskrift="Likviditet" tekst={"Dette diagrammet viser bedriftens økonomiske likviditet for 2021"}/>
