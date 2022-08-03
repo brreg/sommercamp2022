@@ -449,34 +449,41 @@ def get_nokkeltall_kjonn(orgnr):
         ret_list.append({'male_percent_avg':round(tup[1])})
     return jsonify({'data': ret_list})
 
+@app.route('/averages/ufrivilligdeltid/')
+def get_average_udeltid():
+    ret_list=[]
+
+    result=session.query(
+        func.avg(PartTime.part_time_percentage),
+        PartTime.year
+    ).select_from(
+        PartTime
+    ).group_by(
+        PartTime.year
+    ).all()
+    
+    for tup in result:
+        ret_list.append({'year': tup[1], 'part_time_percentage_avg':tup[0]})
+
+    return jsonify({'data': ret_list})
+
 @app.route('/nokkeltall/<orgnr>/ufrivilligdeltid/')
-def get_nokkeltall_udeltid(orgnr):
+def get_all_ufrivilligdeltid_for_orgnr(orgnr):
     ret_list=[]
 
     result=session.query(
         PartTime.part_time_percentage,
+        PartTime.year
     ).select_from(
         PartTime
     ).filter(
-        PartTime.org_nr == orgnr,
-        PartTime.year == '2021'
+        PartTime.org_nr == orgnr
     ).all()
     
     for tup in result:
-        ret_list.append({'part_time_percentage':round(tup[0])})
+        ret_list.append({'year': tup[1], 'part_time_percentage': tup[0]})
 
-    result=session.query(
-        func.avg(PartTime.part_time_percentage),
-    ).select_from(
-        PartTime
-    ).filter(
-        PartTime.year == '2022'
-    ).all()
-
-    for tup in result:
-        ret_list.append({'part_time_percentage_avg':round(tup[0])})
     return jsonify({'data': ret_list})
-
 
 if __name__ == '__main__':
     app.debug = True
