@@ -17,6 +17,7 @@ app.config['JSON_SORT_KEYS'] = False
 
 Base = automap_base()
 
+
 #Tablenames must match those in database
 class Regnskap(Base):
     __tablename__='key_financial_figures'
@@ -59,6 +60,10 @@ Base.prepare(autoload_with=engine)
 session = Session(engine)
 
 
+def bad_request(orgnr):
+    return orgnr.isdigit() == False
+        
+
 #Endpoint to get all accounts in database
 @app.route('/accounts/')
 def get_all_bedrifter():
@@ -86,9 +91,15 @@ def get_all_orgdata():
 #Endpoint to get specific org data from orgnr
 @app.route('/orgs/<orgnr>/')
 def get_one_orgdata(orgnr):
-    return jsonify({'data':[{
-        'org_nr':org.org_nr, 'org_name': org.org_name, 'org_address_id':org.org_address_id} for org in session.query(Smb).filter(Smb.org_nr==orgnr)
-    ]})
+
+    
+    if orgnr.isdigit() == False:
+        return 'Bad request'
+    else:
+        res = ({'data':[{
+            'org_nr':org.org_nr, 'org_name': org.org_name, 'org_address_id':org.org_address_id} for org in session.query(Smb).filter(Smb.org_nr==int(orgnr))
+        ]})
+        return res
 
 
 #Endpoint to get all social data
@@ -170,43 +181,54 @@ def get_all_deadlinesspercent_for_orgnr(orgnr):
     return jsonify({'data': ret_list})
 
 @app.route('/orgs/<orgnr>/licedata')
+
 def get_all_licedata_for_orgnr(orgnr):
-    result = session.query(
-        func.avg(Licedata.lice_average),
-        Licedata.lice_year
-    ).select_from(
-        Licedata
-    ).join(
-        Location, Licedata.loc_nr == Location.loc_nr
-    ).filter(
-        Location.org_nr == orgnr
-    ).group_by(
-        Licedata.lice_year
-    ).all()
-    ret_list = []
-    for tup in result:
-        ret_list.append({'year': tup[1], 'thiscomp': tup[0]})
-    return jsonify({'data': ret_list})
+    
+    if orgnr.isdigit() == False:
+        return 'Bad request'
+    
+    else:
+        result = session.query(
+            func.avg(Licedata.lice_average),
+            Licedata.lice_year
+        ).select_from(
+            Licedata
+        ).join(
+            Location, Licedata.loc_nr == Location.loc_nr
+        ).filter(
+            Location.org_nr == orgnr
+        ).group_by(
+            Licedata.lice_year
+        ).all()
+        ret_list = []
+        for tup in result:
+            ret_list.append({'year': tup[1], 'thiscomp': tup[0]})
+        return jsonify({'data': ret_list})
  
 #Endpoint to get escape data on orgnr level
 @app.route('/orgs/<orgnr>/escapes')
 def get_all_escapedata_for_orgnr(orgnr):
-    result = session.query(
-        func.sum(Escape.escape_count_sum),
-        Escape.escape_year
-    ).select_from(
-        Escape
-    ).join(
-        Location, Escape.loc_nr == Location.loc_nr
-    ).filter(
-        Location.org_nr == orgnr
-    ).group_by(
-        Escape.escape_year
-    ).all()
-    ret_list = []
-    for tup in result:
-        ret_list.append({'year': tup[1], 'thiscomp': tup[0]})
-    return jsonify({'data': ret_list})
+    
+    if bad_request(orgnr):
+        return('Bad request')
+    
+    else:
+        result = session.query(
+            func.sum(Escape.escape_count_sum),
+            Escape.escape_year
+        ).select_from(
+            Escape
+        ).join(
+            Location, Escape.loc_nr == Location.loc_nr
+        ).filter(
+            Location.org_nr == orgnr
+        ).group_by(
+            Escape.escape_year
+        ).all()
+        ret_list = []
+        for tup in result:
+            ret_list.append({'year': tup[1], 'thiscomp': tup[0]})
+        return jsonify({'data': ret_list})
 
 
 #Endpoint to get all areal data from orgnr
@@ -226,29 +248,7 @@ def get_all_areal_org(orgnr):
         ret_list.append({'areal_use_org': tup[0]})
     return jsonify({'data': ret_list})
 
-@app.route('/orgs/<orgnr>/address')
-def get_address_for_orgnr(orgnr):
 
-    result = session.query(
-        Smb.org_nr,
-        Address.org_address,
-        Address.org_city,
-        Address.id,
-        Smb.org_address_id
-    ).select_from(
-        Address
-    ).join(
-        Smb, Address.id == Smb.org_address_id
-    ).filter(
-        Smb.org_nr == orgnr
-    ).all()
-    
-    ret_list = []
-    for tup in result:
-
-        ret_list.append({'org_nr': tup[0], 'address': tup[1], 'city':tup[2]})
-
-    return jsonify({'data': ret_list})
 """
 #Endpoint to get averages from the aquaculture industry
 @app.route('/averages/')
@@ -351,7 +351,7 @@ def get_all_averages_co2production():
     for tup in result:
         ret_list.append({'year': tup[0], 'average_all': tup[1]})
     return jsonify({'data': ret_list})
-    
+
 
 #Endpoint to get averages from the aquaculture industry
 @app.route('/nokkeltall/<orgnr>/areal')
@@ -389,9 +389,61 @@ def get_nokkeltall_areal(orgnr):
 
     return jsonify({'data': ret_list})
 
-
+@app.route('/orgs/<orgnr>/address')
+def get_address_for_orgnr(orgnr):
     
+    if bad_request(orgnr):
+        return 'Bad request'
+    
+    else:
+        result = session.query(
+            Smb.org_nr,
+            Address.org_address,
+            Address.org_city,
+            Address.id,
+            Smb.org_address_id
+        ).select_from(
+            Address
+        ).join(
+            Smb, Address.id == Smb.org_address_id
+        ).filter(
+            Smb.org_nr == orgnr
+        ).all()
+        
+        ret_list = []
+        for tup in result:
+
+            ret_list.append({'org_nr': tup[0], 'address': tup[1], 'city':tup[2]})
+
+        return jsonify({'data': ret_list})
+
+
+@app.route('/orgs/<orgnr>/flights/')
+def get_flight_sum(orgnr):
+    result=session.query(
+        Co2Emissions.year,
+        func.sum(Co2Emissions.co2e_feed),
+        func.sum(Co2Emissions.co2e_production),
+        (func.sum(Co2Emissions.co2e_feed)/424),
+        (func.sum(Co2Emissions.co2e_production)/424)
+    ).select_from(
+        Co2Emissions
+    ).join(
+        Location, Co2Emissions.loc_nr == Location.loc_nr
+    ).filter(
+        Location.org_nr == orgnr,
+        Co2Emissions.year == '2021'
+    ).group_by(
+        Co2Emissions.year
+    ).all()
+    ret_list=[]
+    for tup in result:
+        ret_list.append({'feed_co2': (tup[1]), 'prod_co2': (tup[2]), 'flights_feed':round(tup[3]), 'flights_production': round(tup[4])})
+    return jsonify({'data': ret_list})
+    
+
 if __name__ == '__main__':
+    app.debug = True
     app.run(host='0.0.0.0', port=105)
 
 
