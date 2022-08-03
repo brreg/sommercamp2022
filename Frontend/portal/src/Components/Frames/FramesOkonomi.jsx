@@ -1,7 +1,7 @@
 import React from 'react';
 import {useParams} from 'react-router-dom';
 import Frame from './Frame';
-import OkonomiGraph from "../../Graphs/okonomi"
+import OkonomiGraph from "../../Graphs/Okonomigrafer/okonomi"
 
 function FramesOkonomi() {
     const {id} = useParams();

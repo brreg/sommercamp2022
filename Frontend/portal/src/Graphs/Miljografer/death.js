@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import useFetchData from '../Components/DataFetcher/fetchdata';
+import useFetchData from '../../Components/DataFetcher/fetchdata';
 // import "./App.css";
 import {
     Chart as ChartJS,

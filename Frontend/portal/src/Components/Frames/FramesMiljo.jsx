@@ -3,11 +3,11 @@ import {useParams } from 'react-router-dom';
 import Frame from './Frame';
 import Nokkeltall from '../Nokkeltall/Nokkeltall'
 import NokkeltallFly from '../Nokkeltall/NokkeltallFly'
-import Death from '../../Graphs/death'
-import Escape from '../../Graphs/escape'
-import Lice from '../../Graphs/lice'
-import Feed from '../../Graphs/feed'
-import Production from '../../Graphs/production'
+import Death from '../../Graphs/Miljografer/death'
+import Escape from '../../Graphs/Miljografer/escape'
+import Lice from '../../Graphs/Miljografer/lice'
+import Feed from '../../Graphs/Miljografer/feed'
+import Production from '../../Graphs/Miljografer/production'
 
 function FramesMiljo() {
     const {id} = useParams();
