@@ -208,7 +208,7 @@ def get__co2emissions_feed(orgnr):
     ).all()
     ret_list=[]
     for tup in result:
-        ret_list.append({'year': tup[0], 'co2emissions_feed_sum': tup[1]})#, 'co2emissions_transport_sum': tup[2]}) 
+        ret_list.append({'year': tup[0], 'thiscomp': tup[1]})#, 'co2emissions_transport_sum': tup[2]}) 
     return jsonify({'data': ret_list})
     
 #Endpoint to get co2 emission from transport on orgnr
@@ -229,7 +229,7 @@ def get__co2emissions_production(orgnr):
     ).all()
     ret_list=[]
     for tup in result:
-        ret_list.append({'year': tup[0], 'co2emissions_production_sum': tup[1]})
+        ret_list.append({'year': tup[0], 'thiscomp': tup[1]})
     return jsonify({'data': ret_list})
 
 #Endpoint to get deadliness data on orgnr level
@@ -249,7 +249,7 @@ def get_all_deadlinesspercent_for_orgnr(orgnr):
     ).all() #
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[0], 'death_percentage': tup[1]}) 
+        ret_list.append({'year': tup[0], 'thiscomp': tup[1]}) 
     return jsonify({'data': ret_list})
 
 @app.route('/orgs/<orgnr>/licedata')
@@ -268,7 +268,7 @@ def get_all_licedata_for_orgnr(orgnr):
     ).all()
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[1], 'year_avg_lice': tup[0]})
+        ret_list.append({'year': tup[1], 'thiscomp': tup[0]})
     return jsonify({'data': ret_list})
  
 #Endpoint to get escape data on orgnr level
@@ -288,7 +288,7 @@ def get_all_escapedata_for_orgnr(orgnr):
     ).all()
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[1], 'escape_count_sum': tup[0]})
+        ret_list.append({'year': tup[1], 'thiscomp': tup[0]})
     return jsonify({'data': ret_list})
 
 
@@ -336,7 +336,7 @@ def get_all_averages_deadliness():
     ).all() #
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[0], 'death_percentage_all': tup[1]}) 
+        ret_list.append({'year': tup[0], 'average_all': tup[1]}) 
     return jsonify({'data': ret_list})
 
 #Endpoint to get averages from the aquaculture industry
@@ -354,7 +354,7 @@ def get_all_averages_licedata():
     ).all()
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[1], 'year_avg_lice_all': tup[0]})
+        ret_list.append({'year': tup[1], 'average_all': tup[0]})
     return jsonify({'data': ret_list})
 
 #Endpoint to get averages from the aquaculture industry
@@ -372,7 +372,7 @@ def get_all_averages_escapes():
     ).all()
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[1], 'escape_count_sum_all': tup[0]})
+        ret_list.append({'year': tup[1], 'average_all': tup[0]})
     return jsonify({'data': ret_list})
     
     

@@ -30,7 +30,7 @@ function FramesMiljo() {
                         nøkkeltall_en={<Nokkeltall id={id} miljo_over="Dødlighet_bedrift" miljo_under="Dødlighet_bedrift"/>} 
                         nøkkeltall_to={<Nokkeltall miljo_over="Dødlighet_bransje" id={id} miljo_under="Dødlighet_bedrift"/>} 
                         tekst={"Grafen viser prosentandelen av produsert laks som har dødd under produksjon fra 2017-2021"} 
-                        graph={<Death org_nr={id}/>}
+                        graph={<Death org_nr={id} apiurl_end="deadliness"/>}
                         dropDown={"Dødlighet er andelen av selskapets produksjon"}
                         show={"som har dødd under oppdrettsprosessen. Tallet er samlet for alle selskapets lokasjoner."}/>
 
