@@ -17,7 +17,7 @@ const Frame = props => {
             </div>
 
             <div className="container_btn">
-                <button onClick={toggleHidden} className="btn-dropDown">{props.dropDown} {show ? <img className="Pil" src={require('./PilOpp.png')}/> : <img className="Pil" src={require('./PilNed.png')}/>} </button>
+                <button onClick={toggleHidden} className="btn-dropDown">{props.dropDown} {show ? <img className="pil" src={require('./images/PilOpp.png')}/> : <img className="pil" src={require('./images/PilNed.png')}/>} </button>
                 <div>
                     {show && <p className="p-hidden">{props.show}</p>}
                 </div>
