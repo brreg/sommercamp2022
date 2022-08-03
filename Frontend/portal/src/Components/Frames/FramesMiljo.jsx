@@ -4,10 +4,7 @@ import Frame from './Frame';
 import Nokkeltall from '../Nokkeltall/Nokkeltall'
 import NokkeltallFly from '../Nokkeltall/NokkeltallFly'
 import MiljoGraph from '../../Graphs/miljograph'
-import Escape from '../../Graphs/Miljografer/escape'
-import Lice from '../../Graphs/Miljografer/lice'
-import Feed from '../../Graphs/Miljografer/feed'
-import Production from '../../Graphs/Miljografer/production'
+
 
 function FramesMiljo() {
     const {id} = useParams();
@@ -67,7 +64,7 @@ function FramesMiljo() {
                         dropDown={"Co2 fôrproduksjon forklart"}
                         show={"CO2-utslippet er regnet ut ved å gange et fast klimaavtrykk per kilo fôr, med fôrforbruket per kilo laks (eFcr) og selskapets totale produksjon av laks. Det tas forbehold om at tallet er et estimat basert på et fast utslipp per kilo for, og at selskapet benytter samme fôrprodusent for hele produksjonen."}
                         kilde={"Kilde: Konstruert tall basert på https://www.sintef.no/contentassets/25338e561f1a4270a59ce25bcbc926a2/report-carbon-footprint-norwegian-seafood-products-2017_final_040620.pdf/"}
-                        graph={<MiljoGraph org_nr={id} apiurl_end="" chart_title="CO2 forproduksjon"/>} />
+                        graph={<MiljoGraph org_nr={id} apiurl_end="co2feed" chart_title="CO2 forproduksjon"/>} />
        
                 </div>
                 <div className="column-frames">
