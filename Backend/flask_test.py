@@ -1,5 +1,5 @@
 import json
-from flask import Flask, jsonify
+from flask import Flask, jsonify, abort
 from flask_cors import CORS
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy import create_engine
@@ -7,7 +7,11 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 from sqlalchemy.sql import func
+from sqlalchemy import exc
 import os
+import werkzeug
+from werkzeug.exceptions import HTTPException, NotFound
+
 
 app = Flask(__name__)
 CORS(app)
@@ -58,6 +62,9 @@ engine = create_engine('postgresql+psycopg2://'+os.environ["database_user"]+':'+
 Base.prepare(autoload_with=engine)
 session = Session(engine)
 
+@app.errorhandler(404)
+def resource_not_found(e):
+    return jsonify(error=str(e)), 404
 
 #Endpoint to get all accounts in database
 @app.route('/accounts/')
@@ -141,14 +148,22 @@ def get_all_orgdata():
         'org_nr':org.org_nr, 'org_name': org.org_name, 'org_address_id':org.org_address_id} for org in session.query(Smb).all()
     ]})
 
+
 #Endpoint to get specific org data from orgnr
 @app.route('/orgs/<orgnr>/')
 def get_one_orgdata(orgnr):
-    return jsonify({'data':[{
-        'org_nr':org.org_nr, 'org_name': org.org_name, 'org_address_id':org.org_address_id} for org in session.query(Smb).filter(Smb.org_nr==orgnr)
-    ]})
+    
+    if orgnr.isdigit() == False:
+        return 'Bad request'
+    else:
+        res = ({'data':[{
+            'org_nr':org.org_nr, 'org_name': org.org_name, 'org_address_id':org.org_address_id} for org in session.query(Smb).filter(Smb.org_nr==int(orgnr))
+        ]})
+        return res
 
+    
 
+    
 #Endpoint to get all areal data
 @app.route('/locations/areal/')
 def get_all_areals():
@@ -191,8 +206,6 @@ def get_one_socialdata(orgnr):
         'org_nr':org.org_nr, 'year': org.year, 'female_percent':org.female_percent, 'male_percent':org.male_percent} for org in session.query(Social).filter(Social.org_nr==orgnr)
     ]})
     
-
-
 
 #Endpoint to get co2 emission from feed on orgnr
 @app.route('/orgs/<orgnr>/co2feed/')
