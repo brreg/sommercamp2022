@@ -38,7 +38,7 @@ const Lice = props => {
         //axios.get("http://127.0.0.1:5000/orgs/886813082/deadliness")
         axios.get(`http://127.0.0.1:5000/orgs/${props.org_nr}/licedata`)
         .then( res=> {
-            //console.log(res)
+            console.log(res)
             for (const dataObj of res.data.data) {
                 licedata.push(parseFloat(dataObj.year_avg_lice))
                 year.push(parseInt(dataObj.year))

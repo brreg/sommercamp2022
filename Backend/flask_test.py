@@ -1,5 +1,5 @@
 import json
-from flask import Flask, jsonify
+from flask import Flask, jsonify, abort
 from flask_cors import CORS
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy import create_engine
@@ -7,7 +7,11 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 from sqlalchemy.sql import func
+from sqlalchemy import exc
 import os
+import werkzeug
+from werkzeug.exceptions import HTTPException, NotFound
+
 
 app = Flask(__name__)
 CORS(app)
@@ -58,6 +62,9 @@ engine = create_engine('postgresql+psycopg2://'+os.environ["database_user"]+':'+
 Base.prepare(autoload_with=engine)
 session = Session(engine)
 
+@app.errorhandler(404)
+def resource_not_found(e):
+    return jsonify(error=str(e)), 404
 
 #Endpoint to get all accounts in database
 @app.route('/accounts/')
@@ -104,7 +111,7 @@ def get_one_licedata(locnr):
     ]})
 
 #Endpoint to get all escapedata
-@app.route('/locations/escapedata/')
+@app.route('/locations/escapes/')
 def get_all_escapedata():
     return jsonify({'data':[{
         'id':loc.id, 'loc_nr':loc.loc_nr, 'escape_year':loc.escape_year, 'escape_week':loc.escape_week, 'escape_count':loc.escape_count, 
@@ -112,7 +119,7 @@ def get_all_escapedata():
     ]})
 
 #Endpoint to get specific escapedata from locnr
-@app.route('/locations/<locnr>/escapedata/')
+@app.route('/locations/<locnr>/escapes/')
 def get_one_escapedata(locnr):
     return jsonify({'data':[{
         'id':loc.id, 'loc_nr':loc.loc_nr, 'escape_year':loc.escape_year, 'escape_week':loc.escape_week, 'escape_count':loc.escape_count, 
@@ -141,14 +148,22 @@ def get_all_orgdata():
         'org_nr':org.org_nr, 'org_name': org.org_name, 'org_address_id':org.org_address_id} for org in session.query(Smb).all()
     ]})
 
+
 #Endpoint to get specific org data from orgnr
 @app.route('/orgs/<orgnr>/')
 def get_one_orgdata(orgnr):
-    return jsonify({'data':[{
-        'org_nr':org.org_nr, 'org_name': org.org_name, 'org_address_id':org.org_address_id} for org in session.query(Smb).filter(Smb.org_nr==orgnr)
-    ]})
+    
+    if orgnr.isdigit() == False:
+        return 'Bad request'
+    else:
+        res = ({'data':[{
+            'org_nr':org.org_nr, 'org_name': org.org_name, 'org_address_id':org.org_address_id} for org in session.query(Smb).filter(Smb.org_nr==int(orgnr))
+        ]})
+        return res
 
+    
 
+    
 #Endpoint to get all areal data
 @app.route('/locations/areal/')
 def get_all_areals():
@@ -192,8 +207,6 @@ def get_one_socialdata(orgnr):
     ]})
     
 
-
-
 #Endpoint to get co2 emission from feed on orgnr
 @app.route('/orgs/<orgnr>/co2feed/')
 def get__co2emissions_feed(orgnr):
@@ -211,7 +224,7 @@ def get__co2emissions_feed(orgnr):
     ).all()
     ret_list=[]
     for tup in result:
-        ret_list.append({'year': tup[0], 'co2emissions_feed_sum': tup[1]})#, 'co2emissions_transport_sum': tup[2]}) 
+        ret_list.append({'year': tup[0], 'thiscomp': tup[1]})#, 'co2emissions_transport_sum': tup[2]}) 
     return jsonify({'data': ret_list})
     
 #Endpoint to get co2 emission from transport on orgnr
@@ -232,7 +245,7 @@ def get__co2emissions_production(orgnr):
     ).all()
     ret_list=[]
     for tup in result:
-        ret_list.append({'year': tup[0], 'co2emissions_production_sum': tup[1]})
+        ret_list.append({'year': tup[0], 'thiscomp': tup[1]})
     return jsonify({'data': ret_list})
 
 #Endpoint to get deadliness data on orgnr level
@@ -252,7 +265,7 @@ def get_all_deadlinesspercent_for_orgnr(orgnr):
     ).all() #
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[0], 'death_percentage': tup[1]}) 
+        ret_list.append({'year': tup[0], 'thiscomp': tup[1]}) 
     return jsonify({'data': ret_list})
 
 @app.route('/orgs/<orgnr>/licedata')
@@ -271,11 +284,11 @@ def get_all_licedata_for_orgnr(orgnr):
     ).all()
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[1], 'year_avg_lice': tup[0]})
+        ret_list.append({'year': tup[1], 'thiscomp': tup[0]})
     return jsonify({'data': ret_list})
  
 #Endpoint to get escape data on orgnr level
-@app.route('/orgs/<orgnr>/escapedata')
+@app.route('/orgs/<orgnr>/escapes')
 def get_all_escapedata_for_orgnr(orgnr):
     result = session.query(
         func.sum(Escape.escape_count_sum),
@@ -291,7 +304,7 @@ def get_all_escapedata_for_orgnr(orgnr):
     ).all()
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[1], 'escape_count_sum': tup[0]})
+        ret_list.append({'year': tup[1], 'thiscomp': tup[0]})
     return jsonify({'data': ret_list})
 
 
@@ -335,7 +348,7 @@ def get_address_for_orgnr(orgnr):
         ret_list.append({'org_nr': tup[0], 'address': tup[1], 'city':tup[2]})
 
     return jsonify({'data': ret_list})
-
+"""
 #Endpoint to get averages from the aquaculture industry
 @app.route('/orgs/averages/')
 def get_all_averages():
@@ -346,7 +359,7 @@ def get_all_averages():
         'female_average': data.female_percent_avg, 'male_average': data.male_percent_avg, 'areal_use_avg': data.areal_use_avg, 
         'part_time_avg': data.part_time_avg} for data in session.query(Averages).all()
     ]})
-
+"""
 
 #Endpoint to get averages from the aquaculture industry
 @app.route('/orgs/averages/deadliness')
@@ -363,7 +376,7 @@ def get_all_averages_deadliness():
     ).all() #
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[0], 'death_percentage_all': tup[1]}) 
+        ret_list.append({'year': tup[0], 'average_all': tup[1]}) 
     return jsonify({'data': ret_list})
 
 #Endpoint to get averages from the aquaculture industry
@@ -381,7 +394,7 @@ def get_all_averages_licedata():
     ).all()
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[1], 'year_avg_lice_all': tup[0]})
+        ret_list.append({'year': tup[1], 'average_all': tup[0]})
     return jsonify({'data': ret_list})
 
 #Endpoint to get averages from the aquaculture industry
@@ -399,7 +412,43 @@ def get_all_averages_escapes():
     ).all()
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[1], 'escape_count_sum_all': tup[0]})
+        ret_list.append({'year': tup[1], 'average_all': tup[0]})
+    return jsonify({'data': ret_list})
+
+#Endpoint to get averages from the aquaculture industry
+@app.route('/orgs/averages/co2feed')
+def get_all_averages_co2feed():
+    result=session.query(
+        Co2Emissions.year,
+        func.sum(Co2Emissions.co2e_feed)
+    ).select_from(
+        Co2Emissions
+    ).join(
+        Location, Co2Emissions.loc_nr == Location.loc_nr
+    ).group_by(
+        Co2Emissions.year
+    ).all()
+    ret_list=[]
+    for tup in result:
+        ret_list.append({'year': tup[0], 'thiscomp': tup[1]})
+    return jsonify({'data': ret_list})
+
+#Endpoint to get averages from the aquaculture industry
+@app.route('/orgs/averages/co2production')
+def get_all_averages_co2production():
+    result=session.query(
+        Co2Emissions.year,
+        func.sum(Co2Emissions.co2e_production)
+    ).select_from(
+        Co2Emissions
+    ).join(
+        Location, Co2Emissions.loc_nr == Location.loc_nr
+    ).group_by(
+        Co2Emissions.year
+    ).all()
+    ret_list=[]
+    for tup in result:
+        ret_list.append({'year': tup[0], 'thiscomp': tup[1]})
     return jsonify({'data': ret_list})
     
     

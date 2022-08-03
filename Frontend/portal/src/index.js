@@ -9,6 +9,7 @@ import Miljo from './Pages/Bedrifter_miljo/Miljo';
 import Sosial from './Pages/Bedrifter_sosial/Sosial';
 import Okonomi from './Pages/Bedrifter_okonomi/Okonomi';
 import Test_Page from './Pages/Test/Test_page'
+import Footer from './Components/Footer/Footer'
 
 
 export default function App() {
@@ -28,6 +29,7 @@ export default function App() {
           <Route path="/test" element={<Test_Page/>}/>
         </Route>
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }
