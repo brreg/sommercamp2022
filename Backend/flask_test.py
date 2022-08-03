@@ -335,7 +335,7 @@ def get_address_for_orgnr(orgnr):
         ret_list.append({'org_nr': tup[0], 'address': tup[1], 'city':tup[2]})
 
     return jsonify({'data': ret_list})
-
+"""
 #Endpoint to get averages from the aquaculture industry
 @app.route('/orgs/averages/')
 def get_all_averages():
@@ -346,7 +346,7 @@ def get_all_averages():
         'female_average': data.female_percent_avg, 'male_average': data.male_percent_avg, 'areal_use_avg': data.areal_use_avg, 
         'part_time_avg': data.part_time_avg} for data in session.query(Averages).all()
     ]})
-
+"""
 
 #Endpoint to get averages from the aquaculture industry
 @app.route('/orgs/averages/deadliness')
@@ -400,6 +400,42 @@ def get_all_averages_escapes():
     ret_list = []
     for tup in result:
         ret_list.append({'year': tup[1], 'average_all': tup[0]})
+    return jsonify({'data': ret_list})
+
+#Endpoint to get averages from the aquaculture industry
+@app.route('/orgs/averages/co2feed')
+def get_all_averages_co2feed():
+    result=session.query(
+        Co2Emissions.year,
+        func.sum(Co2Emissions.co2e_feed)
+    ).select_from(
+        Co2Emissions
+    ).join(
+        Location, Co2Emissions.loc_nr == Location.loc_nr
+    ).group_by(
+        Co2Emissions.year
+    ).all()
+    ret_list=[]
+    for tup in result:
+        ret_list.append({'year': tup[0], 'thiscomp': tup[1]})
+    return jsonify({'data': ret_list})
+
+#Endpoint to get averages from the aquaculture industry
+@app.route('/orgs/averages/co2production')
+def get_all_averages_co2production():
+    result=session.query(
+        Co2Emissions.year,
+        func.sum(Co2Emissions.co2e_production)
+    ).select_from(
+        Co2Emissions
+    ).join(
+        Location, Co2Emissions.loc_nr == Location.loc_nr
+    ).group_by(
+        Co2Emissions.year
+    ).all()
+    ret_list=[]
+    for tup in result:
+        ret_list.append({'year': tup[0], 'thiscomp': tup[1]})
     return jsonify({'data': ret_list})
     
     
