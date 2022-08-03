@@ -1,4 +1,5 @@
 .footer {
+    margin-top: 2%;
     display: flex;
     flex-flow: wrap;
     background-color: #1A36D9;
@@ -18,7 +19,7 @@
 }
 
 .footer-1 {
-    margin-left: 20%;
+    margin-left: 15%;
 }
 
 .footer-2 {
@@ -31,6 +32,15 @@
 
 .p-footer-bold {
     font-weight: bold;
+}
+
+.some {
+    width: 400px;
+}
+
+.img-some {
+    width: 50px;
+    margin-right: 8%;
 }
 
 

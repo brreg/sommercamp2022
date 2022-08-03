@@ -1,6 +1,13 @@
 .forside {
-  background-image: url(./Images/Jordklode_Artwork.png);
-  height: 70vh;
+  height: 80vh;
+  z-index: 1;
+}
+
+.background-img {
+  width: 100%;
+  position: absolute;
+  margin-top: -10%;
+  z-index: -1;
 }
 
 h1 {

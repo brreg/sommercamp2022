@@ -63,7 +63,6 @@ session = Session(engine)
 def bad_request(orgnr):
     return orgnr.isdigit() == False
         
-
 #Endpoint to get all accounts in database
 @app.route('/accounts/')
 def get_all_bedrifter():
@@ -375,7 +374,7 @@ def get_all_averages_co2production():
 
 @app.route('/orgs/<orgnr>/address/')
 def get_address_for_orgnr(orgnr):
-    
+
     if bad_request(orgnr):
         return 'Bad request'
     
@@ -402,28 +401,56 @@ def get_address_for_orgnr(orgnr):
         return jsonify({'data': ret_list})
 
 
-@app.route('/orgs/<orgnr>/flights/')
-def get_flight_sum(orgnr):
-    result=session.query(
-        Co2Emissions.year,
-        func.sum(Co2Emissions.co2e_feed),
-        func.sum(Co2Emissions.co2e_production),
-        (func.sum(Co2Emissions.co2e_feed)/424),
-        (func.sum(Co2Emissions.co2e_production)/424)
-    ).select_from(
-        Co2Emissions
-    ).join(
-        Location, Co2Emissions.loc_nr == Location.loc_nr
-    ).filter(
-        Location.org_nr == orgnr,
-        Co2Emissions.year == '2021'
-    ).group_by(
-        Co2Emissions.year
-    ).all()
+@app.route('/nokkeltall/<orgnr>/kjonn/')
+def get_nokkeltall_kjonn(orgnr):
     ret_list=[]
+
+    result=session.query(
+        Social.female_percent,
+        Social.male_percent
+    ).select_from(
+        Social
+    ).filter(
+        Social.org_nr == orgnr,
+        Social.year == '2021'
+    ).all()
+    
     for tup in result:
-        ret_list.append({'feed_co2': (tup[1]), 'prod_co2': (tup[2]), 'flights_feed':round(tup[3]), 'flights_production': round(tup[4])})
+        ret_list.append({'female_percent':round(tup[0])})
+        ret_list.append({'male_percent':round(tup[1])})
+
+    result=session.query(
+        func.avg(Social.female_percent),
+        func.avg(Social.male_percent)
+    ).select_from(
+        Social
+    ).filter(
+        Social.year == '2021'
+    ).all()
+
+    for tup in result:
+        ret_list.append({'female_percent_avg':round(tup[0])})
+        ret_list.append({'male_percent_avg':round(tup[1])})
     return jsonify({'data': ret_list})
+
+@app.route('/averages/ufrivilligdeltid/')
+def get_average_udeltid():
+    ret_list=[]
+
+    result=session.query(
+        func.avg(PartTime.part_time_percentage),
+        PartTime.year
+    ).select_from(
+        PartTime
+    ).group_by(
+        PartTime.year
+    ).all()
+    
+    for tup in result:
+        ret_list.append({'year': tup[1], 'part_time_percentage_avg':tup[0]})
+
+    return jsonify({'data': ret_list})
+
 
 #Endpoint to get specific account from orgnr
 @app.route('/accounts/<orgnr>/')
@@ -432,6 +459,24 @@ def get_bedrift(orgnr):
         'id': regnskap.id, 'org_nr': regnskap.org_nr, 'year':regnskap.year, 'liquidity_ratio':regnskap.liquidity_ratio,
         'return_on_assets':regnskap.return_on_assets, 'solidity':regnskap.solidity} for regnskap in session.query(Regnskap).filter(Regnskap.org_nr == orgnr)
     ]})
+
+@app.route('/nokkeltall/<orgnr>/ufrivilligdeltid/')
+def get_all_ufrivilligdeltid_for_orgnr(orgnr):
+    ret_list=[]
+
+    result=session.query(
+        PartTime.part_time_percentage,
+        PartTime.year
+    ).select_from(
+        PartTime
+    ).filter(
+        PartTime.org_nr == orgnr
+    ).all()
+    
+    for tup in result:
+        ret_list.append({'year': tup[1], 'part_time_percentage': tup[0]})
+
+    return jsonify({'data': ret_list})
 
 
 if __name__ == '__main__':

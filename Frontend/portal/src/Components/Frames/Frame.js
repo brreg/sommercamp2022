@@ -17,7 +17,7 @@ const Frame = props => {
             </div>
 
             <div className="container_btn">
-                <button onClick={toggleHidden} className="btn-dropDown">{props.dropDown} {show ? <img className="Pil" src={require('./PilOpp.png')}/> : <img className="Pil" src={require('./PilNed.png')}/>} </button>
+                <button onClick={toggleHidden} className="btn-dropDown">{props.dropDown} {show ? <img className="pil" src={require('./images/PilOpp.png')}/> : <img className="pil" src={require('./images/PilNed.png')}/>} </button>
                 <div>
                     {show && <p className="p-hidden">{props.show}</p>}
                 </div>
@@ -34,12 +34,10 @@ const Frame = props => {
                     {props.graph}
                 </div>
                 <div className="tekstboks-frame">
-                    <p className="p-tekst">
+                    <p className="p-tekst-frame">
                         {props.tekst}
-                    <br></br> 
-                    <br></br>
-                        {props.kilde}
                     </p>
+                    <p className="p-kilde">{props.kilde}</p>
                 </div>
             </div>
 
