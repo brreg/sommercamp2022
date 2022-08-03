@@ -22,19 +22,107 @@ function Nokkeltall (props) {
       
     }, []);
 
+    const [nokkeltallDod, setNokkeltallDod] = useState("")
+
+    useEffect(() => {
+        
+        axios.get(`http://10.172.205.152:105/orgs/${props.id}/deadliness`)
+        .then( res=> {
+            setNokkeltallDod(res.data.data[4].thiscomp)
+        })
+        .catch( err=> {
+            console.log(err)
+        })
+      
+    }, []);
+
+    const [nokkeltallLice, setNokkeltallLice] = useState("")
+
+    useEffect(() => {
+        
+        axios.get(`http://10.172.205.152:105/orgs/${props.id}/licedata/`)
+        .then( res=> {
+            setNokkeltallLice(res.data.data[4].thiscomp)
+        })
+        .catch( err=> {
+            console.log(err)
+        })
+      
+    }, []);
+
+    const [nokkeltallEscapes, setNokkeltallEscapes] = useState("")
+    const [nokkeltallEscapeYear, setNokkeltallEscapesYear] = useState("")
+
+    useEffect(() => {
+        
+        axios.get(`http://10.172.205.152:105/orgs/${props.id}/escapes/`)
+        .then( res=> {
+            setNokkeltallEscapes(res.data.data[0].thiscomp)
+            setNokkeltallEscapesYear(res.data.data[0].year)
+        })
+        .catch( err=> {
+            console.log(err)
+        })
+      
+    }, []);
+
+    const [averageDeadliness, setAverageDeadliness] = useState("")
+
+    useEffect(() => {
+        
+        axios.get(`http://10.172.205.152:105/averages/deadliness`)
+        .then( res=> {
+            setAverageDeadliness(res.data.data[2].average_all)
+        })
+        .catch( err=> {
+            console.log(err)
+        })
+      
+    }, []);
+
+    const [averageLice, setAverageLice] = useState("")
+
+    useEffect(() => {
+        
+        axios.get(`http://10.172.205.152:105/averages/licedata`)
+        .then( res=> {
+            setAverageLice(res.data.data[4].average_all)
+        })
+        .catch( err=> {
+            console.log(err)
+        })
+      
+    }, []);
+
+    const [averageEscapes, setAverageEscapes] = useState("")
+    const [averageEscapesYear, setAverageEscapesYear] = useState("")
+
+    useEffect(() => {
+        
+        axios.get(`http://10.172.205.152:105/averages/escapes`)
+        .then( res=> {
+            setAverageEscapes(res.data.data[0].average_all)
+            setAverageEscapesYear(res.data.data[0].year)
+        })
+        .catch( err=> {
+            console.log(err)
+        })
+      
+    }, []);
+
     const transform_miljo_over = (miljo_over) => {
 
         switch(miljo_over) {
-            case "Dødlighet_bedrift": 
+            case "Dødelighet_bedrift": 
                 return `${orgname} hadde gjennomsnittlig`;
-            case "Dødlighet_bransje": 
+            case "Dødelighet_bransje": 
                 return "Bransjen hadde i gjennomsnitt";
             case "Lakselus_bedrift": 
                 return `${orgname} hadde gjennomsnittlig`;
             case "Lakselus_bransje": 
                 return "Bransjen hadde totalt";
             case "Rømninger_bedrift": 
-                return `${orgname} hadde gjennomsnittlig`;
+                return `${orgname} hadde`;
             case "Rømninger_bransje": 
                 return "Bransjen hadde totalt";
             default:
@@ -48,29 +136,51 @@ function Nokkeltall (props) {
     const transform_miljo_under = (miljo_under) => {
 
         switch(miljo_under) {
-            case "Dødlighet_bedrift": 
-                return "dødlighet i 2022";
-            case "Dødlighet_bransje": 
-                return "dødlight i 2022";
+            case "Dødelighet_bedrift": 
+                return "dødlighet i 2021";
+            case "Dødelighet_bransje": 
+                return "dødlighet i 2021";
             case "Lakselus_bedrift": 
-                return "lakselus i 2022";
+                return "lakselus i 2021";
             case "Lakselus_bransje": 
-                return "lakselus 2022";
+                return "lakselus 2021";
             case "Rømninger_bedrift": 
-                return "rømninger i 2022";
+                return `rømninger i ${nokkeltallEscapeYear}`;
             case "Rømninger_bransje": 
-                return "rømninger i 2022";
+                return `rømninger i ${averageEscapesYear}`;
             default:
                 return "kunne ikke finne";
             }
         };
     
     const transformed_miljo_under = transform_miljo_under(props.miljo_under)
+
+    const transform_miljo_nokkeltall = (miljo_nokkeltall) => {
+
+        switch(miljo_nokkeltall) {
+            case "Dødelighet_bedrift_tall": 
+                return `${nokkeltallDod}%`;
+            case "Dødelighet_bransje_tall": 
+                return `${averageDeadliness}%`;
+            case "Lakselus_bedrift_tall": 
+                return `${nokkeltallLice}`;
+            case "Lakselus_bransje_tall": 
+                return `${averageLice}`;
+            case "Rømninger_bedrift_tall": 
+                return `${nokkeltallEscapes}`;
+            case "Rømninger_bransje_tall": 
+                return `${averageEscapes}`;
+            default:
+                return "xxx";
+            }
+        };
+    
+    const transformed_miljo_nokkeltall = transform_miljo_nokkeltall(props.miljo_nokkeltall)
     
     return (
         <div className="nøkkeltall"> 
             <div className="overtekst-nøkkeltall"> {transformed_miljo_over} </div>
-            <div className="tall-overskrift"> 300 </div>
+            <div className="tall-overskrift"> {transformed_miljo_nokkeltall} </div>
             <div className="undertekst-nøkkeltall"> {transformed_miljo_under} </div>
         </div>
     )
