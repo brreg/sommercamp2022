@@ -2,7 +2,7 @@ import React from 'react';
 import {useParams, useNavigate} from 'react-router-dom';
 import "./Test_page.css";
 import AS_buttons from "../../Components/Buttons/AS_buttons";
-import Death from "../../Graphs/death";
+import MiljoGraph from "../../Graphs/miljograph";
 
 
 const Test_Page = () => {
@@ -17,7 +17,7 @@ const Test_Page = () => {
         </div>
         <div></div>
         <div className="frame-floater">
-            <Death org_nr="886813082"/>
+            <MiljoGraph org_nr="886813082"/>
         </div>
         </div>
     )  
