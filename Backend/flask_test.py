@@ -173,11 +173,10 @@ def get__co2emissions_feed(orgnr):
     ).all()
     ret_list=[]
     for tup in result:
-        ret_list.append({'year': tup[0], 'thiscomp': tup[1]})#, 'co2emissions_transport_sum': tup[2]}) 
+        ret_list.append({'year': tup[0], 'thiscomp': tup[1]})
     return jsonify({'data': ret_list})
     
 #Endpoint to get co2 emission from transport on orgnr
-
 @app.route('/orgs/<orgnr>/co2production/')
 def get__co2emissions_production(orgnr):
     result=session.query(
@@ -515,6 +514,26 @@ def get_licelimit_orgnr(orgnr):
         if i==5: break
     
     return jsonify({'data': ret_list})
+
+### Returns one lice limit that this orgnr has 
+@app.route('/orgs/<orgnr>/flights/')
+def get_flights(orgnr):
+    result=session.query(
+        Co2Emissions.year,
+        func.sum(Co2Emissions.co2e_feed),
+        (func.sum(Co2Emissions.co2e_feed))/424
+    ).select_from(
+        Co2Emissions
+    ).join(
+        Location, Co2Emissions.loc_nr == Location.loc_nr
+    ).group_by(
+        Co2Emissions.year
+    ).all()
+    ret_list=[]
+    for tup in result:
+        ret_list.append({'flights_feed': tup[0], 'flights_production': tup[1], 'average_all_feed_flights':round(tup[2])})
+    return jsonify({'data': ret_list})
+
 
 if __name__ == '__main__':
     app.debug = True

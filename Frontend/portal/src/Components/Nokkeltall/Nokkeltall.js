@@ -54,7 +54,8 @@ function Nokkeltall (props) {
     const [nokkeltallEscapeYear, setNokkeltallEscapesYear] = useState("")
 
     useEffect(() => {
-        
+        //127.0.0.1:5000
+        //10.172.205.152:105
         axios.get(`http://10.172.205.152:105/orgs/${props.id}/escapes/`)
         .then( res=> {
             setNokkeltallEscapes(res.data.data[0].thiscomp)
