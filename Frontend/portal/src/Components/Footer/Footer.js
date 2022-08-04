@@ -4,7 +4,6 @@ import './Footer.css';
 const Footer = () => {
     return (
         <div>
-        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
             <div className="footer">
                 <div className="footers footer-1">
                     <img src={require('./images/BR_logo-bokmaal_hvit.png')} className="img-footer"></img>
