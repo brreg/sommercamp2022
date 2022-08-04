@@ -42,7 +42,7 @@ const LiceGraph = props => {
     const getData = async () =>{
         // 10.172.205.152:105
         // 127.0.0.1:5000
-        let url = `http://127.0.0.1:5000/averages/${props.apiurl_end}`
+        let url = `http://10.172.205.152:105/averages/${props.apiurl_end}`
         await axios.get(url) 
         .then( res => {
             let tempAveragesData = []
@@ -55,7 +55,7 @@ const LiceGraph = props => {
             console.error(err)
         })
 
-        await  axios.get(`http://127.0.0.1:5000/orgs/${props.org_nr}/${props.apiurl_end}`) 
+        await  axios.get(`http://10.172.205.152:105/orgs/${props.org_nr}/${props.apiurl_end}`) 
         .then( res=> {
             let tempThisCompData = []
             let tempYear = []
