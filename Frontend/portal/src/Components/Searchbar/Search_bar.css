@@ -22,6 +22,10 @@
   padding: 7px 27px;
 }
 
+.search-img {
+  width: 20px;
+}
+
 #searchBtn {
   background-color: white;
   border: none;

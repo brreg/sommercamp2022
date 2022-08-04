@@ -1,6 +1,6 @@
 .row_forside {
-    margin: 0 10%;
-    padding-top: 10%;
+    margin-left: 15%;
+    padding-top: 15%;
     display: flex;
     flex-flow: wrap;
 }
@@ -10,7 +10,7 @@
 }
     
 .card_forside {
-    border: 1px solid #004785;
+    border: 1px solid #2B47EE;
     padding: 16px;
     text-align: left;
     background-color: white;
@@ -40,4 +40,6 @@
     margin: 4%;
     float: left;
 }
+
+
   
