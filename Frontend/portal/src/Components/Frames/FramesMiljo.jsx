@@ -4,6 +4,7 @@ import Frame from './Frame';
 import Nokkeltall from '../Nokkeltall/Nokkeltall'
 import NokkeltallFly from '../Nokkeltall/NokkeltallFly'
 import MiljoGraph from '../../Graphs/miljograph'
+import LiceGraph from '../../Graphs/licegraph'
 
 
 function FramesMiljo() {
@@ -52,7 +53,7 @@ function FramesMiljo() {
                         dropDown={"Lakselus forklart"}
                         show={"Lusetall er gjennomsnittlig hunnlus per fisk. Tallene er basert på data som innrapporteres hver uke på lokasjonsnivå. Dataen er samlet på årsnivå i diagrammet. Diagrammet viser bedriftens lusetall, gjennomsnittlig lusetall for bransjen, og tillatt grense for lakselus."}
                         kilde={"Kilde: https://www.barentswatch.no/fiskehelse/"}
-                        graph={<MiljoGraph org_nr={id} apiurl_end="licedata/" chart_title="Lice data" lice="licelimit/" />} />
+                        graph={<LiceGraph org_nr={id} apiurl_end="licedata/" chart_title="Lice data"/>} />
 
                 </div>
                 <div className="column-frames">
