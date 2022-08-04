@@ -71,9 +71,9 @@ function SearchBar({ placeholder}) {
         />
         <div className="searchIcon">
           {filteredData.length !== 0 ? (
-            <button id="searchBtn"onClick={performSearch}> ? </button>
+            <button id="searchBtn"onClick={performSearch}></button>
           ) : (
-            <button id="exitBtn" onClick={clearInput}> x </button>
+            <button id="exitBtn" onClick={clearInput}> <img src={require('./images/Forstorrelsesglass.png')} className="search-img"></img> </button>
           )}
         </div>
       </div>

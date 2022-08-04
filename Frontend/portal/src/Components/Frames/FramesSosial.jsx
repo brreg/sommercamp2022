@@ -4,7 +4,7 @@ import Frame from './Frame';
 import NokkeltallAreal from '../Nokkeltall/NokkeltallAreal';
 import Kjonngraf from '../../Graphs/Sosialgrafer/Kjonnsfordeling/kjonngraf';
 import MiljoGraph from '../../Graphs/miljograph'
-
+import Nokkeltall from '../Nokkeltall/Nokkeltall';
 
 function FramesSosial() {
     const {id} = useParams();
@@ -14,7 +14,9 @@ function FramesSosial() {
             <div className="row-frames">
                 <div className="column-frames">
                     <Frame overskrift= "Kjønnsfordeling" 
-                            graph={<Kjonngraf/>} 
+                            nøkkeltall_en={<Nokkeltall id={id} miljo_over="Kjønn_bedrift" miljo_under="Kjønn_bedrift" miljo_nokkeltall="Kjønn_bedrift_tall"/>} 
+                            nøkkeltall_to={<Nokkeltall miljo_over="Kjønn_bransje" id={id} miljo_under="Kjønn_bedrift" miljo_nokkeltall="Kjønn_bransje_tall"/>} 
+                            graph={<Kjonngraf id={id}/>} 
                             tekst={"Dette diagrammet viser andelen menn og kvinner i selskapet målt i prosent"}
                             dropDown={"Kjønnsfordeling forklart"}
                             show={"Kjønnsfordeling viser andelen av kvinner og menn i selskapet."}
