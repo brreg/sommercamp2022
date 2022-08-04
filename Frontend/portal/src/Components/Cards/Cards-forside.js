@@ -11,7 +11,7 @@ const CardForside = () => {
                             <a href="/"><img src={require('./Images/Pil-ikon.png')} className="image-card" alt="logo"></img></a>
                         </div>
                         <div>
-                            <p className="p_card_forside">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+                            <p className="p_card_forside">Samlet oversikt over alle selskaper (AS) kategorisert etter bransje.</p>
                         </div>
                     </div>
                 </div>
@@ -22,7 +22,7 @@ const CardForside = () => {
                             <a href="/"><img src={require('./Images/Pil-ikon.png')} className="image-card" alt="logo"></img></a>
                         </div>
                         <div>
-                            <p className="p_card_forside">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+                            <p className="p_card_forside">Les mer om FNs bærekraftsmål og Norges handlingsplan for å nå bærekraftsmålene.</p>
                         </div>
                     </div>
                 </div>
@@ -33,7 +33,7 @@ const CardForside = () => {
                             <a href="/"><img src={require('./Images/Pil-ikon.png')} className="image-card" alt="logo"></img></a>
                         </div>
                         <div>
-                            <p className="p_card_forside">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+                            <p className="p_card_forside">Oversikt over eksisterende og kommende regelverk på bærekraftsområde.</p>
                         </div>
        
                     </div>
