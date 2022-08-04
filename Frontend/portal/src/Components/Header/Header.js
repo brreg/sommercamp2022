@@ -42,9 +42,9 @@ const Header = (props) => {
             <div className="header-container">
                 <div className="generell-info">
                     <div className="overskrift-generell-bedrifter"> {orgname} </div>
-                    <div className="info org_nr"> <p className="info-title">Organisasjonsnummer</p> {"\n"} <p className="info-text">{id}</p> </div>
-                    <div className="info kommune"> <p className="info-title">Sted</p>{"\n"} <p className="info-text">{orgCity}</p> </div> 
-                    <div className="info adresse"> <p className="info-title">Adresse</p>{"\n"} <p className="info-text">{orgAddress}</p> </div>
+                    <div className="info org_nr"> <p className="info-title">Organisasjonsnummer:</p> {"\n"} <p className="info-text">{id}</p> </div>
+                    <div className="info kommune"> <p className="info-title">Sted:</p>{"\n"} <p className="info-text">{orgCity}</p> </div> 
+                    <div className="info adresse"> <p className="info-title">Adresse:</p>{"\n"} <p className="info-text">{orgAddress}</p> </div>
                 </div>
             </div>
         </div>
