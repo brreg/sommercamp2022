@@ -132,11 +132,9 @@ def get_socialdata():
 @app.route('/orgs/<orgnr>/social/')
 def get_one_socialdata(orgnr):
     return jsonify({'data':[{
-        'org_nr':org.org_nr, 'year': org.year, 'female_percent':org.female_percent, 'male_percent':org.male_percent} for org in session.query(Social).filter(Social.org_nr==orgnr)
+        'org_nr':org.org_nr, 'year': org.year, 'female_percent':round(org.female_percent), 'male_percent':round(org.male_percent)} for org in session.query(Social).filter(Social.org_nr==orgnr)
     ]})
     
-
-
 
 #Endpoint to get co2 emission from feed on orgnr
 @app.route('/orgs/<orgnr>/co2feed/')
@@ -416,8 +414,8 @@ def get_nokkeltall_kjonn(orgnr):
     ).all()
     
     for tup in result:
-        ret_list.append({'female_percent':round(tup[0])})
-        ret_list.append({'male_percent':round(tup[1])})
+        ret_list.append({'female_percent':round(tup[0], 0)})
+        ret_list.append({'male_percent':round(tup[1], 0)})
 
     result=session.query(
         func.avg(Social.female_percent),
@@ -429,8 +427,8 @@ def get_nokkeltall_kjonn(orgnr):
     ).all()
 
     for tup in result:
-        ret_list.append({'female_percent_avg':round(tup[0])})
-        ret_list.append({'male_percent_avg':round(tup[1])})
+        ret_list.append({'female_percent_avg':round(tup[0], 0)})
+        ret_list.append({'male_percent_avg':round(tup[1], 0)})
     return jsonify({'data': ret_list})
 
 @app.route('/averages/ufrivilligdeltid/')
