@@ -9,6 +9,7 @@ import licedata_container as ldc
 import escapedata as ed
 import EscapedataContainer as edc
 import random
+import time
 
 ## locality with lice data 45032
 ## locality with escape data 45017
@@ -89,6 +90,8 @@ class API:
 
                 # put licedata objects into licedata container
                 licedata_container.addLiceData(licedataObj)
+                print('Getting licedata')
+                time.sleep(1)
                 
         return licedata_container
     
@@ -111,6 +114,8 @@ class API:
                 if (len(escapedata["data"]) > 0):
                     escapedata_object = ed.Escapedata(escapedata["localityNo"], escapedata["year"], escapedata["data"])
                     edcontainer.add_escapedata(escapedata_object)
+                    print('Getting lice data')
+                    time.sleep(1)
                 else: 
                     pass
 

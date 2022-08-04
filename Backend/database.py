@@ -650,6 +650,19 @@ class Database:
         finally: 
             if self.conn is not None:
                 self.conn.close()
+                
+    def get_valid_orgs(self, locnrs):
+        dfas = pd.read_csv('as.csv', sep = ';')
+        dfas['LOK_KAP'] = dfas['LOK_KAP'].str.replace(',','.')
+
+        locnrmedas = []
+        for i in locnrs:
+            if len(dfas.loc[dfas['LOK_NR'] == i]) == 1:
+                locnrmedas.append(i)
+                
+        return locnrmedas
+           
+        
     
     #Returns dataframe with co2 data
     def generate_co2_data(self, locnrs, year, dfas, dfdead):
@@ -703,9 +716,13 @@ class Database:
                 producer_id = 4
 
             efcrR = round(random.triangular(0.86, 1.57, 1.32),2)
-    
-            kapasitet = dfas.loc[dfas['LOK_NR'] == loc]['LOK_KAP'].values[0]
-            deadlighet = dfdead.loc[dfdead['LOK_NR'] == loc]['Deadlighet'].values[0]
+
+            if dfas.loc[dfas['LOK_NR'] == loc]['LOK_KAP'].size != 0:
+                kapasitet = dfas.loc[dfas['LOK_NR'] == loc]['LOK_KAP'].values[0]
+                deadlighet = dfdead.loc[dfdead['LOK_NR'] == loc]['Deadlighet'].values[0]
+            else:
+                kapasitet = 0
+                deadlighet = 0
 
             produksjon = 1000*(round((float(kapasitet)-float(deadlighet))*0.67))
     
