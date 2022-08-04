@@ -42,8 +42,24 @@ classDiagram
     class Database {
       + config()
 	  + connect()
+	  + config()
 	  + create_table()
 	  + insert_lice_data(lice_data)
+	  + update_db_averages()
+	  + insert_data()
+	  + get_locnrs()
+	  + insert_areal_data()
+	  + insert_part_time_data()
+	  + getasdata()
+	  + add_producers()
+	  + insert_address_smb_locnr_csv()
+	  + insert_lice_limit()
+	  + get_valid_orgs()
+	  + generate_co2_data()
+	  + generate_social_figures()
+	  + generate_deadliness_data()
+	  + generate_social_figures()
+	  
     }
 	    
 	class DatabaseINI {
