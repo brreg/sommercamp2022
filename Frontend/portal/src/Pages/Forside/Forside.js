@@ -9,7 +9,7 @@ function Forside() {
     return (
 
         <div className = "forside">
-            <img src={require('./Images/Forside3.png')} className="background-img"></img>
+            <img src={require('./Images/Forside.png')} className="background-img"></img>
             <div className="tekstboks_forside">
                 <p className="liten_overskrift_forside">Velkommen til</p>
                 <p className="overskrift_forside">Bærekraftsportalen</p>
