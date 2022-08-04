@@ -4,10 +4,10 @@
 
 .btn-toolbar button {
     background-color: white; 
-    color: #1A36D9;
+    color: #2B47EE;
     width: 220px;
     border: none;
-    border: 3px solid #1A36D9;
+    border: 3px solid #2B47EE;
     font-weight: bold;
     border-radius: 5px;
     font-size: 23px;
@@ -19,13 +19,13 @@
   
   
   .btn-toolbar button:hover {
-    background-color: #1A36D9;    
+    background-color: #2B47EE;    
     color: white; 
 
   }
       
   #selected {
-    border: 3px solid #1A36D9;
-    background-color: #1A36D9;    
+    border: 3px solid #2B47EE;
+    background-color: #2B47EE;    
     color: white; 
   }
