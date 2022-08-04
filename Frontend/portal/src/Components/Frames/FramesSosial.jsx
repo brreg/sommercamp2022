@@ -3,6 +3,8 @@ import {useParams} from 'react-router-dom';
 import Frame from './Frame';
 import NokkeltallAreal from '../Nokkeltall/NokkeltallAreal';
 import Kjonngraf from '../../Graphs/Sosialgrafer/Kjonnsfordeling/kjonngraf';
+import MiljoGraph from '../../Graphs/miljograph'
+
 
 function FramesSosial() {
     const {id} = useParams();
@@ -33,7 +35,9 @@ function FramesSosial() {
                             tekst={"Grafen viser antall arbeidere i ufrivillig deltid målt i prosent"}
                             dropDown={"Ufrivillig deltidsprosent forklart"}
                             show={"Den ufrivillige deltidsprosenten viser hvor stor del andel av ansatte i selskapet som ønsker, og er tilgjengelige for å jobbe mer."}
-                            kilde={"Konstruert tall basert på https://www.ssb.no/statbank/table/09368/"}/>
+                            kilde={"Konstruert tall basert på https://www.ssb.no/statbank/table/09368/"}
+                            graph={<MiljoGraph org_nr={id} apiurl_end="ufrivilligdeltid/" chart_title="Ufrivillig Deltid"/>} 
+                            />
                 </div>
             </div>
         </div>

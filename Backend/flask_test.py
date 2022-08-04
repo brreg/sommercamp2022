@@ -160,7 +160,7 @@ def get__co2emissions_production(orgnr):
     return jsonify({'data': ret_list})
 
 #Endpoint to get deadliness data on orgnr level
-@app.route('/orgs/<orgnr>/deadliness')
+@app.route('/orgs/<orgnr>/deadliness/')
 def get_all_deadlinesspercent_for_orgnr(orgnr):
     result = session.query(
         Deadliness.death_year,
@@ -179,7 +179,7 @@ def get_all_deadlinesspercent_for_orgnr(orgnr):
         ret_list.append({'year': tup[0], 'thiscomp': tup[1]}) 
     return jsonify({'data': ret_list})
 
-@app.route('/orgs/<orgnr>/licedata')
+@app.route('/orgs/<orgnr>/licedata/')
 
 def get_all_licedata_for_orgnr(orgnr):
     
@@ -205,7 +205,7 @@ def get_all_licedata_for_orgnr(orgnr):
         return jsonify({'data': ret_list})
  
 #Endpoint to get escape data on orgnr level
-@app.route('/orgs/<orgnr>/escapes')
+@app.route('/orgs/<orgnr>/escapes/')
 def get_all_escapedata_for_orgnr(orgnr):
     
     if bad_request(orgnr):
@@ -262,7 +262,7 @@ def get_all_averages():
 """
 
 #Endpoint to get averages from the aquaculture industry
-@app.route('/averages/deadliness')
+@app.route('/averages/deadliness/')
 def get_all_averages_deadliness():
     result = session.query(
         Deadliness.death_year,
@@ -280,7 +280,7 @@ def get_all_averages_deadliness():
     return jsonify({'data': ret_list})
 
 #Endpoint to get averages from the aquaculture industry
-@app.route('/averages/licedata')
+@app.route('/averages/licedata/')
 def get_all_averages_licedata():
     result = session.query(
         func.avg(Licedata.lice_average),
@@ -298,7 +298,7 @@ def get_all_averages_licedata():
     return jsonify({'data': ret_list})
 
 #Endpoint to get averages from the aquaculture industry
-@app.route('/averages/escapes')
+@app.route('/averages/escapes/')
 def get_all_averages_escapes():
     result = session.query(
         func.sum(Escape.escape_count_sum),
@@ -316,7 +316,7 @@ def get_all_averages_escapes():
     return jsonify({'data': ret_list})
 
 #Endpoint to get averages from the aquaculture industry
-@app.route('/averages/co2feed')
+@app.route('/averages/co2feed/')
 def get_all_averages_co2feed():
     result=session.query(
         Co2Emissions.year,
@@ -334,7 +334,7 @@ def get_all_averages_co2feed():
     return jsonify({'data': ret_list})
 
 #Endpoint to get averages from the aquaculture industry
-@app.route('/averages/co2production')
+@app.route('/averages/co2production/')
 def get_all_averages_co2production():
     result=session.query(
         Co2Emissions.year,
@@ -353,7 +353,7 @@ def get_all_averages_co2production():
 
 
 #Endpoint to get averages from the aquaculture industry
-@app.route('/nokkeltall/<orgnr>/areal')
+@app.route('/nokkeltall/<orgnr>/areal/')
 def get_nokkeltall_areal(orgnr):
     ret_list = []
 
@@ -388,7 +388,7 @@ def get_nokkeltall_areal(orgnr):
 
     return jsonify({'data': ret_list})
 
-@app.route('/orgs/<orgnr>/address')
+@app.route('/orgs/<orgnr>/address/')
 def get_address_for_orgnr(orgnr):
 
     if bad_request(orgnr):
@@ -463,11 +463,11 @@ def get_average_udeltid():
     ).all()
     
     for tup in result:
-        ret_list.append({'year': tup[1], 'part_time_percentage_avg':tup[0]})
+        ret_list.append({'year': tup[1], 'average_all':tup[0]})
 
     return jsonify({'data': ret_list})
 
-@app.route('/nokkeltall/<orgnr>/ufrivilligdeltid/')
+@app.route('/orgs/<orgnr>/ufrivilligdeltid/')
 def get_all_ufrivilligdeltid_for_orgnr(orgnr):
     ret_list=[]
 
@@ -481,12 +481,38 @@ def get_all_ufrivilligdeltid_for_orgnr(orgnr):
     ).all()
     
     for tup in result:
-        ret_list.append({'year': tup[1], 'part_time_percentage': tup[0]})
+        ret_list.append({'year': tup[1], 'thiscomp': tup[0]})
 
+    return jsonify({'data': ret_list})
+
+### Returns one lice limit that this orgnr has 
+@app.route('/orgs/<orgnr>/licelimit/')
+def get_licelimit_orgnr(orgnr):
+    ret_list=[]
+
+    result=session.query(
+        Licedata.lice_limit,
+        Licedata.lice_year
+    ).select_from(
+        Licedata
+    ).join(
+        Location, Licedata.loc_nr == Location.loc_nr
+    ).filter(
+        Location.org_nr == orgnr,
+    ).all()
+
+    i=0
+    for data in result:
+        ret_list.append({'year': data[1], 'limit': data[0]})
+        i+=1
+        if i==5: break
+    
     return jsonify({'data': ret_list})
 
 if __name__ == '__main__':
     app.debug = True
-    app.run(host='0.0.0.0', port=105)
+    #app.run(host='0.0.0.0', port=105)
+    app.run()
+
 
 
