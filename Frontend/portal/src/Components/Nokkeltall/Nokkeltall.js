@@ -120,11 +120,15 @@ function Nokkeltall (props) {
             case "Lakselus_bedrift": 
                 return `${orgname} hadde gjennomsnittlig`;
             case "Lakselus_bransje": 
-                return "Bransjen hadde totalt";
+                return "Bransjen hadde gjennomsnittlig";
             case "Rømninger_bedrift": 
                 return `${orgname} hadde`;
             case "Rømninger_bransje": 
-                return "Bransjen hadde totalt";
+                return "Bransjen hadde gjennomsnittlig";
+            case "Kjønn_bedrift": 
+                return `${orgname} hadde `;
+            case "Kjønn_bransje": 
+                return "Bransjen hadde gjennomsnittlig";
             default:
                 return "kunne ikke finne";
             }
@@ -148,6 +152,10 @@ function Nokkeltall (props) {
                 return `rømninger i ${nokkeltallEscapeYear}`;
             case "Rømninger_bransje": 
                 return `rømninger i ${averageEscapesYear}`;
+            case "Kjønn_bedrift": 
+                return "i 2021";
+            case "Kjønn_bransje": 
+                return "i 2021";
             default:
                 return "kunne ikke finne";
             }
@@ -170,6 +178,10 @@ function Nokkeltall (props) {
                 return `${nokkeltallEscapes}`;
             case "Rømninger_bransje_tall": 
                 return `${averageEscapes}`;
+            case "Kjønn_bedrift_tall": 
+                return "i 2021";
+            case "Kjønn_bransje_tall": 
+                return "i 2021";
             default:
                 return "xxx";
             }

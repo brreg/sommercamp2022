@@ -85,11 +85,11 @@ function NokkeltallFly (props) {
             case "Fôrproduksjon_bedrift": 
                 return `${orgname} slapp ut`;
             case "Fôrproduksjon_bransje": 
-                return `Bransjen slapp ut`;
+                return `Bransjen slapp ut gjennomsnittlig`;
             case "CO2_bedrift": 
                 return `${orgname} hadde totalt`;
             case "CO2_bransje": 
-                return `Bransjen slapp ut`;
+                return `Bransjen slapp ut gjennomsnittlig`;
             case "Arealbruk_bedrift": 
                 return `${orgname} brukte totalt`;
             case "Arealbruk_bransje": 
