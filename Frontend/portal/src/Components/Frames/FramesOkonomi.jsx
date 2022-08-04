@@ -20,7 +20,7 @@ function FramesOkonomi() {
                 <div className="column-frames">
                     <Frame overskrift="Likviditet" 
                             tekst={"Dette diagrammet viser bedriftens økonomiske likviditet for 2021"}
-                            graph={<Soliditet/>}
+                            graph={<Soliditet value={60}/>}
                             dropDown={"Likviditet forklart"}
                             show={"Likviditet viser selskapets evne til å betale sine forpliktelser når de forfaller. Tallet regnes ut ved å dele selskapets omløpsmidler (tilgjengelige midler) på kortsiktig gjeld. Dataen er hentet fra regnskapsregisteret."}
                             kilde={"Kilde: Regnskapsregisteret"}/>
@@ -28,7 +28,7 @@ function FramesOkonomi() {
                 <div className="column-frames">
                     <Frame overskrift="Lønnsomhet" 
                             tekst={"Dette diagrammet viser bedriftens økonomiske lønnsomhet for 2021"}                            
-                            graph={<Soliditet/>}
+                            graph={<Soliditet value={20}/>}
                             dropDown={"Lønnsomhet forklart"}
                             show={"Lønnsomheten (totalkapitalrentabilitet) i et foretak er et mål på avkastningen på selskapets eiendeler. Et vanlig lønnsomhetsnivå er 10 - 15%, men lønnsomhetsnivået bør ligge over det selskapet betaler for sine lån. Tallene er hentet fra regnskapsregisteret."}
                             kilde={"Kilde: Regnskapsregisteret"}/>

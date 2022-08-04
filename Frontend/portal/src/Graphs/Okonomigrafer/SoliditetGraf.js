@@ -12,7 +12,7 @@ const SoliditetGraf = (props) => {
                 width="100%"
                 minimumValue={0}
                 maximumValue={100}
-                interval={[3,9,17,40,100]}
+                interval={10}
                 value={props.value} // Her legges det inn fra databasen altså verdien til KPIen
                 needleShape="needle"
                 needleBrush="#01DD8D"
@@ -27,7 +27,7 @@ const SoliditetGraf = (props) => {
 
                 backingBrush="#ffffff"
 
-                labelInterval={[40]}
+                labelInterval={20}
 
                  rangeBrushes="#1A36D9, #649eff, #78aaff, #92bbff, #accbff">
 
