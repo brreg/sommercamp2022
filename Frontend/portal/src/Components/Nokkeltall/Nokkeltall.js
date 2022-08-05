@@ -45,8 +45,8 @@ function Nokkeltall (props) {
         
         axios.get(`http://10.172.205.152:105/orgs/${props.id}/licedata/`)
         .then( res=> {
-            setNokkeltallLice(res.data.data[4].thiscomp)
-            setYearLice(res.data.data[4].year)
+            setNokkeltallLice(res.data.data[1].thiscomp)
+            setYearLice(res.data.data[1].year)
         })
         .catch( err=> {
             console.log(err)
@@ -91,7 +91,7 @@ function Nokkeltall (props) {
         
         axios.get(`http://10.172.205.152:105/averages/licedata`)
         .then( res=> {
-            setAverageLice(res.data.data[4].average_all)
+            setAverageLice(res.data.data[1].average_all)
         })
         .catch( err=> {
             console.log(err)
@@ -166,13 +166,13 @@ function Nokkeltall (props) {
 
         switch(miljo_under) {
             case "Dødelighet_bedrift": 
-                return `dødlighet i ${yearDod}`;
+                return `dødelighet i ${yearDod}`;
             case "Dødelighet_bransje": 
-                return `dødlighet i ${yearDod}`;
+                return `dødelighet i ${yearDod}`;
             case "Lakselus_bedrift": 
-                return `lakelus i ${yearLice}`;
+                return `hunnlus per laks i ${yearLice}`;
             case "Lakselus_bransje": 
-                return `lakelus i ${yearLice}`;
+                return `hunnlus per laks i ${yearLice}`;
             case "Rømninger_bedrift": 
                 return `rømninger i ${nokkeltallEscapeYear}`;
             case "Rømninger_bransje": 

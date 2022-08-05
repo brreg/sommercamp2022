@@ -29,7 +29,7 @@ const Header = (props) => {
         axios.get(`http://10.172.205.152:105/orgs/${props.id}/address`)
         .then( res=> {
             setOrgAddress(res.data.data[0].address)
-            setOrgCity(res.data.data[0].city.toLowerCase().charAt(0).toUpperCase() + res.data.data[0].city.toLowerCase().slice(1))
+            setOrgCity(res.data.data[0].city)
         })
         .catch( err=> {
             console.log(err)
@@ -43,6 +43,7 @@ const Header = (props) => {
                 <div className="generell-info">
                     <div className="overskrift-generell-bedrifter"> {orgname} </div>
                     <div className="info org_nr"> <p className="info-title">Organisasjonsnummer:</p> {"\n"} <p className="info-text">{id}</p> </div>
+                    <div className="info bransje"> <p className="info-title">Bransje:</p>{"\n"} <p className="info-text"> Oppdrett </p> </div>
                     <div className="info kommune"> <p className="info-title">Sted:</p>{"\n"} <p className="info-text">{orgCity}</p> </div> 
                     <div className="info adresse"> <p className="info-title">Adresse:</p>{"\n"} <p className="info-text">{orgAddress}</p> </div>
                 </div>
