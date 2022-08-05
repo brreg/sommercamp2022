@@ -31,7 +31,7 @@ function FramesMiljo() {
                         dropDown={"Dødlighet forklart"}
                         show={"Dødlighet er andelen av selskapets produksjon som har dødd under oppdrettsprosessen. Tallet er samlet for alle selskapets lokasjoner."}
                         kilde={"Kilde: Konstruert tall"}
-                        graph={<MiljoGraph org_nr={id} apiurl_end="deadliness/" chart_title="Deadliness data"/>} />
+                        graph={<MiljoGraph org_nr={id} apiurl_end="deadliness/" chart_title="Deadliness data" bedrifter={`${id}`}/>} />
 
                 </div>
                 <div className="column-frames">
