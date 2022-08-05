@@ -26,6 +26,7 @@ function NokkeltallFly (props) {
     const [orgFlightsProd, setOrgFlightsProd] = useState("")
     const [orgProd, setOrgProd] = useState("")
     const [orgFeed, setOrgFeed] = useState("")
+    const [yearCO2, setYearCO2] = useState("")
 
     useEffect(() => {
         
@@ -36,6 +37,7 @@ function NokkeltallFly (props) {
             setOrgFlightsProd(res.data.data[0].flights_production)
             setOrgFeed(res.data.data[0].feed_co2)
             setOrgProd(res.data.data[0].prod_co2)
+            setYearCO2(res.data.data[0].year)
         })
         .catch( err=> {
             console.log(err)
@@ -45,6 +47,7 @@ function NokkeltallFly (props) {
 
     const [avgFlightsFeed, setAvgFlightsFeed] = useState("")
     const [avgFeed, setAvgFeed] = useState("")
+    const [yearFeed, setYearFeed] = useState("")
 
     useEffect(() => {
         
@@ -53,6 +56,7 @@ function NokkeltallFly (props) {
             console.log(res.data.data[2].flights_feed)
             setAvgFlightsFeed(res.data.data[2].average_all_feed_flights)
             setAvgFeed(res.data.data[2].average_all)
+            setYearFeed(res.data.data[2].year)
 
         })
         .catch( err=> {
@@ -63,6 +67,7 @@ function NokkeltallFly (props) {
 
     const [avgFlightsProd, setAvgFlightsProd] = useState("")
     const [avgProd, setAvgProd] = useState("")
+    const [yearProd, setYearProd] = useState("")
 
     useEffect(() => {
         
@@ -71,6 +76,7 @@ function NokkeltallFly (props) {
             console.log(res.data.data[2].flights_production)
             setAvgFlightsProd(res.data.data[2].average_all_production_flights)
             setAvgProd(res.data.data[2].average_all)
+            setYearProd(res.data.data[2].year)
 
         })
         .catch( err=> {
@@ -85,11 +91,11 @@ function NokkeltallFly (props) {
             case "Fôrproduksjon_bedrift": 
                 return `${orgname} slapp ut`;
             case "Fôrproduksjon_bransje": 
-                return `Bransjen slapp ut`;
+                return `Bransjen slapp ut gjennomsnittlig`;
             case "CO2_bedrift": 
                 return `${orgname} hadde totalt`;
             case "CO2_bransje": 
-                return `Bransjen slapp ut`;
+                return `Bransjen slapp ut gjennomsnittlig`;
             case "Arealbruk_bedrift": 
                 return `${orgname} brukte totalt`;
             case "Arealbruk_bransje": 
@@ -105,13 +111,13 @@ function NokkeltallFly (props) {
 
         switch(fly_under) {
             case "Fôrproduksjon_bedrift": 
-                return "tonn CO2e i 2022";
+                return "tonn CO2e i 2021";
             case "Fôrproduksjon_bransje": 
-                return "tonn CO2e i 2022";
+                return `tonn CO2e i ${yearFeed}`;
             case "CO2_bedrift": 
-                return "tonn CO2e i 2022";
+                return "tonn CO2e i 2021";
             case "CO2_bransje": 
-                return "tonn CO2e i 2022";
+                return `tonn CO2e i ${yearProd}`;
             case "Arealbruk_bedrift": 
                 return "areal i 2022";
             case "Arealbruk_bransje": 

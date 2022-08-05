@@ -29,6 +29,7 @@ def fill_db():
     db = Database()
     db.connect()
     db.config()
+    """
     db.create_tables()
     time.sleep(3)
     
@@ -95,7 +96,7 @@ def fill_db():
     time.sleep(1)
     
     db.update_db_averages()
-
+    """
 fill_db()
 
 

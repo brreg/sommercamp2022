@@ -22,6 +22,56 @@ function NokkeltallFly (props) {
       
     }, []);
 
+    const [orgAreal, seOrgAreal] = useState("")
+    const [avgAreal, setAvgAreal] = useState("")
+    const [orgFootball, setOrgFootball] = useState("")
+    const [avgFootball, setAvgFootball] = useState("")
+
+    useEffect(() => {
+        
+        axios.get(`http://10.172.205.152:105/orgs/${props.id}/areal/`)
+        .then( res=> {
+            console.log(res.data)
+            seOrgAreal(res.data.data[0].this_org_areal)
+            setAvgAreal(res.data.data[2].all_org_areal)
+            setOrgFootball(res.data.data[1].this_org_areal_football)
+            setAvgFootball(res.data.data[3].all_org_areal_football)
+
+        })
+        .catch( err=> {
+            console.log(err)
+        })
+      
+    }, []);
+
+    const transform_areal_tall = (areal_tall) => {
+
+        switch(areal_tall) {
+            case "Arealbruk_bedrift": 
+                return `${orgAreal}`;
+            case "Arealbruk_bransje": 
+                return `${avgAreal}`;
+            default:
+                return "kunne ikke finne";
+            }
+        };
+    
+    const transformed_areal_tall = transform_areal_tall(props.areal_tall)
+
+    const transform_areal_ball = (areal_ball) => {
+
+        switch(areal_ball) {
+            case "Fotball_bedrift": 
+                return `${orgFootball}`;
+            case "Fotball_bransje": 
+                return `${avgFootball}`;
+            default:
+                return "kunne ikke finne";
+            }
+        };
+    
+    const transformed_areal_ball= transform_areal_ball(props.areal_ball)
+
     const transform_areal_over = (areal_over) => {
 
         switch(areal_over) {
@@ -53,12 +103,12 @@ function NokkeltallFly (props) {
     return (
         <div className="nøkkeltallFly"> 
             <div className="overtekst-nøkkeltallAreal"> {transformed_areal_over} </div>
-            <div className="tall-overskriftAreal"> 300 </div>
+            <div className="tall-overskriftAreal"> {transformed_areal_tall} m2 </div>
             <div className="undertekst-nøkkeltallAreal"> {transformed_areal_under} </div>
             <div className="strek"/>
             <div className="under_strek">
-            <div><img className="areal_bilde" src={require('./Fotball.png')}></img></div>
-            <div className="areal_tekst"> Dette tilsvarer 50 fotballbaner </div>
+            <div> <img className="areal_bilde" src={require('./Fotball.png')}/> </div>
+            <div className="areal_tekst"> Dette tilsvarer {transformed_areal_ball} fotballbaner </div>
             </div> 
         </div>
     )
