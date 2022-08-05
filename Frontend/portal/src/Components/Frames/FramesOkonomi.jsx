@@ -33,7 +33,8 @@ function FramesOkonomi() {
                             graph={<Soliditet id={id}/>}
                             dropDown={"Soliditet forklart"}
                             show={"Soliditet viser hvor stor andel av eiendelene som er finansiert med egenkapital. Hvis egenkapital er under 100 000 kr anses soliditeten som svak. Tallene er hentet fra regnskapsregisteret."}
-                            kilde={"Kilde: Regnskapsregisteret"}/>
+                            kilde={<div>Kilde: <a href="https://data.brreg.no/regnskapsregisteret/regnskap/swagger-ui/swagger-ui/index.html#/regnskapsregisteret/getRegnskap">Regnskapsregisteret</a></div>}/>
+                            
                 </div>
                 <div className="column-frames">
                     <Frame overskrift="Likviditet" 
@@ -41,7 +42,7 @@ function FramesOkonomi() {
                             graph={<Likviditet id={id}/>}
                             dropDown={"Likviditet forklart"}
                             show={"Likviditet viser selskapets evne til å betale sine forpliktelser når de forfaller. Tallet regnes ut ved å dele selskapets omløpsmidler (tilgjengelige midler) på kortsiktig gjeld. Dataen er hentet fra regnskapsregisteret."}
-                            kilde={"Kilde: Regnskapsregisteret"}/>
+                            kilde={<div>Kilde: <a href="https://data.brreg.no/regnskapsregisteret/regnskap/swagger-ui/swagger-ui/index.html#/regnskapsregisteret/getRegnskap">Regnskapsregisteret</a></div>}/>
                 </div>
                 <div className="column-frames">
                     <Frame overskrift="Lønnsomhet" 
@@ -49,7 +50,7 @@ function FramesOkonomi() {
                             graph={<Lonnsomhet id={id}/>}
                             dropDown={"Lønnsomhet forklart"}
                             show={"Lønnsomheten (totalkapitalrentabilitet) i et foretak er et mål på avkastningen på selskapets eiendeler. Et vanlig lønnsomhetsnivå er 10 - 15%, men lønnsomhetsnivået bør ligge over det selskapet betaler for sine lån. Tallene er hentet fra regnskapsregisteret."}
-                            kilde={"Kilde: Regnskapsregisteret"}/>
+                            kilde={<div>Kilde: <a href="https://data.brreg.no/regnskapsregisteret/regnskap/swagger-ui/swagger-ui/index.html#/regnskapsregisteret/getRegnskap">Regnskapsregisteret</a></div>}/>
                 </div>
             </div>
         </div>

@@ -39,8 +39,8 @@ function FramesSosial() {
                             tekst={"Dette diagrammet viser andelen menn og kvinner i selskapet målt i prosent."}
                             dropDown={"Kjønnsfordeling forklart"}
                             show={"Kjønnsfordeling viser andelen av kvinner og menn i selskapet. Diagrammet tar ikke høyde for kjønnsmangfold utenom mann og kvinne da det ikke rapporteres på dette."}
-                            kilde={"Konstruerte tall basert på Konstruert tall basert på https://www.fiskeridir.no/Tall-og-analyse/Statistikkbanken"}
-                            />
+                            kilde={<div>Konstruerte tall basert på: <a href="https://www.fiskeridir.no/Tall-og-analyse/Statistikkbanken">Fiskeridirektoratet</a></div>}/>
+
                 </div>
                 <div className="column-frames">
                     <Frame overskrift="Arealbruk" 
@@ -49,14 +49,14 @@ function FramesSosial() {
                             tekst={"Disse tallene viser hvor stort areal hvert selskap benytter målt i kvadratmeter."}
                             dropDown={"Arealbruk forklart"}
                             show={"Arealbruk viser hvor stort område selskapet benytter for å drive med oppdrettsaktivitet."}
-                            kilde={"Kilde: https://open-data-fiskeridirektoratet-fiskeridir.hub.arcgis.com/datasets/48f1b90ebe3049deb6bf33bcd67263ac/explore"}/>
+                            kilde={<div>Konstruerte tall basert på: <a href="https://open-data-fiskeridirektoratet-fiskeridir.hub.arcgis.com/datasets/48f1b90ebe3049deb6bf33bcd67263ac/explore">Fiskeridirektoratet</a></div>}/>
                 </div>
                 <div className="column-frames">
                     <Frame overskrift="Ufrivillig deltidsprosent" 
                             tekst={"Grafen viser antall arbeidere i ufrivillig deltid målt i prosent."}
                             dropDown={"Ufrivillig deltidsprosent forklart"}
                             show={"Den ufrivillige deltidsprosenten viser hvor stor del andel av ansatte i selskapet som ønsker, og er tilgjengelige for å jobbe mer."}
-                            kilde={"Konstruerte tall basert på https://www.ssb.no/statbank/table/09368/"}
+                            kilde={<div>Konstruerte tall basert på: <a href="https://www.ssb.no/statbank/table/09368/">Statistisk Sentralbyrå</a></div>}
                             graph={<MiljoGraph org_nr={id} apiurl_end="ufrivilligdeltid/" chart_title="Ufrivillig Deltid" bedrifter={orgname}/>} 
                             />
                 </div>
