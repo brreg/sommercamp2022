@@ -82,7 +82,7 @@ const MiljoGraph = props => {
                     backgroundColor: "#2B47EE",
                 },
                 {
-                    label: "Bransjen", // replace w props name?
+                    label: "Gjennomsnitt i bransjen", // replace w props name?
                     data: averagesData,
                     borderColor: "rgb(53, 162, 235)",
                     backgroundColor: "#11CD89",
