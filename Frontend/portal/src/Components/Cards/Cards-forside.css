@@ -10,13 +10,13 @@
 }
     
 .card_forside {
-    border: 1px solid #2B47EE;
+    border: 2px solid #2B47EE;
     padding: 16px;
     text-align: left;
     background-color: white;
     border-radius: 25px;
     width: 300px;
-    height: 220px;
+    height: 170px;
     box-shadow: 0px 8px 16px 6px #00478514;
 }
 
@@ -42,7 +42,19 @@
 .p_card_forside {
     margin: 4%;
     float: left;
-    line-height: 140%;
+    line-height: 180%;
+}
+
+@media only screen and (max-width:1600px) {
+    .row_forside {
+        padding-top: 4%;
+    }
+
+    .card_forside {
+        width: 210px;
+        height: 150px;
+    }
+    
 }
 
 
