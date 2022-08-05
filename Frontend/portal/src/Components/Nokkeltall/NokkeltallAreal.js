@@ -103,11 +103,11 @@ function NokkeltallFly (props) {
     return (
         <div className="nøkkeltallFly"> 
             <div className="overtekst-nøkkeltallAreal"> {transformed_areal_over} </div>
-            <div className="tall-overskriftAreal"> {transformed_areal_tall} m2</div>
+            <div className="tall-overskriftAreal"> {transformed_areal_tall} m2 </div>
             <div className="undertekst-nøkkeltallAreal"> {transformed_areal_under} </div>
             <div className="strek"/>
             <div className="under_strek">
-            <div><img className="areal_bilde" src={require('./Fotball.png')}></img></div>
+            <div> <img className="areal_bilde" src={require('./Fotball.png')}/> </div>
             <div className="areal_tekst"> Dette tilsvarer {transformed_areal_ball} fotballbaner </div>
             </div> 
         </div>

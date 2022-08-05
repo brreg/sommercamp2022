@@ -3,7 +3,6 @@ import {useParams} from 'react-router-dom';
 import Frame from './Frame';
 import NokkeltallAreal from '../Nokkeltall/NokkeltallAreal';
 import Kjonngraf from '../../Graphs/Sosialgrafer/Kjonnsfordeling/kjonngraf';
-import MiljoGraph from '../../Graphs/miljograph'
 import Nokkeltall from '../Nokkeltall/Nokkeltall';
 
 function FramesSosial() {
@@ -27,7 +26,6 @@ function FramesSosial() {
                     <Frame overskrift="Arealbruk" 
                             nøkkeltall_en={<NokkeltallAreal id={id} areal_over="Arealbruk_bedrift" areal_under="Arealbruk_bedrift" areal_tall="Arealbruk_bedrift" areal_ball="Fotball_bedrift"/>}
                             nøkkeltall_to={<NokkeltallAreal id={id} areal_over="Arealbruk_bransje" areal_under="Arealbruk_bransje" areal_tall="Arealbruk_bransje" areal_ball="Fotball_bransje"/>}
-                            graph={<Kjonngraf id={id}/>} 
                             tekst={"Disse tallene viser hvor stort areal hvert selskap benytter målt i m2"}
                             dropDown={"Arealbruk forklart"}
                             show={"Arealbruk viser hvor stort område selskapet benytter for å drive med oppdrettsaktivitet."}
@@ -38,9 +36,7 @@ function FramesSosial() {
                             tekst={"Grafen viser antall arbeidere i ufrivillig deltid målt i prosent"}
                             dropDown={"Ufrivillig deltidsprosent forklart"}
                             show={"Den ufrivillige deltidsprosenten viser hvor stor del andel av ansatte i selskapet som ønsker, og er tilgjengelige for å jobbe mer."}
-                            kilde={"Konstruert tall basert på https://www.ssb.no/statbank/table/09368/"}
-                            graph={<MiljoGraph org_nr={id} apiurl_end="ufrivilligdeltid/" chart_title="Ufrivillig Deltid"/>} 
-                            />
+                            kilde={"Konstruert tall basert på https://www.ssb.no/statbank/table/09368/"}/>
                 </div>
             </div>
         </div>
