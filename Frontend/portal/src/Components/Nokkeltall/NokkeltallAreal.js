@@ -78,7 +78,7 @@ function NokkeltallFly (props) {
             case "Arealbruk_bedrift": 
                 return `${orgname} brukte totalt`;
             case "Arealbruk_bransje": 
-                return `Bransjen brukte totalt`;
+                return `Bransjen brukte gjennomsnittlig`;
             default:
                 return "kunne ikke finne";
             }
@@ -103,7 +103,7 @@ function NokkeltallFly (props) {
     return (
         <div className="nøkkeltallFly"> 
             <div className="overtekst-nøkkeltallAreal"> {transformed_areal_over} </div>
-            <div className="tall-overskriftAreal"> {transformed_areal_tall} m2 </div>
+            <div className="tall-overskriftAreal"> {transformed_areal_tall} m<sup>2</sup></div>
             <div className="undertekst-nøkkeltallAreal"> {transformed_areal_under} </div>
             <div className="strek"/>
             <div className="under_strek">

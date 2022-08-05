@@ -45,8 +45,8 @@ function Nokkeltall (props) {
         
         axios.get(`http://10.172.205.152:105/orgs/${props.id}/licedata/`)
         .then( res=> {
-            setNokkeltallLice(res.data.data[4].thiscomp)
-            setYearLice(res.data.data[4].year)
+            setNokkeltallLice(res.data.data[1].thiscomp)
+            setYearLice(res.data.data[1].year)
         })
         .catch( err=> {
             console.log(err)
@@ -91,7 +91,7 @@ function Nokkeltall (props) {
         
         axios.get(`http://10.172.205.152:105/averages/licedata`)
         .then( res=> {
-            setAverageLice(res.data.data[4].average_all)
+            setAverageLice(res.data.data[1].average_all)
         })
         .catch( err=> {
             console.log(err)

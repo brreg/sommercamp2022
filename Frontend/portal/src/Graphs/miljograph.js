@@ -76,13 +76,13 @@ const MiljoGraph = props => {
             labels: year,
             datasets: [
                 {
-                    label: "This company", // replace w prop name?
+                    label: `${props.bedrifter}`, // replace w prop name?
                     data: thisCompData,
                     borderColor: "rgb(53, 162, 235)",
                     backgroundColor: "#2B47EE",
                 },
                 {
-                    label: "Industry Average", // replace w props name?
+                    label: "Bransjen", // replace w props name?
                     data: averagesData,
                     borderColor: "rgb(53, 162, 235)",
                     backgroundColor: "#11CD89",
@@ -102,7 +102,7 @@ const MiljoGraph = props => {
                 }
             }
         })
-    }, [averagesData, thisCompData, year])
+    }, [averagesData, thisCompData, year, props.bedrifter])
 
 
     return (
