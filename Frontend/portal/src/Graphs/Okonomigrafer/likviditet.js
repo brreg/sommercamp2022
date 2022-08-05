@@ -55,7 +55,7 @@ const Likviditet = (props) => {
             <div className="text_container">
                 <div className="textbox"> Ikke tilfredsstillende </div>
                 <div className="textbox"> Svak </div>
-                <div className="textbox"> Tilfreds </div>
+                <div className="textbox"> Tilfredsstillende </div>
                 <div className="textbox"> God </div>
                 <div className="textbox"> Svært god </div>
             </div>
