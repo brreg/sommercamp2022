@@ -170,9 +170,9 @@ function Nokkeltall (props) {
             case "Dødelighet_bransje": 
                 return `dødlighet i ${yearDod}`;
             case "Lakselus_bedrift": 
-                return `lakelus i ${yearLice}`;
+                return `hunnlus per laks i ${yearLice}`;
             case "Lakselus_bransje": 
-                return `lakelus i ${yearLice}`;
+                return `hunnlus per laks i ${yearLice}`;
             case "Rømninger_bedrift": 
                 return `rømninger i ${nokkeltallEscapeYear}`;
             case "Rømninger_bransje": 

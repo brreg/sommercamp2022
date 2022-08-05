@@ -111,13 +111,13 @@ function NokkeltallFly (props) {
 
         switch(fly_under) {
             case "Fôrproduksjon_bedrift": 
-                return "tonn CO2e i 2021";
+                return "tonn CO2-ekvivalenter i 2021";
             case "Fôrproduksjon_bransje": 
-                return `tonn CO2e i ${yearFeed}`;
+                return `tonn CO2-ekvivalenter i ${yearFeed}`;
             case "CO2_bedrift": 
-                return "tonn CO2e i 2021";
+                return "tonn CO2-ekvivalenter i 2021";
             case "CO2_bransje": 
-                return `tonn CO2e i ${yearProd}`;
+                return `tonn CO2-ekvivalenter i ${yearProd}`;
             case "Arealbruk_bedrift": 
                 return "areal i 2022";
             case "Arealbruk_bransje": 
@@ -174,7 +174,7 @@ function NokkeltallFly (props) {
             <div className="strek"/>
             <div className="under_strek">
             <div><img className="fly_bilde" src={require('./Fly.png')}></img></div>
-            <div className="fly_tekst"> Dette tilsvarer {transformed_numbers} flyreiser Oslo - New York </div>
+            <div className="fly_tekst">Tilsvarer {transformed_numbers} flyreiser fra Oslo til New York </div>
             </div> 
         </div>
     )
