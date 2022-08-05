@@ -71,11 +71,11 @@ const LiceGraph = props => {
         })
 
         
-        await  axios.get(`http://127.0.0.1:5000/orgs/${props.org_nr}/licelimit/`) 
+        await  axios.get(`http://10.172.205.152:105/orgs/${props.org_nr}/licelimit/`) 
         .then( res=> {
             let tempLimit = []
             for (const dataObj of res.data.data) {
-                licelimit.push(parseFloat(dataObj.limit))
+                tempLimit.push(parseFloat(dataObj.limit))
             }
             setLicelimit(tempLimit)
         })
