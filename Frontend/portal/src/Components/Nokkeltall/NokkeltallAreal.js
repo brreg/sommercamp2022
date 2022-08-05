@@ -108,7 +108,7 @@ function NokkeltallFly (props) {
             <div className="strek"/>
             <div className="under_strek">
             <div> <img className="areal_bilde" src={require('./Fotball.png')}/> </div>
-            <div className="areal_tekst"> Dette tilsvarer {transformed_areal_ball} fotballbaner </div>
+            <div className="areal_tekst"> Tilsvarer {transformed_areal_ball} fotballbaner </div>
             </div> 
         </div>
     )

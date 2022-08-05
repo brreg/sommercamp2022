@@ -103,7 +103,7 @@ const LiceGraph = props => {
                 },
                 {   
                     type: "bar",
-                    label: "Bransjen", // replace w props name?
+                    label: "Gjennomsnitt i bransjen", // replace w props name?
                     data: averagesData,
                     borderColor: "rgb(53, 162, 235)",
                     backgroundColor: "#11CD89",
