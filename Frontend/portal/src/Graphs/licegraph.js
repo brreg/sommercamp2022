@@ -75,7 +75,7 @@ const LiceGraph = props => {
         .then( res=> {
             let tempLimit = []
             for (const dataObj of res.data.data) {
-                licelimit.push(parseFloat(dataObj.limit))
+                tempLimit.push(parseFloat(dataObj.limit))
             }
             setLicelimit(tempLimit)
         })
