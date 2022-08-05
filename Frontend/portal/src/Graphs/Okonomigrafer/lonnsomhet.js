@@ -5,24 +5,24 @@ import "./okonomi.css"
 
 
 
-const Soliditet = (props) => {
+const Lonnsomhet = (props) => {
 
     const axios = require('axios')
 
     const [arrowLoc, setArrowLoc] = useState(0)
 
-    const [globalSoliditet, setGlobalSoliditet] = useState(0)
+    const [globalLonnsomhet, setGlobalLonnsomhet] = useState(0)
 
     useEffect(() => {
-        getSoliditetsData()
+        getLonnsomhetData()
     }, []);
 
-    const getSoliditetsData = async () => {
+    const getLonnsomhetData = async () => {
         await axios.get(`http://10.172.205.152:105/accounts/${props.id}/`)
         .then( res=> {
-            console.log(res.data.data[4].solidity)
-            setGlobalSoliditet(res.data.data[4].solidity)
-            setArrowLocation(res.data.data[4].solidity)
+            console.log(res.data.data[4].return_on_assets)
+            setGlobalLonnsomhet(res.data.data[4].return_on_assets)
+            setArrowLocation(res.data.data[4].return_on_assets)
         })
         .catch( err=> {
             console.log(err)
@@ -30,20 +30,20 @@ const Soliditet = (props) => {
         
     } 
 
-    const setArrowLocation = (soliditet) => {
-    if (soliditet <= 3) {
+    const setArrowLocation = (lonnsomhet) => {
+    if (lonnsomhet <= 1) {
         setArrowLoc(0)
     }
-    else if (soliditet <= 9) {
+    else if (lonnsomhet <= 6) {
         setArrowLoc(1)
     }
-    else if (soliditet <= 17) {
+    else if (lonnsomhet <= 10) {
         setArrowLoc(2)
     }
-    else if (soliditet <= 40) {
+    else if (lonnsomhet <= 15) {
         setArrowLoc(3)
     }
-    else if (soliditet >= 40) {
+    else if (lonnsomhet >= 15) {
         setArrowLoc(4)
     }
     }
@@ -59,7 +59,6 @@ const Soliditet = (props) => {
                 <div className="textbox"> God </div>
                 <div className="textbox"> Svært god </div>
             </div>
-
             <div className="graph_container">
                 <div className="box box1"> </div>
                 <div className="box box2"> </div>
@@ -71,10 +70,10 @@ const Soliditet = (props) => {
             <div className="arrow_container">
             {[...Array(5)].map((x, i) => {
             if (arrowLoc === i){
-                return  <div key={i} className="arrowbox">  <img className="arrow" src={require('../../Components/Frames/images/PilOpp.png')}/> <div className="textbox2"> {globalSoliditet}% </div> </div>
+                return  <div key={i} className="arrowbox">  <img className="arrow" src={require('../../Components/Frames/images/PilOpp.png')}/> <div className="textbox2"> {globalLonnsomhet}% </div>  </div>
             }
             else {
-                return <div key={i} className="arrowbox">  </div>
+                return <div key={i} className="arrowbox"> </div>
             }
             })}
             </div>
@@ -86,4 +85,4 @@ const Soliditet = (props) => {
 
 
 // rendering above class to the React DOM
-export default Soliditet;
+export default Lonnsomhet;

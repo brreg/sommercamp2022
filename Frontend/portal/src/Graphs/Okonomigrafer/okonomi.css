@@ -1,3 +1,66 @@
-.graph {
-    margin-left: -50%;
+.overall_container{
+    padding: 1%;
+    padding-top: 7%;
+}
+
+.graph_container {
+    height: flex;
+    display: flex;
+}
+
+.text_container {
+    display: flex;
+}
+
+.textbox {
+    width: 20%;
+    font-size: 12px;
+    text-align: center;
+}
+
+.box1 {
+    background-color: #d5dafa;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+.box2 {
+    background-color: #B8C2F9;
+}
+.box3 {
+    background-color: #8c9bee;
+}
+.box4 {
+    background-color: #5A70F2;
+}
+.box5 {
+    background-color: #2B47EF;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.arrow_container {
+    height: flex;
+    display: flex;
+    border: none;
+}
+
+.arrow {
+    height: 15px;
+}
+
+.textbox2 {
+    font-size: 12px;
+    text-align: center;
+    top: 16px;
+}
+
+.arrowbox {
+    text-align: center;
+    width: 20%;
+    height: 50px;
+}
+.box {
+    text-align: center;
+    width: 20%;
+    height: 20px;
 }
