@@ -166,9 +166,9 @@ function Nokkeltall (props) {
 
         switch(miljo_under) {
             case "Dødelighet_bedrift": 
-                return `dødlighet i ${yearDod}`;
+                return `dødelighet i ${yearDod}`;
             case "Dødelighet_bransje": 
-                return `dødlighet i ${yearDod}`;
+                return `dødelighet i ${yearDod}`;
             case "Lakselus_bedrift": 
                 return `hunnlus per laks i ${yearLice}`;
             case "Lakselus_bransje": 

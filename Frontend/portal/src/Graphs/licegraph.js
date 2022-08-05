@@ -107,14 +107,7 @@ const LiceGraph = props => {
                     data: averagesData,
                     borderColor: "rgb(53, 162, 235)",
                     backgroundColor: "#11CD89",
-                }, 
-                {   
-                    type: "line",
-                    label: "Lusegrense", // replace w props name?
-                    data: licelimit,
-                    borderColor: "rgb(53, 162, 235)",
-                    backgroundColor: "#11CD89",
-                }
+                },
             ],
         })
 
