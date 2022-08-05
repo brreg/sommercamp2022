@@ -14,8 +14,10 @@
 
 .textbox {
     width: 20%;
-    font-size: 12px;
+    font-size: 16px;
     text-align: center;
+    align-self: flex-end;
+    
 }
 
 .box1 {
