@@ -9,9 +9,22 @@
     height: flex;
 }
 
+.miljo-frame {
+    height: 3000px;
+}
+
+.okonomi-frame {
+    height: 1500px;
+}
+
+.sosial-frame {
+    height: 1500px;
+}
+
 .row-frames {
     display: flex;
-    flex-flow: wrap;
+    flex-direction: column;
+    flex-wrap: wrap;
 }
 
 .column-frames {

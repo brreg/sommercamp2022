@@ -12,7 +12,7 @@ const Jentergraf = (props) => {
 
 
 <linearGradient id={`gradJente-${uuid}`}>
-<stop offset={`${props.offset2}%`}  stop-color={props.offset2 == 0 ? "lightgrey" : "pink"} />
+<stop offset={`${props.offset2}%`}  stop-color={props.offset2 == 0 ? "lightgrey" : "#2B47EE"} />
 <stop offset={`${100-props.offset2}%`} stop-color="lightgrey"/>
 </linearGradient>
 
