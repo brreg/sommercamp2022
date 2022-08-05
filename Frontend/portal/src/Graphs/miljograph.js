@@ -8,7 +8,6 @@ import {
     Title,
     Tooltip,
     Legend,
-    PointElement,
 } from 'chart.js'
 import {Bar} from "react-chartjs-2";
 
@@ -18,8 +17,7 @@ ChartJS.register(
     BarElement,
     Title,
     Tooltip,
-    Legend,
-    PointElement,
+    Legend
 );
 
 
@@ -28,7 +26,6 @@ const MiljoGraph = props => {
     const [averagesData,setAveragesData] = useState([])
     const [thisCompData, setThisCompData] = useState([])
     const [year, setYear] = useState([])
-    const[licelimit, setLicelimit] = useState([])
 
     const [chartData, setChartData] = useState({
         datasets: [],
@@ -40,7 +37,7 @@ const MiljoGraph = props => {
     const getData = async () =>{
         // 10.172.205.152:105
         // 127.0.0.1:5000
-        let url = `http://127.0.0.1:5000/averages/${props.apiurl_end}`
+        let url = `http://10.172.205.152:105/averages/${props.apiurl_end}`
         await axios.get(url) 
         .then( res => {
             let tempAveragesData = []
@@ -53,7 +50,7 @@ const MiljoGraph = props => {
             console.error(err)
         })
 
-        await  axios.get(`http://127.0.0.1:5000/orgs/${props.org_nr}/${props.apiurl_end}`) 
+        await  axios.get(`http://10.172.205.152:105/orgs/${props.org_nr}/${props.apiurl_end}`) 
         .then( res=> {
             let tempThisCompData = []
             let tempYear = []
@@ -67,60 +64,30 @@ const MiljoGraph = props => {
         .catch( err=> {
             console.error(err)
         })
-
-        if (props.apiurl_end == "licedata/"){
-            await  axios.get(`http://127.0.0.1:5000/orgs/${props.org_nr}/${props.lice}`) 
-            .then( res=> {
-                let tempLimit = []
-                for (const dataObj of res.data.data) {
-                    licelimit.push(parseFloat(dataObj.limit))
-                }
-                setLicelimit(tempLimit)
-            })
-            .catch( err=> {
-                console.error(err)
-            })
-        }
+        
     }
-
-
     useEffect(() => {
         getData();
     }, [])
 
-
     useEffect(() => {
-        let tempdatasets = [
-            {   
-                type: "bar",
-                label: "This company", // replace w prop name?
-                data: thisCompData,
-                borderColor: "rgb(53, 162, 235)",
-                backgroundColor: "#2B47EE",
-            },
-            {   
-                type: "bar",
-                label: "Industry Average", // replace w props name?
-                data: averagesData,
-                borderColor: "rgb(53, 162, 235)",
-                backgroundColor: "#11CD89",
-            }
-        ]
-        if (props.apiurl_end=="licedata/"){
-            tempdatasets.push(
-                {   
-                    type: "line",
-                    label: "Lice limit", // replace w props name?
-                    data: licelimit,
-                    borderColor: "rgb(53, 162, 235)",
-                    backgroundColor: "black",
-                }
-            )
-        }
+        
         setChartData({
             labels: year,
-            data: tempdatasets
-            
+            datasets: [
+                {
+                    label: `${props.bedrifter}`, // replace w prop name?
+                    data: thisCompData,
+                    borderColor: "rgb(53, 162, 235)",
+                    backgroundColor: "#2B47EE",
+                },
+                {
+                    label: "Gjennomsnitt i bransjen", // replace w props name?
+                    data: averagesData,
+                    borderColor: "rgb(53, 162, 235)",
+                    backgroundColor: "#11CD89",
+                }
+            ],
         })
 
         setChartOptions({
@@ -135,7 +102,7 @@ const MiljoGraph = props => {
                 }
             }
         })
-    }, [averagesData, thisCompData, year])
+    }, [averagesData, thisCompData, year, props.bedrifter])
 
 
     return (
@@ -147,3 +114,6 @@ const MiljoGraph = props => {
     )
 }
 export default MiljoGraph; 
+
+
+

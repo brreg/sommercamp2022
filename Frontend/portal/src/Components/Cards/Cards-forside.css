@@ -1,6 +1,6 @@
 .row_forside {
     margin-left: 15%;
-    padding-top: 15%;
+    padding-top: 13%;
     display: flex;
     flex-flow: wrap;
 }
@@ -10,19 +10,22 @@
 }
     
 .card_forside {
-    border: 1px solid #2B47EE;
+    border: 2px solid #2B47EE;
     padding: 16px;
     text-align: left;
     background-color: white;
     border-radius: 25px;
     width: 300px;
-    height: 220px;
+    height: 170px;
+    box-shadow: 0px 8px 16px 6px #00478514;
 }
 
 .overskrift_card_forside {
-    margin: 4%;
+    margin-top: 5%;
+    margin-left: 4%;
     font-size: 18px;
     float: left;
+    font-weight: bold;
 }
 
 .image-card {
@@ -39,6 +42,19 @@
 .p_card_forside {
     margin: 4%;
     float: left;
+    line-height: 180%;
+}
+
+@media only screen and (max-width:1600px) {
+    .row_forside {
+        padding-top: 4%;
+    }
+
+    .card_forside {
+        width: 210px;
+        height: 150px;
+    }
+    
 }
 
 

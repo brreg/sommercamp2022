@@ -1,16 +1,19 @@
-.kjonnsgraf {
-}
-
 .guttene {
     display: flex;
     flex-direction: row;
     padding: 1.5%;
 }
 
+.testgutter {
+    display: flex;
+    justify-content: center;
+}
+
 .jentene {
     display: flex;
     flex-direction: row;
     padding: 1.5%;
+    margin-left: -3.5%;
 }
 
 .jenteIkon {
@@ -21,4 +24,10 @@
 .guttIkon {
     margin: -6px;
     padding: 1.3%;
+
+}
+
+.svg {
+    display: block;
+    margin: auto;
 }

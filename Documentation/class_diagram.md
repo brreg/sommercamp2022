@@ -42,8 +42,23 @@ classDiagram
     class Database {
       + config()
 	  + connect()
+	  + config()
 	  + create_table()
-	  + insert_lice_data(lice_data)
+	  + update_db_averages()
+	  + insert_data(df, tablename)
+	  + get_locnrs()
+	  + insert_areal_data(filename)
+	  + insert_part_time_data(filename)
+	  + getasdata(filename)
+	  + add_producers()
+	  + insert_address_smb_locnr_csv(filename)
+	  + insert_lice_limit(filename)
+	  + get_valid_orgs(locnrs)
+	  + generate_co2_data(locnrs, year, dfas, dfdead)
+	  + generate_social_figures(years)
+	  + generate_deadliness_data(locnrs, filename, year)
+	  + generate_social_figures(years)
+	  
     }
 	    
 	class DatabaseINI {
