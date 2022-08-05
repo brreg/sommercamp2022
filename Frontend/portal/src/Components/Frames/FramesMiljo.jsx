@@ -48,8 +48,8 @@ function FramesMiljo() {
                         nøkkeltall_en={<Nokkeltall id={id} miljo_over="Dødelighet_bedrift" miljo_under="Dødelighet_bedrift" miljo_nokkeltall="Dødelighet_bedrift_tall"/>} 
                         nøkkeltall_to={<Nokkeltall miljo_over="Dødelighet_bransje" id={id} miljo_under="Dødelighet_bedrift" miljo_nokkeltall="Dødelighet_bransje_tall"/>} 
                         tekst={"Grafen viser prosentandelen av produsert laks som har dødd under produksjon fra 2017-2021"} 
-                        dropDown={"Dødlighet forklart"}
-                        show={"Dødlighet er andelen av selskapets produksjon som har dødd under oppdrettsprosessen. Tallet er samlet for alle selskapets lokasjoner."}
+                        dropDown={"Dødelighet forklart"}
+                        show={"Dødelighet er andelen av selskapets produksjon som har dødd under oppdrettsprosessen. Tallet er samlet for alle selskapets lokasjoner."}
                         kilde={"Kilde: Konstruerte tall basert på data fra Fiskeridirektoratet"}
                         graph={<MiljoGraph org_nr={id} apiurl_end="deadliness/" chart_title="Dødelighet" bedrifter={orgname} />} />
 
