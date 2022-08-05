@@ -12,7 +12,7 @@ const Guttergraf = (props) => {
 
 
       <linearGradient id={`gradGutt-${uuid}`}>
-      <stop offset={`${props.offset2}%`}  stop-color={props.offset2 == 0 ? "lightgrey" : "blue"} />
+      <stop offset={`${props.offset2}%`}  stop-color={props.offset2 == 0 ? "lightgrey" : "#11CD89"} />
       <stop offset={`${100-props.offset2}%`} stop-color="lightgrey"/>
       </linearGradient>
 

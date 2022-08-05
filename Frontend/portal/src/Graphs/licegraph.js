@@ -96,21 +96,21 @@ const LiceGraph = props => {
             datasets: [
                 {   
                     type: "bar",
-                    label: "This company", // replace w prop name?
+                    label: `${props.bedrifter}`, // replace w prop name?
                     data: thisCompData,
                     borderColor: "rgb(53, 162, 235)",
                     backgroundColor: "#2B47EE",
                 },
                 {   
                     type: "bar",
-                    label: "Industry Average", // replace w props name?
+                    label: "Bransjen", // replace w props name?
                     data: averagesData,
                     borderColor: "rgb(53, 162, 235)",
                     backgroundColor: "#11CD89",
                 }, 
                 {   
                     type: "line",
-                    label: "Lice limit", // replace w props name?
+                    label: "Lusegrense", // replace w props name?
                     data: licelimit,
                     borderColor: "rgb(53, 162, 235)",
                     backgroundColor: "#11CD89",
@@ -130,7 +130,7 @@ const LiceGraph = props => {
                 }
             }
         })
-    }, [averagesData, thisCompData, year])
+    }, [averagesData, thisCompData, year, props.bedrifter])
 
 
     return (

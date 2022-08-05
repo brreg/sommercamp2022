@@ -29,7 +29,7 @@ const Header = (props) => {
         axios.get(`http://10.172.205.152:105/orgs/${props.id}/address`)
         .then( res=> {
             setOrgAddress(res.data.data[0].address)
-            setOrgCity(res.data.data[0].city.toLowerCase().charAt(0).toUpperCase() + res.data.data[0].city.toLowerCase().slice(1))
+            setOrgCity(res.data.data[0].city)
         })
         .catch( err=> {
             console.log(err)

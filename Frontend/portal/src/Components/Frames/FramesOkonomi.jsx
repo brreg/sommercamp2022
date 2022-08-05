@@ -26,7 +26,7 @@ function FramesOkonomi() {
 
         return (
             <div className="container-frames">
-            <div className="row-frames">
+            <div className="row-frames okonomi-frame">
                 <div className="column-frames">
                     <Frame overskrift= "Soliditet" 
                             tekst={`Dette diagrammet viser ${orgname} økonomiske soliditet for 2021`} 

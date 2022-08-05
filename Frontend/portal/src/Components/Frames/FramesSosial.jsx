@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
 import Frame from './Frame';
 import NokkeltallAreal from '../Nokkeltall/NokkeltallAreal';
@@ -9,9 +9,28 @@ import Nokkeltall from '../Nokkeltall/Nokkeltall';
 function FramesSosial() {
     const {id} = useParams();
 
+
+    const [orgname, setOrgname] = useState("")
+    const axios = require('axios')
+    
+    useEffect(() => {
+        getOrg()
+    }, []);
+
+    const getOrg = async() => {
+        await axios.get(`http://10.172.205.152:105/orgs/${id}`)
+        .then( res=> {
+            console.log("TEST2", res.data.data[0].org_name)
+            setOrgname(res.data.data[0].org_name)
+        })
+        .catch( err=> {
+            console.log(err)
+        })
+    }
+
         return (
             <div className="container-frames">
-            <div className="row-frames">
+            <div className="row-frames sosial-frame">
                 <div className="column-frames">
                     <Frame overskrift= "Kjønnsfordeling" 
                             nøkkeltall_en={<Nokkeltall id={id} miljo_over="Kjønn_bedrift" miljo_under="Kjønn_bedrift" miljo_nokkeltall="Kjønn_bedrift_tall"/>} 
@@ -38,7 +57,7 @@ function FramesSosial() {
                             dropDown={"Ufrivillig deltidsprosent forklart"}
                             show={"Den ufrivillige deltidsprosenten viser hvor stor del andel av ansatte i selskapet som ønsker, og er tilgjengelige for å jobbe mer."}
                             kilde={"Konstruert tall basert på https://www.ssb.no/statbank/table/09368/"}
-                            graph={<MiljoGraph org_nr={id} apiurl_end="ufrivilligdeltid/" chart_title="Ufrivillig Deltid"/>} 
+                            graph={<MiljoGraph org_nr={id} apiurl_end="ufrivilligdeltid/" chart_title="Ufrivillig Deltid" bedrifter={orgname}/>} 
                             />
                 </div>
             </div>
