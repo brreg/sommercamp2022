@@ -23,12 +23,14 @@ function Nokkeltall (props) {
     }, []);
 
     const [nokkeltallDod, setNokkeltallDod] = useState("")
+    const [yearDod, setYearDod] = useState("")
 
     useEffect(() => {
         
         axios.get(`http://10.172.205.152:105/orgs/${props.id}/deadliness`)
         .then( res=> {
             setNokkeltallDod(res.data.data[4].thiscomp)
+            setYearDod(res.data.data[4].year)
         })
         .catch( err=> {
             console.log(err)
@@ -37,12 +39,14 @@ function Nokkeltall (props) {
     }, []);
 
     const [nokkeltallLice, setNokkeltallLice] = useState("")
+    const [yearLice, setYearLice] = useState("")
 
     useEffect(() => {
         
         axios.get(`http://10.172.205.152:105/orgs/${props.id}/licedata/`)
         .then( res=> {
-            setNokkeltallLice(res.data.data[4].thiscomp)
+            setNokkeltallLice(res.data.data[1].thiscomp)
+            setYearLice(res.data.data[1].year)
         })
         .catch( err=> {
             console.log(err)
@@ -54,7 +58,8 @@ function Nokkeltall (props) {
     const [nokkeltallEscapeYear, setNokkeltallEscapesYear] = useState("")
 
     useEffect(() => {
-        
+        //127.0.0.1:5000
+        //10.172.205.152:105
         axios.get(`http://10.172.205.152:105/orgs/${props.id}/escapes/`)
         .then( res=> {
             setNokkeltallEscapes(res.data.data[0].thiscomp)
@@ -86,7 +91,7 @@ function Nokkeltall (props) {
         
         axios.get(`http://10.172.205.152:105/averages/licedata`)
         .then( res=> {
-            setAverageLice(res.data.data[4].average_all)
+            setAverageLice(res.data.data[1].average_all)
         })
         .catch( err=> {
             console.log(err)
@@ -110,6 +115,26 @@ function Nokkeltall (props) {
       
     }, []);
 
+    const [tallJenter, setTallJenter] = useState("")
+    const [tallGutter, setTallGutter] = useState("")
+    const [avgJenter, setAvgJenter] = useState("")
+    const [avgGutter, setAvgGutter] = useState("")
+
+    useEffect(() => {
+        
+        axios.get(`http://10.172.205.152:105/nokkeltall/${props.id}/kjonn`)
+        .then( res=> {
+            setTallJenter(res.data.data[0].female_percent)
+            setTallGutter(res.data.data[1].male_percent)            
+            setAvgJenter(res.data.data[2].female_percent_avg)
+            setAvgGutter(res.data.data[3].male_percent_avg)
+        })
+        .catch( err=> {
+            console.log(err)
+        })
+      
+    }, []);
+
     const transform_miljo_over = (miljo_over) => {
 
         switch(miljo_over) {
@@ -120,11 +145,15 @@ function Nokkeltall (props) {
             case "Lakselus_bedrift": 
                 return `${orgname} hadde gjennomsnittlig`;
             case "Lakselus_bransje": 
-                return "Bransjen hadde totalt";
+                return "Bransjen hadde gjennomsnittlig";
             case "Rømninger_bedrift": 
                 return `${orgname} hadde`;
             case "Rømninger_bransje": 
-                return "Bransjen hadde totalt";
+                return "Bransjen hadde gjennomsnittlig";
+            case "Kjønn_bedrift": 
+                return `${orgname} hadde `;
+            case "Kjønn_bransje": 
+                return "Bransjen hadde gjennomsnittlig";
             default:
                 return "kunne ikke finne";
             }
@@ -137,17 +166,21 @@ function Nokkeltall (props) {
 
         switch(miljo_under) {
             case "Dødelighet_bedrift": 
-                return "dødlighet i 2021";
+                return `dødelighet i ${yearDod}`;
             case "Dødelighet_bransje": 
-                return "dødlighet i 2021";
+                return `dødelighet i ${yearDod}`;
             case "Lakselus_bedrift": 
-                return "lakselus i 2021";
+                return `hunnlus per laks i ${yearLice}`;
             case "Lakselus_bransje": 
-                return "lakselus 2021";
+                return `hunnlus per laks i ${yearLice}`;
             case "Rømninger_bedrift": 
                 return `rømninger i ${nokkeltallEscapeYear}`;
             case "Rømninger_bransje": 
                 return `rømninger i ${averageEscapesYear}`;
+            case "Kjønn_bedrift": 
+                return "i 2021";
+            case "Kjønn_bransje": 
+                return "i 2021";
             default:
                 return "kunne ikke finne";
             }
@@ -170,6 +203,10 @@ function Nokkeltall (props) {
                 return `${nokkeltallEscapes}`;
             case "Rømninger_bransje_tall": 
                 return `${averageEscapes}`;
+            case "Kjønn_bedrift_tall": 
+                return `${tallJenter}% kvinner    ${tallGutter}% menn`;
+            case "Kjønn_bransje_tall": 
+                return `${avgJenter}% kvinner    ${avgGutter}% menn`;
             default:
                 return "xxx";
             }

@@ -1,57 +1,85 @@
-import React from 'react';
-import { IgrLinearGauge, IgrLinearGaugeModule, IgrLinearGraphRange } from 'igniteui-react-gauges';
+import React, {useEffect, useState} from 'react';
+import PilOpp from '../../Components/Frames/images/PilOpp.png'
+
 import "./okonomi.css"
 
-IgrLinearGaugeModule.register();
 
-const Soliditet = () => {
+
+const Soliditet = (props) => {
+
+    const axios = require('axios')
+
+    const [arrowLoc, setArrowLoc] = useState(0)
+
+    const [globalSoliditet, setGlobalSoliditet] = useState(0)
+
+    useEffect(() => {
+        getSoliditetsData()
+    }, []);
+
+    const getSoliditetsData = async () => {
+        await axios.get(`http://10.172.205.152:105/accounts/${props.id}/`)
+        .then( res=> {
+            console.log(res.data.data[4].solidity)
+            setGlobalSoliditet(res.data.data[4].solidity)
+            setArrowLocation(res.data.data[4].solidity)
+        })
+        .catch( err=> {
+            console.log(err)
+        })
+        
+    } 
+
+    const setArrowLocation = (soliditet) => {
+    if (soliditet <= 3) {
+        setArrowLoc(0)
+    }
+    else if (soliditet <= 9) {
+        setArrowLoc(1)
+    }
+    else if (soliditet <= 17) {
+        setArrowLoc(2)
+    }
+    else if (soliditet <= 40) {
+        setArrowLoc(3)
+    }
+    else if (soliditet >= 40) {
+        setArrowLoc(4)
+    }
+    }
+
+
 
     return (
-            <IgrLinearGauge className="graph"
-                height="80px"
-                width="100%"
-                minimumValue={0}
-                maximumValue={50}
-                interval={10}
-                value={50} // Her legges det inn fra databasen altså verdien til KPIen
-                needleShape="needle"
-                needleBrush="#01DD8D"
-              
-                ticksPreTerminal={0}
-                ticksPostInitial={0}
-                tickStrokeThickness={0}
-                tickStartExtent={0.0}
-                tickEndExtent={0.0}s
-                minorTickEndExtent={0}
-                minorTickStartExtent={0}   
+        <div className="overall_container">
+            <div className="text_container">
+                <div className="textbox ikke_tilfreds"> Ikke tilfredsstillende </div>
+                <div className="textbox"> Svak </div>
+                <div className="textbox"> Tilfredsstillende </div>
+                <div className="textbox"> God </div>
+                <div className="textbox"> Svært god </div>
+            </div>
 
-                backingBrush="#ffffff"
+            <div className="graph_container">
+                <div className="box box1"> </div>
+                <div className="box box2"> </div>
+                <div className="box box3"> </div>
+                <div className="box box4"> </div>
+                <div className="box box5"> </div>
+            </div>
 
-                labelInterval={0}
+            <div className="arrow_container">
+            {[...Array(5)].map((x, i) => {
+            if (arrowLoc === i){
+                return  <div key={i} className="arrowbox">  <img className="arrow" src={require('../../Components/Frames/images/PilOpp.png')}/> <div className="textbox2"> {globalSoliditet}% </div> </div>
+            }
+            else {
+                return <div key={i} className="arrowbox">  </div>
+            }
+            })}
+            </div>
 
-                 rangeBrushes="#1A36D9, #649eff, #78aaff, #92bbff, #accbff">
-
-                 <IgrLinearGraphRange name="range1"
-                    startValue={0} endValue={10}
-                    innerStartExtent={0.5} innerEndExtent={0.5}
-                    outerStartExtent={0.25} outerEndExtent={0.25} />
-                <IgrLinearGraphRange name="range2"
-                    startValue={10} endValue={20}
-                    innerStartExtent={0.5} innerEndExtent={0.5}
-                    outerStartExtent={0.25} outerEndExtent={0.25} />
-                <IgrLinearGraphRange name="range3"
-                    startValue={20} endValue={30}
-                    innerStartExtent={0.5} innerEndExtent={0.5}
-                    outerStartExtent={0.25} outerEndExtent={0.25} />
-                <IgrLinearGraphRange name="range4"
-                    startValue={30} endValue={40}
-                    innerStartExtent={0.5} innerEndExtent={0.5}
-                    outerStartExtent={0.25} outerEndExtent={0.25} />
-                <IgrLinearGraphRange name="range5"
-                    startValue={40} endValue={50}
-                    innerStartExtent={0.5} innerEndExtent={0.5}
-                    outerStartExtent={0.25} outerEndExtent={0.25} />
-                </IgrLinearGauge>
+        </div>
     );
 
 }

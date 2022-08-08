@@ -28,6 +28,10 @@ def fill_db():
     db.connect()
     db.config()
     #db.create_tables()
+=======
+    """
+    db.create_tables()
+
     time.sleep(3)
     
     #Fill licedata:
@@ -102,8 +106,14 @@ def fill_db():
     #Generate and insert part time data
     db.insert_part_time_data('part_time_percentages.csv')
     time.sleep(1)
+
     '''
     #db.update_db_averages()
+
+
+    
+    db.update_db_averages()
+    """
 
 fill_db()
 

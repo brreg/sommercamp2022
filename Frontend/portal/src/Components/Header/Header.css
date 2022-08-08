@@ -10,6 +10,7 @@
 }
 
 .overskrift-generell-bedrifter {
+    margin-top: 0.5%;
     font-size: 32px;
     width: flex;
     font-weight: 700;
@@ -25,7 +26,7 @@
 }
 
 .info-title {
-    text-decoration: underline;
     width: 100%;
+    font-weight: 700;
 }
 

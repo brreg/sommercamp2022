@@ -1,43 +1,81 @@
 .row_forside {
-    margin: 0 10%;
-    padding-top: 10%;
-    display: flex;
-    flex-flow: wrap;
+  margin-left: 15%;
+  padding-top: 10%;
+  display: flex;
+  flex-flow: wrap;
 }
 
 .column_forside {
-    width: 28%;
+  width: 28%;
 }
-    
+
 .card_forside {
-    border: 1px solid #004785;
-    padding: 16px;
-    text-align: left;
-    background-color: white;
-    border-radius: 25px;
-    width: 300px;
-    height: 220px;
+  border: 2px solid #2b47ee;
+  padding: 16px;
+  text-align: left;
+  background-color: white;
+  border-radius: 25px;
+  width: 300px;
+  height: 170px;
+  box-shadow: 0px 8px 16px 6px #00478514;
 }
 
 .overskrift_card_forside {
-    margin: 4%;
-    font-size: 18px;
-    float: left;
+  margin-top: 5%;
+  margin-left: 4%;
+  font-size: 18px;
+  float: left;
+  font-weight: bold;
 }
 
 .image-card {
-    margin: 4%;
-    width: 22px;
-    float: right;
+  margin: 4%;
+  width: 22px;
+  float: right;
 }
-  
-.image-card:hover{
-    text-decoration: none;
-    background-color: #fff;
+
+.image-card:hover {
+  text-decoration: none;
+  background-color: #fff;
 }
 
 .p_card_forside {
-    margin: 4%;
-    float: left;
+  margin: 4%;
+  float: left;
+  line-height: 180%;
 }
-  
+
+@media only screen and (min-width: 1920px) {
+  .row_forside {
+    padding-top: 4%;
+  }
+}
+
+@media only screen and (max-width: 1600px) {
+  .row_forside {
+    padding-top: 5.5%;
+  }
+
+  .card_forside {
+    width: 220px;
+    height: 160px;
+  }
+
+  .p_card_forside {
+    line-height: 150%;
+    margin-top: -3%;
+  }
+}
+
+@media only screen and (max-width: 1100px) {
+  .row_forside {
+    float: none;
+    display: block;
+    margin-left: 40%;
+    padding-top: 4%;
+  }
+
+  .column_forside {
+    padding-bottom: 5%;
+  }
+}
