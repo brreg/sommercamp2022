@@ -17,10 +17,8 @@ from regn import RegnskapsAPI
 #filename = 'smb.csv'
 
 def fill_db():
-    
-    locnrs = [45032, 45017, 29276, 20776, 18015, 20595, 25835, 29336, 11611, 32877, 24735, 28976, 11651, 
-    13563, 26595, 13641, 13653, 11758, 11687, 11690, 11649, 13209, 13823, 12131]
-    years = [2017,2018,2019,2020,2021]
+
+    years = [2021]
     
     #Export passwords for both API's
     #Files: 'as.csv', 'smb.csv', 'arealbruk3.csv', 'lice_limit.csv', 'part_time_percentages.csv'
@@ -29,18 +27,29 @@ def fill_db():
     db = Database()
     db.connect()
     db.config()
-    db.create_tables()
+    #db.create_tables()
     time.sleep(3)
-    
-    #Fill basic data about locations, addresses and orgs
-    db.insert_address_smb_locnr_csv('smb.csv')
     
     #Fill licedata:
     bapi = API()
+    locs = bapi.get_locnrs()
+    locnrs = db.get_valid_orgs(locs)
+    locnrs = list(dict.fromkeys(locnrs))
+    print(len(locnrs))
     licedata_container = bapi.get_many_lice_data(locnrs, years)
     df = licedata_container.getDataFrame()
     db.insert_data(df, 'salmonoid_lice')
     time.sleep(1)
+    
+    #Insert lice limit
+    #db.insert_lice_limit('lice_limit.csv')
+    #time.sleep(1)
+    
+    '''
+    #Fill basic data about locations, addresses and orgs
+    db.insert_address_smb_locnr_csv('smb.csv')
+    
+
     
     #Insert lice limit
     db.insert_lice_limit('lice_limit.csv')
@@ -93,8 +102,8 @@ def fill_db():
     #Generate and insert part time data
     db.insert_part_time_data('part_time_percentages.csv')
     time.sleep(1)
-    
-    db.update_db_averages()
+    '''
+    #db.update_db_averages()
 
 fill_db()
 

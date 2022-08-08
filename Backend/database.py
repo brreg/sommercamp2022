@@ -573,8 +573,37 @@ class Database:
         addresses = []
         smbs = []
         locs = []
+        
+        #
+        dfas = pd.read_csv(filename, sep = ';')
+        dfas['LOK_KAP'] = dfas['LOK_KAP'].str.replace(',','.')
+        locnrs = dfas['LOK_NR'].values.tolist()
 
-        for tup in df.itertuples():
+        locnrmedas = []
+        for i in locnrs:
+            if len(dfas.loc[dfas['LOK_NR'] == i]) == 1:
+                locnrmedas.append(i)
+
+        
+        
+        for i in locnrmedas:
+            enhet = dfas.loc[dfas['LOK_NR'] == i]['LOK_ENHET'].values[0]        
+            if enhet == 'STK':
+                konvertert = int(int(dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0])*5)/1000
+                dfas['LOK_KAP'][dfas.loc[dfas['LOK_NR']==i].index[0]] = konvertert
+                dfas['LOK_ENHET'][dfas.loc[dfas['LOK_NR']==i].index[0]] = 'TN'
+            elif enhet == 'KG':
+                konvertert = int(int(dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0])/1000)
+                dfas['LOK_KAP'][dfas.loc[dfas['LOK_NR']==i].index[0]] = konvertert
+                dfas['LOK_ENHET'][dfas.loc[dfas['LOK_NR']==i].index[0]] = 'TN'
+            elif enhet == 'M3':
+                konvertert = int(int(dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0])*0.005)
+                dfas['LOK_KAP'][dfas.loc[dfas['LOK_NR']==i].index[0]] = konvertert
+                dfas['LOK_ENHET'][dfas.loc[dfas['LOK_NR']==i].index[0]] = 'TN'       
+        
+        #
+
+        for tup in dfas.itertuples():
             if (math.isnan(tup[4])):
                 postcode = 0000
             else: 
@@ -583,9 +612,10 @@ class Database:
             addresses.append(address_record)
             smb_record = (int(tup[1]), str(tup[2]), str(tup[3]))
             smbs.append(smb_record)
-            loc_record = (int(tup[6]), int(tup[1]), str(tup[7]), float(tup[10]))
+            loc_record = (int(tup[1]), str(tup[7]), float(tup[10]), int(tup[6]))
             locs.append(loc_record)
-
+        
+        
         try:
             self.conn = psycopg2.connect(
             host="localhost",
@@ -594,7 +624,7 @@ class Database:
             password=os.environ["database_password"])
 
             cur = self.conn.cursor()
-
+            '''
             ### execute many insertion commands for address, smb and loc
             stmt_address = """INSERT INTO address (org_address, org_zipcode, org_city) VALUES(%s, %s, %s) ON CONFLICT (org_address, org_zipcode, org_city) DO NOTHING;"""
             cur.executemany(stmt_address, addresses)
@@ -604,9 +634,11 @@ class Database:
             stmt_smb = """INSERT INTO smb (org_nr, org_name, org_address_id) VALUES(%s, %s, (SELECT ID from address WHERE org_address=%s LIMIT 1)) ON CONFLICT (org_nr) DO NOTHING;"""
             #print(stmt_smb)
             cur.executemany(stmt_smb, smbs)
-
-
+            
             stmt_loc = """INSERT INTO location (loc_nr, org_nr, loc_name, loc_capacity) VALUES(%s, %s, %s, %s) ON CONFLICT (loc_nr) DO NOTHING;"""
+            cur.executemany(stmt_loc, locs)
+            '''
+            stmt_loc = """UPDATE location SET org_nr = %s, loc_name = %s, loc_capacity = %s WHERE loc_nr = %s;"""
             cur.executemany(stmt_loc, locs)
 
             self.conn.commit()
@@ -618,7 +650,7 @@ class Database:
         finally: 
             if self.conn is not None:
                 self.conn.close()
-    
+        
     #Updates lice-table to include licelimit
     def insert_lice_limit(self, filename):
         
@@ -793,6 +825,8 @@ class Database:
             deadlighet.append(int(float(dfas.loc[dfas['LOK_NR'] == i]['LOK_KAP'].values[0])*random.uniform(12.5, 17.5)/100))
             
         dictdead = {'LOK_NR':locnrmedas,'Deadlighet':deadlighet, 'Year': year}#, 'Enhet': 'TN'}
+
+        
         dfdead = pd.DataFrame(dictdead)
         return dfdead
     
@@ -817,3 +851,8 @@ class Database:
         print(dfsocial)
         return dfsocial
 
+
+db2 = Database()
+db2.connect()
+db2.config()
+db2.insert_address_smb_locnr_csv('smb.csv')
