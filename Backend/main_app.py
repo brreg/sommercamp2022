@@ -28,7 +28,7 @@ def fill_db():
     db.connect()
     db.config()
     #db.create_tables()
-=======
+
     """
     db.create_tables()
 
