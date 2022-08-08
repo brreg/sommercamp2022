@@ -93,13 +93,9 @@ function NokkeltallFly (props) {
             case "Fôrproduksjon_bransje": 
                 return `Bransjen slapp ut gjennomsnittlig`;
             case "CO2_bedrift": 
-                return `${orgname} hadde totalt`;
+                return `${orgname} slapp ut`;
             case "CO2_bransje": 
                 return `Bransjen slapp ut gjennomsnittlig`;
-            case "Arealbruk_bedrift": 
-                return `${orgname} brukte totalt`;
-            case "Arealbruk_bransje": 
-                return `Bransjen brukte totalt`;
             default:
                 return "kunne ikke finne";
             }
@@ -111,17 +107,13 @@ function NokkeltallFly (props) {
 
         switch(fly_under) {
             case "Fôrproduksjon_bedrift": 
-                return "tonn CO2-ekvivalenter i 2021";
+                return "CO2-ekvivalenter per produserte tonn fisk i 2021";
             case "Fôrproduksjon_bransje": 
-                return `tonn CO2-ekvivalenter i ${yearFeed}`;
+                return `CO2-ekvivalenter per produserte tonn fisk i ${yearFeed}`;
             case "CO2_bedrift": 
-                return "tonn CO2-ekvivalenter i 2021";
+                return "CO2-ekvivalenter per produserte tonn fisk i 2021";
             case "CO2_bransje": 
-                return `tonn CO2-ekvivalenter i ${yearProd}`;
-            case "Arealbruk_bedrift": 
-                return "areal i 2022";
-            case "Arealbruk_bransje": 
-                return "areal i 2022";
+                return `CO2-ekvivalenter per produserte tonnn fisk i ${yearProd}`;
             default:
                 return "kunne ikke finne";
             }
@@ -153,13 +145,13 @@ function NokkeltallFly (props) {
 
         switch(co2_number) {
             case "Fôr_bedrift_co2":
-                return `${orgFeed}`;
+                return `${orgFeed} tonn`;
             case "Prod_bedrift_co2":
-                    return `${orgProd}`;
+                    return `${orgProd} tonn`;
             case "Fôr_bransje_co2":
-                return `${avgFeed}`;
+                return `${avgFeed} tonn`;
             case "Prod_bransje_co2":
-                    return `${avgProd}`;
+                    return `${avgProd} tonn`;
             default:
                 return "xxx";
         }
@@ -174,7 +166,7 @@ function NokkeltallFly (props) {
             <div className="strek"/>
             <div className="under_strek">
             <div><img className="fly_bilde" src={require('./Fly.png')}></img></div>
-            <div className="fly_tekst">Tilsvarer {transformed_numbers} flyreiser fra Oslo til New York </div>
+            <div className="fly_tekst">Tilsvarer {transformed_numbers} flyreiser fra Oslo til Bergen </div>
             </div> 
         </div>
     )

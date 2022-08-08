@@ -90,9 +90,9 @@ function NokkeltallFly (props) {
 
         switch(areal_under) {
             case "Arealbruk_bedrift": 
-                return "areal i 2022";
+                return "areal per produserte tonn fisk i 2022";
             case "Arealbruk_bransje": 
-                return "areal i 2022";
+                return "areal per produserte tonn fisk i 2022";
             default:
                 return "kunne ikke finne";
             }
@@ -105,11 +105,6 @@ function NokkeltallFly (props) {
             <div className="overtekst-nøkkeltallAreal"> {transformed_areal_over} </div>
             <div className="tall-overskriftAreal"> {transformed_areal_tall} m<sup>2</sup></div>
             <div className="undertekst-nøkkeltallAreal"> {transformed_areal_under} </div>
-            <div className="strek"/>
-            <div className="under_strek">
-            <div> <img className="areal_bilde" src={require('./Fotball.png')}/> </div>
-            <div className="areal_tekst"> Tilsvarer {transformed_areal_ball} fotballbaner </div>
-            </div> 
         </div>
     )
 }

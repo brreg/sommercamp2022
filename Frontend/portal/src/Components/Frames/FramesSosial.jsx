@@ -53,6 +53,8 @@ function FramesSosial() {
                 </div>
                 <div className="column-frames">
                     <Frame overskrift="Ufrivillig deltidsprosent" 
+                            nøkkeltall_en={<Nokkeltall id={id} miljo_over="Deltid_bedrift" miljo_under="Deltid_bedrift" miljo_nokkeltall="Deltid_bedrift_tall"/>} 
+                            nøkkeltall_to={<Nokkeltall miljo_over="Deltid_bransje" id={id} miljo_under="Deltid_bedrift" miljo_nokkeltall="Deltid_bransje_tall"/>} 
                             tekst={"Grafen viser antall arbeidere i ufrivillig deltid målt i prosent."}
                             dropDown={"Ufrivillig deltidsprosent forklart"}
                             show={"Den ufrivillige deltidsprosenten viser hvor stor del andel av ansatte i selskapet som ønsker, og er tilgjengelige for å jobbe mer."}

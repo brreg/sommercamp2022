@@ -99,6 +99,35 @@ function Nokkeltall (props) {
       
     }, []);
 
+    const [orgPartTime, setOrgPartTime] = useState("")
+
+    useEffect(() => {
+        
+        axios.get(`http://10.172.205.152:105/orgs/${props.id}/ufrivilligdeltid`)
+        .then( res=> {
+            setOrgPartTime(res.data.data[4].thiscomp)
+        })
+        .catch( err=> {
+            console.log(err)
+        })
+      
+    }, []);
+
+    const [avgPartTime, setAvgPartTime] = useState("")
+
+    useEffect(() => {
+        
+        axios.get(`http://10.172.205.152:105/averages/ufrivilligdeltid`)
+        .then( res=> {
+            console.log("PARTTIME", res.data)
+            setAvgPartTime(res.data.data[4].average_all)
+        })
+        .catch( err=> {
+            console.log(err)
+        })
+      
+    }, []);
+
     const [averageEscapes, setAverageEscapes] = useState("")
     const [averageEscapesYear, setAverageEscapesYear] = useState("")
 
@@ -154,6 +183,10 @@ function Nokkeltall (props) {
                 return `${orgname} hadde `;
             case "Kjønn_bransje": 
                 return "Bransjen hadde gjennomsnittlig";
+            case "Deltid_bedrift": 
+                return `${orgname} hadde `;
+            case "Deltid_bransje": 
+                return "Bransjen hadde gjennomsnittlig";
             default:
                 return "kunne ikke finne";
             }
@@ -181,6 +214,10 @@ function Nokkeltall (props) {
                 return "i 2021";
             case "Kjønn_bransje": 
                 return "i 2021";
+            case "Deltid_bedrift": 
+                return "ufrivillig deltid i 2021";
+            case "Deltid_bransje": 
+                return "ufrivillig deltid i 2021";
             default:
                 return "kunne ikke finne";
             }
@@ -203,6 +240,10 @@ function Nokkeltall (props) {
                 return `${nokkeltallEscapes}`;
             case "Rømninger_bransje_tall": 
                 return `${averageEscapes}`;
+            case "Deltid_bedrift_tall": 
+                return `${orgPartTime}%`;
+            case "Deltid_bransje_tall": 
+                return `${avgPartTime}%`;
             case "Kjønn_bedrift_tall": 
                 return `${tallJenter}% kvinner    ${tallGutter}% menn`;
             case "Kjønn_bransje_tall": 
