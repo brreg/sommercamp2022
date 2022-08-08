@@ -32,10 +32,10 @@ function NokkeltallFly (props) {
         axios.get(`http://10.172.205.152:105/orgs/${props.id}/areal/`)
         .then( res=> {
             console.log(res.data)
-            seOrgAreal(res.data.data[0].this_org_areal)
-            setAvgAreal(res.data.data[2].all_org_areal)
+            seOrgAreal(res.data.data[2].this_org_areal_string)
+            setAvgAreal(res.data.data[5].all_org_areal_string)
             setOrgFootball(res.data.data[1].this_org_areal_football)
-            setAvgFootball(res.data.data[3].all_org_areal_football)
+            setAvgFootball(res.data.data[4].all_org_areal_football)
 
         })
         .catch( err=> {

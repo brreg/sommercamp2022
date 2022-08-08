@@ -35,8 +35,8 @@ function NokkeltallFly (props) {
             console.log(res.data.data[0].flights_feed)
             setOrgFlightsFeed(res.data.data[0].flights_feed)
             setOrgFlightsProd(res.data.data[0].flights_production)
-            setOrgFeed(res.data.data[0].feed_co2)
-            setOrgProd(res.data.data[0].prod_co2)
+            setOrgFeed(res.data.data[0].feed_co2_string)
+            setOrgProd(res.data.data[0].prod_co2_string)
             setYearCO2(res.data.data[0].year)
         })
         .catch( err=> {
@@ -55,7 +55,7 @@ function NokkeltallFly (props) {
         .then( res=> {
             console.log(res.data.data[2].flights_feed)
             setAvgFlightsFeed(res.data.data[2].average_all_feed_flights)
-            setAvgFeed(res.data.data[2].average_all)
+            setAvgFeed(res.data.data[2].average_all_string)
             setYearFeed(res.data.data[2].year)
 
         })
@@ -73,10 +73,10 @@ function NokkeltallFly (props) {
         
         axios.get(`http://10.172.205.152:105/averages/co2production/`)
         .then( res=> {
-            console.log(res.data.data[2].flights_production)
-            setAvgFlightsProd(res.data.data[2].average_all_production_flights)
-            setAvgProd(res.data.data[2].average_all)
-            setYearProd(res.data.data[2].year)
+            console.log(res.data.data[4].flights_production)
+            setAvgFlightsProd(res.data.data[4].average_all_production_flights)
+            setAvgProd(res.data.data[4].average_all_string)
+            setYearProd(res.data.data[4].year)
 
         })
         .catch( err=> {
@@ -153,9 +153,9 @@ function NokkeltallFly (props) {
 
         switch(co2_number) {
             case "Fôr_bedrift_co2":
-                return `${orgProd}`;
+                return `${orgFeed}`;
             case "Prod_bedrift_co2":
-                    return `${orgFeed}`;
+                    return `${orgProd}`;
             case "Fôr_bransje_co2":
                 return `${avgFeed}`;
             case "Prod_bransje_co2":
