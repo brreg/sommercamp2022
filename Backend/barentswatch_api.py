@@ -79,8 +79,8 @@ class API:
     # returns a licedata container with many licedata objects inside
     def get_many_lice_data(self, locnrs, years):
         licedata_container = ldc.LicedataContainer() # container to store all lice data
-        for year in years: 
-            for locnr in locnrs: 
+        for year in years:
+            for locnr in locnrs:
 
                 licedata = self.get_lice_data(locnr, year)
                 licedata.pop("type")

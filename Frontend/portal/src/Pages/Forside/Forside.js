@@ -18,7 +18,7 @@ function Forside() {
           bransjens gjennomsnitt. Bevissthet og handling er veien til
           bærekraftig utvikling.
         </p>
-        <SearchBar placeholder="Søk etter organisasjon..." />
+        <SearchBar placeholder="Søk etter virksomhet..." />
       </div>
       <div>
         <CardForside />

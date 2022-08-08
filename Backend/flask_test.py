@@ -63,6 +63,34 @@ session = Session(engine)
 def bad_request(orgnr):
     return orgnr.isdigit() == False
         
+def org_name_format(orgname):
+    tolist = str(orgname).split()
+    res = ''
+    for i in tolist:
+        if i == 'ASA' or i == 'AS':
+            res += i
+        else:
+            res += i.capitalize() + ' '
+    return res
+
+def number_format(number):
+    res = ''
+    stn = str(number)
+    if len(stn) == 5:
+        res += (stn[0:2] + ' ' + stn[2:5])
+        return (res)
+    elif len(stn) == 4:
+        res += (stn[0] + ' ' + stn[1:4])
+        return (res)
+    elif len(stn) == 6:
+        res += (stn[0:3] + ' ' + stn[3:6])
+        return (res)
+    elif len(stn) == 7:
+        res += (stn[0] + ' ' + stn[1:4] + ' ' + stn[4:7])
+        return res
+    else:
+        return number
+    
 #Endpoint to get all accounts in database
 @app.route('/accounts/')
 def get_all_bedrifter():
@@ -83,12 +111,11 @@ def get_all_orgdata():
 @app.route('/orgs/<orgnr>/')
 def get_one_orgdata(orgnr):
 
-    
     if orgnr.isdigit() == False:
         return 'Bad request'
     else:
         res = ({'data':[{
-            'org_nr':org.org_nr, 'org_name': org.org_name, 'org_address_id':org.org_address_id} for org in session.query(Smb).filter(Smb.org_nr==int(orgnr))
+            'org_nr':org.org_nr, 'org_name': org_name_format(org.org_name), 'org_address_id':org_name_format(org.org_address_id)} for org in session.query(Smb).filter(Smb.org_nr==int(orgnr))
         ]})
         return res
 
@@ -116,7 +143,7 @@ def get_address_for_orgnr(orgnr):
         ret_list = []
         for tup in result:
 
-            ret_list.append({'org_nr': tup[0], 'address': tup[1], 'city':tup[2]})
+            ret_list.append({'org_nr': tup[0], 'address': org_name_format(tup[1]), 'city':org_name_format(tup[2])})
 
         return jsonify({'data': ret_list})
 
@@ -162,6 +189,7 @@ def get__co2emissions_feed(orgnr):
     result=session.query(
         Co2Emissions.year,
         func.sum(Co2Emissions.co2e_feed),
+        func.sum(Location.loc_capacity)
     ).select_from(
         Co2Emissions
     ).join(
@@ -170,10 +198,12 @@ def get__co2emissions_feed(orgnr):
         Location.org_nr==orgnr
     ).group_by(
         Co2Emissions.year
+    ).order_by(
+        Co2Emissions.year
     ).all()
     ret_list=[]
     for tup in result:
-        ret_list.append({'year': tup[0], 'thiscomp': tup[1]})
+        ret_list.append({'year': tup[0], 'thiscomp': tup[1]/tup[2]})
     return jsonify({'data': ret_list})
     
 #Endpoint to get co2 emission from transport on orgnr
@@ -181,7 +211,8 @@ def get__co2emissions_feed(orgnr):
 def get__co2emissions_production(orgnr):
     result=session.query(
         Co2Emissions.year,
-        func.sum(Co2Emissions.co2e_production)
+        func.sum(Co2Emissions.co2e_production),
+        func.sum(Location.loc_capacity)
     ).select_from(
         Co2Emissions
     ).join(
@@ -190,10 +221,12 @@ def get__co2emissions_production(orgnr):
         Location.org_nr==orgnr
     ).group_by(
         Co2Emissions.year
+    ).order_by(
+        Co2Emissions.year
     ).all()
     ret_list=[]
     for tup in result:
-        ret_list.append({'year': tup[0], 'thiscomp': tup[1]})
+        ret_list.append({'year': tup[0], 'thiscomp': (tup[1]/tup[2])})
     return jsonify({'data': ret_list})
 
 #Endpoint to get deadliness data on orgnr level
@@ -201,7 +234,7 @@ def get__co2emissions_production(orgnr):
 def get_all_deadlinesspercent_for_orgnr(orgnr):
     result = session.query(
         Deadliness.death_year,
-        func.sum(Deadliness.death_nr)/func.sum(Location.loc_capacity)
+        (func.sum(Deadliness.death_nr)/func.sum(Location.loc_capacity)*100)
     ).select_from(
         Deadliness
     ).join(
@@ -210,11 +243,15 @@ def get_all_deadlinesspercent_for_orgnr(orgnr):
         Location.org_nr == orgnr
     ).group_by(
         Deadliness.death_year
+    ).order_by(
+        Deadliness.death_year
     ).all() #
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[0], 'thiscomp': round(tup[1], 4)}) 
+        ret_list.append({'year': tup[0], 'thiscomp': round(tup[1], 2)}) 
+
     return jsonify({'data': ret_list})
+
 
 @app.route('/orgs/<orgnr>/licedata/')
 def get_all_licedata_for_orgnr(orgnr):
@@ -234,12 +271,14 @@ def get_all_licedata_for_orgnr(orgnr):
             Location.org_nr == orgnr
         ).group_by(
             Licedata.lice_year
+        ).order_by(
+            Licedata.lice_year
         ).all()
         ret_list = []
         for tup in result:
-            ret_list.append({'year': tup[1], 'thiscomp': round(tup[0], 4)})
+            ret_list.append({'year': tup[1], 'thiscomp': round(tup[0], 2)})
         return jsonify({'data': ret_list})
- 
+    
 #Endpoint to get escape data on orgnr level
 @app.route('/orgs/<orgnr>/escapes/')
 def get_all_escapedata_for_orgnr(orgnr):
@@ -259,6 +298,8 @@ def get_all_escapedata_for_orgnr(orgnr):
             Location.org_nr == orgnr
         ).group_by(
             Escape.escape_year
+        ).order_by(
+            Escape.escape_year
         ).all()
         ret_list = []
         for tup in result:
@@ -266,21 +307,50 @@ def get_all_escapedata_for_orgnr(orgnr):
         return jsonify({'data': ret_list})
 
 
-#Endpoint to get all areal data from orgnr
+#Endpoint to get averages from the aquaculture industry
 @app.route('/orgs/<orgnr>/areal/')
-def get_all_areal_org(orgnr):
+def get_nokkeltall_areal(orgnr):
+    ret_list = []
+
     result = session.query(
         func.sum(Areal.areal_use),
+        func.sum(Areal.areal_use)/7140,
+        func.sum(Location.loc_capacity),
+        func.sum(Deadliness.death_nr)
     ).select_from(
         Areal
     ).join(
         Location, Areal.loc_nr == Location.loc_nr
+    ).join(
+        Deadliness, Areal.loc_nr == Deadliness.loc_nr
     ).filter(
         Location.org_nr == orgnr
     ).all()
-    ret_list = []
+    
     for tup in result:
-        ret_list.append({'areal_use_org': tup[0]})
+        ret_list.append({'this_org_areal': round(tup[0])})
+        ret_list.append({'this_org_areal_football': round(tup[1])})
+        ret_list.append({'this_org_areal_string': number_format(round(tup[0]/((tup[2]-tup[3])*(2/3))))})
+
+    result = session.query(
+        func.sum(Areal.areal_use),
+        func.avg(Areal.areal_use)/7140,
+        func.sum(Location.loc_capacity),
+        func.sum(Deadliness.death_nr)
+    ).select_from(
+        Areal
+    ).join(
+        Deadliness, Areal.loc_nr == Deadliness.loc_nr
+    ).join(
+        Location, Areal.loc_nr == Location.loc_nr
+    ).all()
+
+    for tup in result:
+        ret_list.append({'all_org_areal': round(tup[0])})
+        ret_list.append({'all_org_areal_football': round(tup[1])})
+        ret_list.append({'all_org_areal_string': number_format(round(tup[0]/((tup[2]-tup[3])*(2/3))))})
+        ret_list.append({'tup0':tup[0], 'tup1':tup[1], 'tup2':tup[2], 'tup3':tup[3]})
+
     return jsonify({'data': ret_list})
 
 #Endpoint to get specific account from orgnr
@@ -297,7 +367,7 @@ def get_bedrift(orgnr):
 def get_all_averages_deadliness():
     result = session.query(
         Deadliness.death_year,
-        func.sum(Deadliness.death_nr)/func.sum(Location.loc_capacity)
+        (func.sum(Deadliness.death_nr)/func.sum(Location.loc_capacity))*100
     ).select_from(
         Deadliness
     ).join(
@@ -307,10 +377,11 @@ def get_all_averages_deadliness():
     ).all() #
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[0], 'average_all': round(tup[1],4)}) 
+        ret_list.append({'year': tup[0], 'average_all': round(tup[1],2)}) 
     return jsonify({'data': ret_list})
 
 #Endpoint to get averages from the aquaculture industry
+
 @app.route('/averages/licedata/')
 def get_all_averages_licedata():
     result = session.query(
@@ -325,14 +396,24 @@ def get_all_averages_licedata():
     ).all()
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[1], 'average_all': round(tup[0], 4)})
+        ret_list.append({'year': tup[1], 'average_all': round(tup[0], 2)})
     return jsonify({'data': ret_list})
 
 #Endpoint to get averages from the aquaculture industry
 @app.route('/averages/escapes/')
 def get_all_averages_escapes():
+    count = 0
+    count_orgs = session.query(
+        func.count(Smb.org_nr)
+    ).select_from(
+        Smb
+    ).all()
+    for res in count_orgs:
+        count = res[0]
+        break
+    
     result = session.query(
-        func.sum(Escape.escape_count_sum),
+        func.avg(Escape.escape_count_sum),
         Escape.escape_year
     ).select_from(
         Escape
@@ -343,7 +424,8 @@ def get_all_averages_escapes():
     ).all()
     ret_list = []
     for tup in result:
-        ret_list.append({'year': tup[1], 'average_all': tup[0]})
+        ret_list.append({'year': int(tup[1]), 'average_all': round(tup[0]/count)})
+    
     return jsonify({'data': ret_list})
 
 #Endpoint to get averages from the aquaculture industry
@@ -351,8 +433,9 @@ def get_all_averages_escapes():
 def get_all_averages_co2feed():
     result=session.query(
         Co2Emissions.year,
-        func.sum(Co2Emissions.co2e_feed),
-        (func.sum(Co2Emissions.co2e_feed))/424
+        func.avg(Co2Emissions.co2e_feed),
+        (func.avg(Co2Emissions.co2e_feed))/0.046,
+        func.avg(Location.loc_capacity)
     ).select_from(
         Co2Emissions
     ).join(
@@ -362,7 +445,7 @@ def get_all_averages_co2feed():
     ).all()
     ret_list=[]
     for tup in result:
-        ret_list.append({'year': tup[0], 'average_all': tup[1], 'average_all_feed_flights':round(tup[2])})
+        ret_list.append({'year': tup[0], 'average_all': round(tup[1]/tup[3]), 'average_all_string': number_format(round(tup[1]/tup[3])), 'average_all_feed_flights':round(tup[2]/tup[3])})
     return jsonify({'data': ret_list})
 
 #Endpoint to get averages from the aquaculture industry
@@ -370,18 +453,24 @@ def get_all_averages_co2feed():
 def get_all_averages_co2production():
     result=session.query(
         Co2Emissions.year,
-        func.sum(Co2Emissions.co2e_production),
-        (func.sum(Co2Emissions.co2e_production))/424
+        func.avg(Co2Emissions.co2e_production),
+        (func.avg(Co2Emissions.co2e_production))/0.046,
+        func.avg(Location.loc_capacity)
     ).select_from(
         Co2Emissions
     ).join(
         Location, Co2Emissions.loc_nr == Location.loc_nr
+    ).join(
+        Smb, Location.org_nr == Smb.org_nr
     ).group_by(
+        Co2Emissions.year,
+        #Location.org_nr
+    ).order_by(
         Co2Emissions.year
     ).all()
     ret_list=[]
     for tup in result:
-        ret_list.append({'year': tup[0], 'average_all': int(tup[1]), 'average_all_production_flights':round(tup[2])})
+        ret_list.append({'year': tup[0], 'average_all': int(tup[1])/tup[3],'average_all_string': (round(tup[1]/tup[3], 2)), 'average_all_production_flights': round(tup[2]/tup[3])})
     return jsonify({'data': ret_list})
 
 @app.route('/averages/ufrivilligdeltid/')
@@ -389,7 +478,7 @@ def get_average_udeltid():
     ret_list=[]
 
     result=session.query(
-        func.avg(PartTime.part_time_percentage),
+        func.avg(PartTime.part_time_percentage)*100,
         PartTime.year
     ).select_from(
         PartTime
@@ -398,46 +487,9 @@ def get_average_udeltid():
     ).all()
     
     for tup in result:
-        ret_list.append({'year': tup[1], 'average_all':tup[0]})
+        ret_list.append({'year': tup[1], 'average_all':round(tup[0], 2)})
 
     return jsonify({'data': ret_list})
-
-#Endpoint to get averages from the aquaculture industry
-@app.route('/nokkeltall/<orgnr>/areal/')
-def get_nokkeltall_areal(orgnr):
-    ret_list = []
-
-    result = session.query(
-        func.avg(Areal.areal_use),
-        func.avg(Areal.areal_use)/7140
-
-    ).select_from(
-        Areal
-    ).join(
-        Location, Areal.loc_nr == Location.loc_nr
-    ).filter(
-        Location.org_nr == orgnr
-    ).all()
-    
-    for tup in result:
-        ret_list.append({'this_org_areal': tup[0]})
-        ret_list.append({'this_org_areal_football': int(tup[1])})
-
-    result = session.query(
-        func.avg(Areal.areal_use),
-        func.avg(Areal.areal_use)/7140
-    ).select_from(
-        Areal
-    ).join(
-        Location, Areal.loc_nr == Location.loc_nr
-    ).all()
-
-    for tup in result:
-        ret_list.append({'all_org_areal': tup[0]})
-        ret_list.append({'all_org_areal_football': int(tup[1])})
-
-    return jsonify({'data': ret_list})
-
 
 @app.route('/nokkeltall/<orgnr>/kjonn/')
 def get_nokkeltall_kjonn(orgnr):
@@ -472,18 +524,18 @@ def get_nokkeltall_kjonn(orgnr):
     return jsonify({'data': ret_list})
 
 
-#@app.route('/orgs/<orgnr>/ufrivilligdeltid/')
-@app.route('/nokkeltall/<orgnr>/ufrivilligdeltid/')
+@app.route('/orgs/<orgnr>/ufrivilligdeltid/')
 def get_all_ufrivilligdeltid_for_orgnr(orgnr):
-    ret_list=[]
-
+    ret_list = []
     result=session.query(
-        PartTime.part_time_percentage,
-        PartTime.year
+    PartTime.part_time_percentage*100,
+    PartTime.year
     ).select_from(
-        PartTime
+      PartTime
     ).filter(
-        PartTime.org_nr == orgnr
+      PartTime.org_nr == orgnr
+    ).order_by(
+      PartTime.year
     ).all()
     
     for tup in result:
@@ -491,53 +543,42 @@ def get_all_ufrivilligdeltid_for_orgnr(orgnr):
 
     return jsonify({'data': ret_list})
 
-### Returns one lice limit that this orgnr has 
-@app.route('/orgs/<orgnr>/licelimit/')
-def get_licelimit_orgnr(orgnr):
+
+
+
+@app.route('/orgs/<orgnr>/flights/')
+def get_flight_sum(orgnr):
     ret_list=[]
 
-    result=session.query(
-        Licedata.lice_limit,
-        Licedata.lice_year
-    ).select_from(
-        Licedata
-    ).join(
-        Location, Licedata.loc_nr == Location.loc_nr
-    ).filter(
-        Location.org_nr == orgnr,
-    ).all()
-
-    i=0
-    for data in result:
-        ret_list.append({'year': data[1], 'limit': data[0]})
-        i+=1
-        if i==5: break
-    
-    return jsonify({'data': ret_list})
-
-### Returns one lice limit that this orgnr has 
-@app.route('/orgs/<orgnr>/flights/')
-def get_flights(orgnr):
     result=session.query(
         Co2Emissions.year,
         func.sum(Co2Emissions.co2e_feed),
-        (func.sum(Co2Emissions.co2e_feed))/424
-    ).select_from(
+        func.sum(Co2Emissions.co2e_production),
+        (func.sum(Co2Emissions.co2e_feed)/0.046),
+        (func.sum(Co2Emissions.co2e_production)/0.046),
+        (func.sum(Location.loc_capacity))
+        ).select_from(
         Co2Emissions
     ).join(
         Location, Co2Emissions.loc_nr == Location.loc_nr
+        ).filter(
+        Location.org_nr == orgnr,
+        Co2Emissions.year == '2021'
     ).group_by(
-        Co2Emissions.year
-    ).all()
-    ret_list=[]
+        Co2Emissions.year).all()
+        
+        
     for tup in result:
-        ret_list.append({'flights_feed': tup[0], 'flights_production': tup[1], 'average_all_feed_flights':round(tup[2])})
+        ret_list.append({'prod_co2': (tup[2]/tup[5]), 'feed_co2_string': number_format(round(tup[1]/tup[5], 2)), 'prod_feed': (round(tup[1]/tup[5])), 'prod_co2_string': (round(tup[2]/tup[5],2)), 'flights_feed':round(tup[3]/tup[5]), 'flights_production': round(tup[4]/tup[5])})
+        
+
     return jsonify({'data': ret_list})
+
 
 
 if __name__ == '__main__':
     app.debug = True
-    #app.run(host='0.0.0.0', port=105)
+    app.run(host='0.0.0.0', port=105)
     app.run()
 
 
