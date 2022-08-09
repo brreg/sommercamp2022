@@ -1,134 +1,119 @@
 .container-frames {
-    clear: both;
+  clear: both;
 }
 
 .container-frame {
-    box-shadow: 0px 8px 16px 6px #00478514;
-    border-radius: 25px;
-    width: 100%;
-    height: flex;
+  box-shadow: 0px 8px 16px 6px #00478514;
+  border-radius: 25px;
+  width: 100%;
+  height: flex;
 }
 
 .miljo-frame {
-    height: 3000px;
+  height: 3300px;
 }
 
 .okonomi-frame {
-    height: 1500px;
+  height: 1500px;
 }
 
 .sosial-frame {
-    height: 1500px;
+  height: 1500px;
 }
 
 .row-frames {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
 }
 
 .column-frames {
-    width: 47%;
-    padding-top: 1%;
-    padding-bottom: 0.5%;
-    padding-left: 1.5%;
-    padding-right: 1%;
+  width: 47%;
+  padding-top: 1%;
+  padding-bottom: 0.5%;
+  padding-left: 1.5%;
+  padding-right: 1%;
 }
 
 .nøkkeltall-frame {
-    display: flex;
-    flex-flow: row wrap;
-    padding-left: 5%;
+  display: flex;
+  flex-flow: row wrap;
+  padding-left: 5%;
 }
 
 .graf-frame {
-    margin-top: 5%;
-    width: 90%;
-    height: flex;
-    border: 1px solid black;
-    margin-left: 5%;
+  margin-top: 5%;
+  width: 90%;
+  height: flex;
+  border: 1px solid black;
+  margin-left: 5%;
 }
 
 .overskrift-frame {
-    margin-left: 2.5%;
-    margin-top: 2%;
-    padding-top: 1%;
-    font-weight: 700;
-    font-size: 16px;
-    display: flex;
-    flex-flow: row wrap;
+  margin-left: 2.5%;
+  margin-top: 2%;
+  padding-top: 1%;
+  font-weight: 700;
+  font-size: 16px;
+  display: flex;
+  flex-flow: row wrap;
 }
 
 .p-overskrift-frame {
-    margin-left: 2.5%;
-    padding-top: 1%;
-    font-size: 24px;
-    color: #000;
+  margin-left: 2.5%;
+  padding-top: 1%;
+  font-size: 24px;
+  color: #000;
 }
 
 .container_btn {
-    border: 2px solid #2B47EE;
-    width: 90%;
-    margin-left: 5%;
-    border-radius: 10px;
+  border: 2px solid #2b47ee;
+  width: 90%;
+  margin-left: 5%;
+  border-radius: 10px;
 }
 
 .btn-dropDown {
-    width: 90%;
-    height: 42px;
-    background-color: #fff;
-    border-radius: 10px;
-    border: none;
-    text-align: left;
-    padding-left: 15px;
-    font-size: 16px;
-    font-weight: 700;
-    margin-left: 1%;
+  width: 90%;
+  height: 42px;
+  background-color: #fff;
+  border-radius: 10px;
+  border: none;
+  text-align: left;
+  padding-left: 15px;
+  font-size: 16px;
+  font-weight: 700;
+  margin-left: 1%;
 }
 
 .pil {
-    float: right;
-    height: 10px;
-    margin-top: 0.7%;
-    margin-right: -8%;
+  float: right;
+  height: 10px;
+  margin-top: 0.7%;
+  margin-right: -8%;
 }
 
 .p-hidden {
-    margin-top: -0.5%;
-    width: 90%;
-    margin-left: 1%;
-    padding-left: 15px;
+  margin-top: -0.5%;
+  width: 90%;
+  margin-left: 1%;
+  padding-left: 15px;
 }
 
 .p-tekst-frame {
-    font-size: 16px;;
-    width: 95%;
+  font-size: 16px;
+  width: 95%;
 }
 
 .p-kilde {
-    margin-top: 5%;
+  margin-top: 5%;
 }
 
 .tekstboks-frame {
-    margin-left: 5%;
-    height: 150px;
+  margin-left: 5%;
+  height: 150px;
 }
 
 .tekst-til-nøkkeltall {
-    margin-left: 5%;
+  margin-left: 5%;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
