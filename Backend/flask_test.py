@@ -253,6 +253,29 @@ def get_all_deadlinesspercent_for_orgnr(orgnr):
     return jsonify({'data': ret_list})
 
 
+#Endpoint to get deadliness data on orgnr level
+@app.route('/orgs/<orgnr>/deadlines/')
+def get_all_deadlinesspercent_for_orgnr2(orgnr):
+    result = session.query(
+        Deadliness.death_year,
+        (func.sum(Deadliness.death_nr)/func.sum(Location.loc_capacity)*100)
+    ).select_from(
+        Deadliness
+    ).join(
+        Location, Deadliness.loc_nr == Location.loc_nr
+    ).filter(
+        Location.org_nr == orgnr
+    ).group_by(
+        Deadliness.death_year
+    ).order_by(
+        Deadliness.death_year
+    ).all() #
+    ret_list = []
+    for tup in result:
+        ret_list.append({'year': tup[0], 'death_percentage': round(tup[1], 2)}) 
+
+    return jsonify({'data': ret_list})
+
 @app.route('/orgs/<orgnr>/licedata/')
 def get_all_licedata_for_orgnr(orgnr):
     
@@ -539,7 +562,7 @@ def get_all_ufrivilligdeltid_for_orgnr(orgnr):
     ).all()
     
     for tup in result:
-        ret_list.append({'year': tup[1], 'thiscomp': tup[0]})
+        ret_list.append({'year': tup[1], 'thiscomp': round(tup[0],2)})
 
     return jsonify({'data': ret_list})
 
@@ -569,7 +592,7 @@ def get_flight_sum(orgnr):
         
         
     for tup in result:
-        ret_list.append({'prod_co2': (tup[2]/tup[5]), 'feed_co2_string': number_format(round(tup[1]/tup[5], 2)), 'prod_feed': (round(tup[1]/tup[5])), 'prod_co2_string': (round(tup[2]/tup[5],2)), 'flights_feed':round(tup[3]/tup[5]), 'flights_production': round(tup[4]/tup[5])})
+        ret_list.append({'prod_co2': (tup[2]/tup[5]), 'feed_co2_string': (round(tup[1]/tup[5], 2)), 'prod_feed': (round(tup[1]/tup[5])), 'prod_co2_string': (round(tup[2]/tup[5],2)), 'flights_feed':round(tup[3]/tup[5]), 'flights_production': round(tup[4]/tup[5])})
         
 
     return jsonify({'data': ret_list})
