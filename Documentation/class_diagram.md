@@ -6,14 +6,10 @@ classDiagram
     Main <|-- RegnDataContainer
     RegnDataContainer <|-- RegnData
     Database <|-- Main
-	Database <|-- DatabaseINI
 	LiceData <|-- BarentswatchAPIController
 	Escapedata <|-- BarentswatchAPIController
-	Main <|-- LicedataContainer
 	LicedataContainer <|-- LiceData
 	EscapedataContainer <|-- Escapedata
-	Main <|-- EscapedataContainer
-	RegnData <|-- RegnskapsAPIController
 	
     
 	
@@ -61,13 +57,7 @@ classDiagram
 	  
     }
 	    
-	class DatabaseINI {
-      + host
-	  + database
-	  + user
-	  + password
-      
-    }
+
 
 	class LicedataContainer {
       + dict = 'lice_data'
