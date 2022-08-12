@@ -1,17 +1,15 @@
 ```mermaid
 classDiagram
 
-    BarentswatchAPIController -- Main
-    RegnskapsAPIController -- Main
-    RegnDataContainer -- RegnskapsAPIController
-    RegnData -- RegnDataContainer
-    Database -- Main
-	LicedataContainer -- BarentswatchAPIController
-	EscapedataContainer -- BarentswatchAPIController
-	LiceData -- LicedataContainer
-	Escapedata -- EscapedataContainer
-	
-    
+Main -- Database
+Main -- BarentswatchAPIController
+	BarentswatchAPIController -- LicedataContainer
+		LicedataContainer -- LiceData
+	BarentswatchAPIController -- EscapedataContainer
+		EscapedataContainer -- Escapedata
+Main -- RegnskapsAPIController
+	RegnskapsAPIController -- RegnDataContainer
+		RegnDataContainer -- RegnData
 	
 	class Main {
           main()
