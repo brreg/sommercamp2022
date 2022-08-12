@@ -4,19 +4,19 @@ Dette repositoriet inneholder en frontend og en backend-del av Bærekraftsportal
 Backend-mappen inneholder kode for å sette opp og fylle en database med bærekraftsdata i oppdrettsnæringen, samt å eksponere dataen i databasen gjennom et REST api. Å kjøre koden forutsetter flere ting:
 
 1. At man har en bruker på barentswatch og setter brukernavnet og passordet ditt som environment variables slik at scriptet kan hente ut informasjon fra APIet deres. 
-Dette gjøres ved å navigerere til Backend-mappen i terminalen, og skrive en slik kommando: 
+Dette gjøres ved å navigerere til Backend-mappen i terminalen, og skrive en slik kommando: \n
 export api_user=ditt_brukernavn
 export api_password=ditt_passord
 
-2. At du har satt opp en bruker i Docker og PGadmin og eksporterer brukernavn og passord til dette. 
+2. At du har satt opp en bruker i Docker og PGadmin og eksporterer brukernavn og passord til dette. \n
 export database_user=ditt_brukernavn
 export database_password=ditt_passord
 
-3. At du får et brukernavn og passord for tilgang til regnskapsregisteret og eksporterer dette også som environment variables.
+3. At du får et brukernavn og passord for tilgang til regnskapsregisteret og eksporterer dette også som environment variables.\n
 export rapi_user=ditt_brukernavn
 export rapi_password=ditt_passord
 
-4. At du har kjørt kommandoen
+4. At du har kjørt kommandoen\n
 export FLASK_APP=flask_test
 slik at flask vet hvilken fil den skal kjøre når vi eksponerer databasen. 
 
