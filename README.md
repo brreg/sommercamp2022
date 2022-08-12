@@ -8,9 +8,9 @@ Dette gjøres ved å navigerere til Backend-mappen i terminalen, og skrive en sl
 export api_user=ditt_brukernavn
 export api_password=ditt_passord
 
-2. At du har satt opp en bruker i Docker og PGadmin og eksporterer brukernavn og passord til dette. \n
-`export database_user=ditt_brukernavn`
-`export database_password=ditt_passord`
+2. At du har satt opp en bruker i Docker og PGadmin og eksporterer brukernavn og passord til dette.
+```export database_user=ditt_brukernavn
+export database_password=ditt_passord```
 
 3. At du får et brukernavn og passord for tilgang til regnskapsregisteret og eksporterer dette også som environment variables.\n
 export rapi_user=ditt_brukernavn
