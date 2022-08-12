@@ -26,10 +26,11 @@ slik at flask vet hvilken fil den skal kjøre når vi eksponerer databasen.
 flask run
 og så er endepunktene tilgjengelig for frontend. 
 
-Frontend-mappen inneholder alt som lager nettsiden. Koden er skrevet i rammeverket React. For å kjøre frontend navigerer man fra Frontend>portal>src, og inne i src mappen skriver man
+Frontend-mappen inneholder alt som lager nettsiden. Koden er skrevet i rammeverket React. Per i dag er det Jakob's IP-adresse som ligger inne i URL-en til alle axios-kallene i frontend. Disse må du endre til din egen IP-adresse i koden:-) 
+For å kjøre frontend navigerer man fra Frontend>portal>src, og inne i src mappen skriver man
 npm start
 i terminalen. 
 Deretter vil du antakelig få beskjed om at du mangler å installere noe, så du må lese feilmeldingen og finne ut hva som skal installeres. 
 Om du nå skriver npm start får du forhåpentlig kjørt nettsiden, som skal vise bærekraftsdata om oppdrettsnæringen dersom flask også kjører samtidig:-) 
 
-sosial og parttime
+
