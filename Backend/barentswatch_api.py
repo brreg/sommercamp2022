@@ -17,12 +17,13 @@ import time
 filename = '/Users/ingunn/Documents/GitHub/sommercamp2022/Dataanalyse/smb.csv'
 
     
-#Get fishhealth data 
+#Code to get data on fishhealth from Barentswatch API.
 
 class API:
       
     def __init__(self):
         
+        #Authentication
         self.barentswatch = OAuth2Service(
         name='barentswatch',
         client_id= os.environ["api_user"],
@@ -38,6 +39,7 @@ class API:
         
         self.session = self.barentswatch.get_auth_session(data=self.data, decoder=json.loads) 
     
+    #Returns list of locations producing salmon
     def get_locnrs(self):
         res = r.get(
         'https://www.barentswatch.no/bwapi/v1/geodata/fishhealth/localitieswithsalmonoids',
@@ -49,6 +51,7 @@ class API:
         
         return locnrs
     
+    #Makes a dataframe containing information about the company
     def make_dfas(self, filename, locnrs):
         dfas = pd.read_csv(filename, sep = ';')
         dfas['LOK_KAP'] = dfas['LOK_KAP'].str.replace(',','.')
@@ -95,6 +98,7 @@ class API:
                 
         return licedata_container
     
+    #Function to get escape data
     def get_escape_data(self, locnr, year):
         
         escape_res = r.get('https://www.barentswatch.no/bwapi/v1/geodata/fishhealth/locality/'+str(locnr)+'/escape/'+str(year),
@@ -120,9 +124,9 @@ class API:
                     pass
 
         return edcontainer
-
+    #Input is a dictionary of the form {localityNo: , year: , data: {weeks:values}}
     def put_lice_data_into_object(self, fishhealthdata) :
-        # input is a dictionary of the form {localityNo: , year: , data: {weeks:values}}
+        
         licebinary=False
         lice_sum = 0
         count = 0

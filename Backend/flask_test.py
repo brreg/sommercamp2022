@@ -62,7 +62,8 @@ session = Session(engine)
 
 def bad_request(orgnr):
     return orgnr.isdigit() == False
-        
+
+#Formats an organisations name 
 def org_name_format(orgname):
     tolist = str(orgname).split()
     res = ''
@@ -73,6 +74,7 @@ def org_name_format(orgname):
             res += i.capitalize() + ' '
     return res
 
+#Formatting long integers
 def number_format(number):
     res = ''
     stn = str(number)
@@ -276,6 +278,7 @@ def get_all_deadlinesspercent_for_orgnr2(orgnr):
 
     return jsonify({'data': ret_list})
 
+#Endpoint to get an organisations licedata
 @app.route('/orgs/<orgnr>/licedata/')
 def get_all_licedata_for_orgnr(orgnr):
     
@@ -496,6 +499,7 @@ def get_all_averages_co2production():
         ret_list.append({'year': tup[0], 'average_all': int(tup[1])/tup[3],'average_all_string': (round(tup[1]/tup[3], 2)), 'average_all_production_flights': round(tup[2]/tup[3])})
     return jsonify({'data': ret_list})
 
+#Endpoint to get average part time use
 @app.route('/averages/ufrivilligdeltid/')
 def get_average_udeltid():
     ret_list=[]
@@ -514,6 +518,7 @@ def get_average_udeltid():
 
     return jsonify({'data': ret_list})
 
+#Endpoint to get social data
 @app.route('/nokkeltall/<orgnr>/kjonn/')
 def get_nokkeltall_kjonn(orgnr):
     ret_list=[]
@@ -546,7 +551,7 @@ def get_nokkeltall_kjonn(orgnr):
         ret_list.append({'male_percent_avg':round(tup[1], 0)})
     return jsonify({'data': ret_list})
 
-
+#Get part time data for a specific organisation
 @app.route('/orgs/<orgnr>/ufrivilligdeltid/')
 def get_all_ufrivilligdeltid_for_orgnr(orgnr):
     ret_list = []
@@ -568,7 +573,7 @@ def get_all_ufrivilligdeltid_for_orgnr(orgnr):
 
 
 
-
+#Endpoint for Co2
 @app.route('/orgs/<orgnr>/flights/')
 def get_flight_sum(orgnr):
     ret_list=[]
