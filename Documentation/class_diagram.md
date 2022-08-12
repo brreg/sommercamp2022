@@ -4,7 +4,7 @@ classDiagram
     BarentswatchAPIController <|-- Main
     RegnskapsAPIController <|-- Main
     RegnDataContainer <|-- RegnskapsAPIController
-    RegnDataContainer <|-- RegnData
+    RegnData <|-- RegnDataContainer
     Database <|-- Main
 	LicedataContainer <|-- BarentswatchAPIController
 	EscapedataContainer <|-- BarentswatchAPIController
