@@ -1,8 +1,8 @@
 ```mermaid
 classDiagram
 
-    Main <|-- BarentswatchAPIController
-    Main <|-- RegnskapsAPIController
+    BarentswatchAPIController <|-- Main
+    RegnskapsAPIController <|-- Main
     Main <|-- RegnDataContainer
     RegnDataContainer <|-- RegnData
     Database <|-- Main
