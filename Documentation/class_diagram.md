@@ -1,19 +1,15 @@
 ```mermaid
 classDiagram
 
-    BarentswatchAPIController <|-- Main
-    RegnskapsAPIController <|-- Main
-    Main <|-- RegnDataContainer
-    RegnDataContainer <|-- RegnData
-    Database <|-- Main
-	Database <|-- DatabaseINI
-	LiceData <|-- BarentswatchAPIController
-	Escapedata <|-- BarentswatchAPIController
-	Main <|-- LicedataContainer
-	LicedataContainer <|-- LiceData
-	EscapedataContainer <|-- Escapedata
-	Main <|-- EscapedataContainer
-	RegnData <|-- RegnskapsAPIController
+    BarentswatchAPIController -- Main
+    RegnskapsAPIController -- Main
+    RegnDataContainer -- RegnskapsAPIController
+    RegnData -- RegnDataContainer
+    Database -- Main
+	LicedataContainer -- BarentswatchAPIController
+	EscapedataContainer -- BarentswatchAPIController
+	LiceData -- LicedataContainer
+	Escapedata -- EscapedataContainer
 	
     
 	
@@ -23,9 +19,15 @@ classDiagram
 
     class BarentswatchAPIController {
       + get_lice_data()
-	  + get_escape_data()
+	  + get_escape_data(locnr, year)
 	  + get_locnrs()
 	  + init()
+	  + make_dfas(filename, locnrs)
+	  + get_lice_data(locnr, year)
+	  + get_many_lice_data(locnrs, years)
+	  + get_many_escape_data(locnrs, years)
+	  + put_lice_data_into_object(fishhealthdata)
+	  
     }
 
     class RegnskapsAPIController {
@@ -61,18 +63,12 @@ classDiagram
 	  
     }
 	    
-	class DatabaseINI {
-      + host
-	  + database
-	  + user
-	  + password
-      
-    }
+
 
 	class LicedataContainer {
       + dict = 'lice_data'
-	  + addLiceData()
-	  + addLiceDataList()
+	  + addLiceData(licedata)
+	  + addLiceDataList(licedatalist)
 	  + getDataFrame()
 	  
     }
@@ -80,14 +76,17 @@ classDiagram
 	class LiceData {
       + locnr
 	  + lice_binary
-	  + lice_week
+	  + lice_data
 	  + lice_year
+	  + lice_average
+	  
     }
 	
 	class Escapedata {
       + init()
 	  + getlist()
 	  + print_data()
+	  + calculate_escape_count(data)
 	  
     }
 	class RegnData {
@@ -97,8 +96,8 @@ classDiagram
     
     class RegnDataContainer {
       + init()
-	  + add_regndata()
-	  + add_regndata_list()
+	  + add_regndata(regndata)
+	  + add_regndata_list(regnatalist)
 	  + get_dataframe()
     }
 	
