@@ -6,10 +6,10 @@ classDiagram
     RegnDataContainer <|-- RegnskapsAPIController
     RegnDataContainer <|-- RegnData
     Database <|-- Main
-	LiceData <|-- BarentswatchAPIController
-	Escapedata <|-- BarentswatchAPIController
-	LicedataContainer <|-- LiceData
-	EscapedataContainer <|-- Escapedata
+	LicedataContainer <|-- BarentswatchAPIController
+	EscapedataContainer <|-- BarentswatchAPIController
+	LiceData <|-- LicedataContainer
+	Escapedata <|-- EscapedataContainer
 	
     
 	
