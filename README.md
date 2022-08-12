@@ -1,5 +1,7 @@
 # sommercamp_2022
-Dette repositoriet inneholder en frontend og en backend-del av Bærekraftsportal, et prosjekt av sommercamperne 2022. 
+Dette kode-repositoriet innholder MVP'en til sommercampen 2022 hos Brønnøysundregistrene og Digitaliseringsdirektoratet. Prosjektet var et tverrfaglig samarbeid mellom 4 IT-studenter, 2 fra juss, 2 med design-bakgrunn og 2 på dataanalyse. Casen var bred og handlet om å utforske hvordan Digitaliseringsdirektoratet og Brønnøysundregisteret kan bidra til det grønne skiftet gjennom å samle og tilgjengeliggjøre allerede innrapporterte data som kan si noe om bærekraft. MVP'en ble en Bærekraftsportal som samler data fra blant annet Regnskapsregisteret og Barentswatch og viser data om virksomheter sett opp mot bransjens gjennomsnitt. 
+
+Dette repositoriet inneholder en frontend og en backend-del av Bærekraftsportalen. Backend består av en postgresql database som administreres i PGAdmin og Docker, hvor vi bruker sqlalchemy til å gjøre spørringer til databasen, og flask for å eksponere informasjonen gjennom et REST API. Frontend benytter React og innehenter data dynamisk fra endepunktene.
 
 Backend-mappen inneholder kode for å sette opp og fylle en database med bærekraftsdata i oppdrettsnæringen, samt å eksponere dataen i databasen gjennom et REST api. Å kjøre koden forutsetter flere ting:
 
