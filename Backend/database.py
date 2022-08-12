@@ -11,8 +11,9 @@ import json
 import math
 import time
 import random
-
-
+'''
+Class containing methods for creating tables for database, filling tables and generating data that we had to mock.
+'''
 class Database:
 
     def __init__(self):
@@ -379,7 +380,7 @@ class Database:
                 self.conn.close()
 
     
-    ### Inserts data in df into either salmonoid_lice ELLER escapes tables in our database
+    ### Inserts data in df into chosen tablename.
     def insert_data(self, df, tablename):
         print("Inserting data")
         try: 
@@ -542,7 +543,7 @@ class Database:
         dfas['LOK_KAP'] = dfas['LOK_KAP'].str.replace(',','.')
         return dfas
     
-    
+    #Adds producers of salmon food
     def add_producers(self):
         prods = [('Polarfeed', 2.75), ('Nutreco', 2.46), ('Ewos', 2.67), ('Biomar', 2.2)]
         try:
@@ -651,7 +652,7 @@ class Database:
             if self.conn is not None:
                 self.conn.close()
         
-    #Updates lice-table to include licelimit
+    #Updates lice-table to include licelimit (currently not in use)
     def insert_lice_limit(self, filename):
         
         df = pd.read_csv("lice_limit.csv")#(filename)
@@ -766,6 +767,7 @@ class Database:
         print(dfmiljo.shape)
         return dfmiljo
     
+    #Generates social figures, return as dataframe
     def generate_social_figures(self, years):
         res = []
         df = pd.read_csv('as.csv', sep = ';')
@@ -787,7 +789,7 @@ class Database:
         return dfsocial
 
         
-
+    #Generates deadliness data, return as dataframe
     def generate_deadliness_data(self, locnrs, filename, year): 
         #years = 2017,2018,2019,2020,2021
         dfdead = pd.DataFrame()
@@ -830,7 +832,7 @@ class Database:
         dfdead = pd.DataFrame(dictdead)
         return dfdead
     
-
+    #Generate social figures, return as dataframe
     def generate_social_figures(self, years):
         res = []
         df = pd.read_csv('as.csv', sep = ';')
@@ -850,9 +852,3 @@ class Database:
         dfsocial = pd.DataFrame(res)
         print(dfsocial)
         return dfsocial
-
-
-db2 = Database()
-db2.connect()
-db2.config()
-db2.insert_address_smb_locnr_csv('smb.csv')

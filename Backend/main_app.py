@@ -18,7 +18,7 @@ from regn import RegnskapsAPI
 
 def fill_db():
 
-    years = [2021]
+    years = []
     
     #Export passwords for both API's
     #Files: 'as.csv', 'smb.csv', 'arealbruk3.csv', 'lice_limit.csv', 'part_time_percentages.csv'
@@ -29,7 +29,7 @@ def fill_db():
     db.config()
     #db.create_tables()
 
-    """
+    
     db.create_tables()
 
     time.sleep(3)
@@ -49,7 +49,7 @@ def fill_db():
     #db.insert_lice_limit('lice_limit.csv')
     #time.sleep(1)
     
-    '''
+    
     #Fill basic data about locations, addresses and orgs
     db.insert_address_smb_locnr_csv('smb.csv')
     
@@ -107,18 +107,16 @@ def fill_db():
     db.insert_part_time_data('part_time_percentages.csv')
     time.sleep(1)
 
-    '''
+  
     #db.update_db_averages()
 
 
     
     db.update_db_averages()
-    """
+    
 
 fill_db()
 
-
-'''
 def main():
 
     dfdead = db.generate_deadliness_data(locnrs, 'as.csv', years)
@@ -179,4 +177,3 @@ def main():
     db.insert_data(df_gender, 'social_figures')
 
 main()
-'''

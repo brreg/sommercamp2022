@@ -10,7 +10,8 @@ from database import Database
 class RegnskapsAPI:
 
     def __init__(self):
-
+        
+        #Authentication
         self.rapi_user = os.environ["rapi_user"]
         self.rapi_password = os.environ["rapi_password"]
 
@@ -23,13 +24,15 @@ class RegnskapsAPI:
         as_liste_uten_duplikater = list(dict.fromkeys(as_liste))
         
         return as_liste_uten_duplikater
-
+    
+    #Gets account numbers from an organization
     def get_regnskap(self, orgnr, year):
         url = 'https://data.brreg.no/regnskapsregisteret/regnskap/'+str(orgnr)+'?%C3%A5r='+str(year)+'&regnskapstype=SELSKAP'
         response = requests.get(url, auth=(self.rapi_user, self.rapi_password))
         time.sleep(2)
         return response.json()
     
+    #Calculating return on assets, liquidity, and solidity
     def get_nokkeltall(self, orgnr, year):
 
         try:
