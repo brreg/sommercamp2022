@@ -23,19 +23,28 @@ export rapi_password=ditt_passord
 ```
 
 4. At du har kjørt kommandoen
+```
 export FLASK_APP=flask_test
+```
 slik at flask vet hvilken fil den skal kjøre når vi eksponerer databasen. 
 
 5. Deretter må du kjøre main_app.py, som oppretter tabellene i databasen, og fyller databasen. Dette gjør den ved å hente data fra regnskapsregisteret og Barentswatch, ved å generere noe data, og ved å fylle inn noe fra csv-filer. To av csv-filene som du trenger ligger ikke offentlig på GitHub ettersom de er konstruerte data og vi ikke ønsket at noen skulle tro det var ekte data. Du kan sende en melding til enten Sanna, Jakob, Andrea eller Ingunn for å få disse filene.
+```
+python3 main_app.py
+```
 
 6. Nå kan du kjøre kommandoen
+```
 flask run
+```
 og så er endepunktene tilgjengelig for frontend. 
 
 Frontend-mappen inneholder alt som lager nettsiden. Koden er skrevet i rammeverket React. Per i dag er det Jakob's IP-adresse som ligger inne i URL-en til alle axios-kallene i frontend. Disse må du endre til din egen IP-adresse i koden:-) 
-For å kjøre frontend navigerer man fra Frontend>portal>src, og inne i src mappen skriver man
+For å kjøre frontend navigerer man fra Frontend>portal>src, og inne i src mappen skriver man følgende i terminalen:
+```
 npm start
-i terminalen. 
+```
+
 Deretter vil du antakelig få beskjed om at du mangler å installere noe, så du må lese feilmeldingen og finne ut hva som skal installeres. 
 Om du nå skriver npm start får du forhåpentlig kjørt nettsiden, som skal vise bærekraftsdata om oppdrettsnæringen dersom flask også kjører samtidig:-) 
 
